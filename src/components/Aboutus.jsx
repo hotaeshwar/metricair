@@ -55,7 +55,13 @@ export default function AboutUs() {
   const [statsRef, statsInView] = useInView(0.2);
 
   return (
-    <section className="w-full bg-[#1a1a2e] text-white py-16 sm:py-20 lg:py-28 px-4 sm:px-8 lg:px-16 overflow-hidden">
+    <section className="w-full bg-[#1a1a2e] text-white
+      pt-28 pb-16
+      sm:pt-32 sm:pb-20
+      lg:pt-36 lg:pb-28
+      px-4 sm:px-8 lg:px-16
+      overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
         {/* ── Left: Text ── */}
