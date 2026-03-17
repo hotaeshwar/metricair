@@ -54,25 +54,16 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [hoveredGroup, setHoveredGroup] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
-    // Close mobile menu on route change
     setMobileOpen(false);
     setMobileProductsOpen(false);
   }, [location.pathname]);
-
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setProductsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -85,125 +76,214 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 20);
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleMouseEnter = () => {
     clearTimeout(timeoutRef.current);
     setProductsOpen(true);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setProductsOpen(false), 150);
+    timeoutRef.current = setTimeout(() => {
+      setProductsOpen(false);
+      setHoveredGroup(null);
+    }, 150);
   };
 
   const isActive = (path) => location.pathname === path;
 
   const navLinkClass = (path) =>
-    `px-4 py-2 rounded text-sm font-medium transition-colors duration-200 ${
+    `px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${
       isActive(path)
         ? "text-[#e94560] bg-white/5"
-        : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+        : scrolled
+        ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+        : "text-white hover:text-[#e94560]"
     }`;
 
-  return (
-    <nav className="bg-[#1a1a2e] w-full fixed top-0 left-0 z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+  const leftNavLinks = (
+    <>
+      <Link to="/" className={navLinkClass("/")}>
+        Home
+      </Link>
+      <Link to="/about" className={navLinkClass("/about")}>
+        About Us
+      </Link>
 
-          {/* ── Logo ── */}
-          <Link to="/" className="shrink-0">
+      {/* Products dropdown */}
+      <div
+        ref={dropdownRef}
+        className="relative"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          className={`flex items-center gap-1 px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${
+            productsOpen
+              ? "text-[#e94560] bg-white/5"
+              : scrolled
+              ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+              : "text-white hover:text-[#e94560]"
+          }`}
+        >
+          Products
+          <svg
+            className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`}
+            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {productsOpen && (
+          <div
+            className="fixed w-[860px] bg-[#16213e] border border-white/10 rounded-xl shadow-2xl p-6 z-50"
+            style={{
+              top: "80px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              maxWidth: "calc(100vw - 32px)",
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+              {PRODUCTS_MENU.map((group) => (
+                <div
+                  key={group.group}
+                  className="relative"
+                  onMouseEnter={() => setHoveredGroup(group.group)}
+                  onMouseLeave={() => setHoveredGroup(null)}
+                >
+                  <Link
+                    to={group.href}
+                    className="flex items-center justify-between text-[#e94560] text-xs font-bold uppercase tracking-widest mb-2 hover:text-white transition-colors duration-150 group"
+                  >
+                    <span>{group.group}</span>
+                    {group.items.length > 0 && (
+                      <svg
+                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${
+                          hoveredGroup === group.group ? "rotate-180" : ""
+                        }`}
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    )}
+                  </Link>
+
+                  {group.items.length > 0 && (
+                    <ul
+                      className={`space-y-1 overflow-hidden transition-all duration-200 ${
+                        hoveredGroup === group.group
+                          ? "max-h-60 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {group.items.map((item) => (
+                        <li key={item.label}>
+                          <Link
+                            to={item.href}
+                            className="block text-gray-400 text-sm hover:text-[#e94560] hover:pl-1.5 transition-all duration-150"
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <Link to="/store" className={navLinkClass("/store")}>
+        Store
+      </Link>
+    </>
+  );
+
+  const rightNavLinks = (
+    <>
+      <Link to="/feedback" className={navLinkClass("/feedback")}>
+        Feedback
+      </Link>
+      <Link to="/careers" className={navLinkClass("/careers")}>
+        Careers
+      </Link>
+      <Link to="/contact" className={navLinkClass("/contact")}>
+        Contact Us
+      </Link>
+
+      <div className={`w-px h-5 mx-2 transition-all duration-300 ${scrolled ? "bg-white/20" : "bg-white/40"}`} />
+
+      <Link
+        to="/login"
+        className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 border ${
+          scrolled
+            ? "text-gray-300 hover:text-[#e94560] border-white/20 hover:border-[#e94560]"
+            : "text-white hover:text-[#e94560] border-white/40 hover:border-[#e94560]"
+        }`}
+      >
+        Log In
+      </Link>
+    </>
+  );
+
+  return (
+    <nav
+      className={`w-full fixed top-0 left-0 z-50 overflow-visible transition-all duration-500 ${
+        scrolled
+          ? "bg-[#1a1a2e] shadow-lg"
+          : "bg-transparent shadow-none"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 overflow-visible">
+
+          {/* ── Desktop Left Links ── */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 justify-start">
+            {leftNavLinks}
+          </div>
+
+          {/* ── Centered Logo ── */}
+          <Link
+            to="/"
+            className="shrink-0 flex items-center justify-center"
+          >
             <img
               src="/images/metric.png"
               alt="MetricAir Logo"
-              style={{ height: "146px" }}
-              className="w-auto object-contain"
+              style={{
+                height: "260px",
+                width: "auto",
+                maxWidth: "500px",
+                transition: "opacity 0.5s ease",
+                opacity: scrolled ? 1 : 0.92,
+              }}
+              className="object-contain"
             />
           </Link>
 
-          {/* ── Desktop Links ── */}
-          <div className="hidden lg:flex items-center gap-1">
-
-            <Link to="/" className={navLinkClass("/")}>
-              Home
-            </Link>
-
-            {/* Products mega dropdown */}
-            <div
-              ref={dropdownRef}
-              className="relative"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <button
-                className={`flex items-center gap-1 px-4 py-2 rounded text-sm font-medium transition-colors duration-200 ${
-                  productsOpen
-                    ? "text-[#e94560] bg-white/5"
-                    : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-                }`}
-              >
-                Products
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`}
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {productsOpen && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[820px] bg-[#16213e] border border-white/10 rounded-xl shadow-2xl p-6 z-50"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="grid grid-cols-3 gap-x-8 gap-y-6">
-                    {PRODUCTS_MENU.map((group) => (
-                      <div key={group.group}>
-                        <Link
-                          to={group.href}
-                          className="block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-2 hover:text-white transition-colors duration-150"
-                        >
-                          {group.group}
-                        </Link>
-                        {group.items.length > 0 && (
-                          <ul className="space-y-1">
-                            {group.items.map((item) => (
-                              <li key={item.label}>
-                                <Link
-                                  to={item.href}
-                                  className="block text-gray-400 text-sm hover:text-[#e94560] hover:pl-1.5 transition-all duration-150"
-                                >
-                                  {item.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* About Us */}
-            <Link to="/about" className={navLinkClass("/about")}>
-              About Us
-            </Link>
+          {/* ── Desktop Right Links ── */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 justify-end">
+            {rightNavLinks}
           </div>
 
-          {/* ── Auth Buttons (desktop) ── */}
-          <div className="hidden lg:flex items-center gap-2">
-            <Link
-              to="/login"
-              className="text-gray-300 hover:text-[#e94560] border border-white/20 hover:border-[#e94560] px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
-            >
-              Log In
-            </Link>
-          </div>
-
-          {/* ── Hamburger ── */}
+          {/* ── Hamburger (mobile only) ── */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            className={`lg:hidden p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
+              scrolled ? "text-gray-300 hover:text-white" : "text-white"
+            }`}
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
@@ -233,7 +313,6 @@ export default function Navbar() {
             Home
           </Link>
 
-          {/* Products Accordion */}
           <div>
             <button
               onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
@@ -284,7 +363,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* About Us */}
           <Link
             to="/about"
             onClick={() => setMobileOpen(false)}
@@ -295,7 +373,48 @@ export default function Navbar() {
             About Us
           </Link>
 
-          {/* Auth */}
+          <Link
+            to="/store"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+              isActive("/store") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+            }`}
+          >
+            Store
+          </Link>
+
+          <div className="border-t border-white/10 my-2" />
+
+          <Link
+            to="/feedback"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+              isActive("/feedback") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+            }`}
+          >
+            Feedback
+          </Link>
+
+          <Link
+            to="/careers"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+              isActive("/careers") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+            }`}
+          >
+            Careers
+          </Link>
+
+          <Link
+            to="/contact"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+              isActive("/contact") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+            }`}
+          >
+            Contact Us
+          </Link>
+
           <div className="pt-3">
             <Link
               to="/login"
