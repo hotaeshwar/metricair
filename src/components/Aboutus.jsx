@@ -177,8 +177,17 @@ export default function AboutUs() {
               <img
                 src="/images/gta.png"
                 alt="MetricAir servicing the Greater Toronto Area"
-                className="relative z-[1] w-full h-auto object-cover rounded-2xl
-                  max-h-[320px] sm:max-h-[400px] lg:max-h-[520px]"
+                className="
+                  relative z-[1] w-full rounded-2xl
+                  h-[260px]
+                  sm:h-[340px]
+                  md:h-[380px]
+                  lg:h-[460px]
+                  xl:h-[520px]
+                  object-contain
+                  object-center
+                  bg-[#16213e]
+                "
               />
             </div>
           </div>
