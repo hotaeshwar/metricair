@@ -1,147 +1,196 @@
-import { useEffect, useRef } from "react";
+// src/components/BrandCarousel.jsx
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 
-export default function IndustryLeader() {
-  const headingRef = useRef(null);
-  const paraRef = useRef(null);
-  const sectionRef = useRef(null);
+const BRANDS = [
+  { src: '/images/brand1.png', alt: 'Brand Partner 1' },
+  { src: '/images/brand2.png', alt: 'Brand Partner 2' },
+  { src: '/images/brand3.png', alt: 'Brand Partner 3' },
+  { src: '/images/brand4.png', alt: 'Brand Partner 4' },
+  // duplicate set for seamless infinite loop
+  { src: '/images/brand1.png', alt: 'Brand Partner 1' },
+  { src: '/images/brand2.png', alt: 'Brand Partner 2' },
+  { src: '/images/brand3.png', alt: 'Brand Partner 3' },
+  { src: '/images/brand4.png', alt: 'Brand Partner 4' },
+];
 
+const REAL = 4;
+
+function getSlidesVisible() {
+  if (typeof window === 'undefined') return 3;
+  if (window.innerWidth < 640)  return 1;
+  if (window.innerWidth < 1024) return 2;
+  return 3;
+}
+
+export default function BrandCarousel() {
+  const [current, setCurrent]                 = useState(0);
+  const [slidesVisible, setSlidesVisible]     = useState(getSlidesVisible);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isPaused, setIsPaused]               = useState(false);
+  const [dragStart, setDragStart]             = useState(null);
+  const [dragOffset, setDragOffset]           = useState(0);
+  const autoRef  = useRef(null);
+  const trackRef = useRef(null);
+
+  // ── Resize ──
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-in");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    if (headingRef.current) observer.observe(headingRef.current);
-    if (paraRef.current) observer.observe(paraRef.current);
-
-    return () => observer.disconnect();
+    function onResize() { setSlidesVisible(getSlidesVisible()); }
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // ── Auto-play ──
+  const startAuto = useCallback(() => {
+    clearInterval(autoRef.current);
+    autoRef.current = setInterval(() => setCurrent(p => p + 1), 2800);
+  }, []);
+
+  useEffect(() => {
+    if (!isPaused) startAuto();
+    return () => clearInterval(autoRef.current);
+  }, [isPaused, startAuto]);
+
+  // ── Infinite jump ──
+  useEffect(() => {
+    if (current >= REAL) {
+      const t = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrent(p => p - REAL);
+      }, 400);
+      return () => clearTimeout(t);
+    }
+  }, [current]);
+
+  useEffect(() => {
+    if (!isTransitioning) {
+      const t = setTimeout(() => setIsTransitioning(true), 20);
+      return () => clearTimeout(t);
+    }
+  }, [isTransitioning]);
+
+  const slideW     = 100 / slidesVisible;
+  const translateX =
+    -(current * slideW) +
+    (dragOffset / (trackRef.current?.offsetWidth || 1)) * 100 * slidesVisible;
+
+  // ── Drag / swipe ──
+  const onDragStart = (clientX) => {
+    clearInterval(autoRef.current);
+    setDragStart(clientX);
+  };
+  const onDragMove = (clientX) => {
+    if (dragStart === null) return;
+    setDragOffset(clientX - dragStart);
+  };
+  const onDragEnd = () => {
+    if (dragStart === null) return;
+    if (dragOffset < -50)     setCurrent(p => p + 1);
+    else if (dragOffset > 50) setCurrent(p => Math.max(p - 1, 0));
+    setDragStart(null);
+    setDragOffset(0);
+    if (!isPaused) startAuto();
+  };
+
   return (
-    <>
-      <style>{`
-        /* Dark circuit-board texture pattern */
-        .circuit-bg {
-          background-color: #0d0d0d;
-          background-image:
-            linear-gradient(rgba(0,200,220,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,200,220,0.03) 1px, transparent 1px),
-            radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,180,210,0.06) 0%, transparent 70%);
-          background-size: 40px 40px, 40px 40px, 100% 100%;
-        }
+    // ── White section background ──
+    <section className="w-full bg-white py-14 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
 
-        /* Diagonal line overlay */
-        .circuit-bg::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background-image:
-            repeating-linear-gradient(
-              135deg,
-              transparent,
-              transparent 60px,
-              rgba(0,180,210,0.025) 60px,
-              rgba(0,180,210,0.025) 61px
-            );
-          pointer-events: none;
-        }
-
-        /* Scroll/load animation base state */
-        .fade-up {
-          opacity: 0;
-          transform: translateY(36px);
-          transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
-        }
-
-        .fade-up.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .fade-up-delay {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s;
-        }
-
-        .fade-up-delay.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Cyan text glow */
-        .cyan-glow {
-          color: #00c8dc;
-          text-shadow: 0 0 40px rgba(0,200,220,0.35), 0 0 80px rgba(0,200,220,0.15);
-        }
-
-        /* Section fade-in on load */
-        @keyframes sectionFadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .section-reveal {
-          animation: sectionFadeIn 0.9s cubic-bezier(0.22,1,0.36,1) both;
-        }
-      `}</style>
-
-      <section
-        ref={sectionRef}
-        className="relative circuit-bg section-reveal w-full overflow-hidden flex items-center justify-center mt-16"
-        style={{ minHeight: "clamp(220px, 28vw, 400px)" }}
-      >
-        {/* Vignette edges */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.65) 100%)",
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-5 sm:px-10 lg:px-16 py-14 sm:py-20 lg:py-24 text-center flex flex-col items-center gap-5 sm:gap-7">
-          {/* Heading */}
-          <h1
-            ref={headingRef}
-            className="fade-up cyan-glow font-black leading-tight tracking-tight
-              text-3xl sm:text-5xl lg:text-6xl xl:text-7xl"
-            style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: "-0.01em" }}
-          >
-            The industry leader in innovation
-          </h1>
-
-          {/* Body paragraph */}
-          <p
-            ref={paraRef}
-            className="fade-up-delay text-gray-400 leading-relaxed max-w-3xl
-              text-xs sm:text-sm lg:text-base"
-            style={{ fontFamily: "'Georgia', serif", letterSpacing: "0.01em" }}
-          >
-            CaptiveAire® is the nation's leading manufacturer of commercial kitchen ventilation
-            systems, and now provides a complete solution of fans, heaters, ductwork, and HVAC
-            equipment. For over 45 years, we've led the industry with innovative technologies,
-            unmatched service, competitive pricing, and rapid lead times. Explore our products to
-            discover how we can help you maximize efficiency and achieve exceptional indoor air
-            quality.
-          </p>
+        {/* ── Header ── */}
+        <div className="text-center mb-10 sm:mb-12">
+          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">
+            Trusted Partners
+          </span>
+          <h2 className="text-gray-900 font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">
+            Brands We Work With
+          </h2>
+          <div className="w-12 h-1 rounded-full bg-[#e94560] mx-auto mt-4" />
         </div>
 
-        {/* Bottom border glow line */}
+        {/* ── Carousel ── */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(0,200,220,0.4) 30%, rgba(0,200,220,0.4) 70%, transparent)",
+          className="relative"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => {
+            setIsPaused(false);
+            setDragStart(null);
+            setDragOffset(0);
           }}
-        />
-      </section>
-    </>
+        >
+          {/* Left fade — white */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(to right, #ffffff, transparent)' }}
+          />
+          {/* Right fade — white */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(to left, #ffffff, transparent)' }}
+          />
+
+          {/* Track */}
+          <div
+            ref={trackRef}
+            className="overflow-hidden"
+            onMouseDown={(e) => onDragStart(e.clientX)}
+            onMouseMove={(e) => onDragMove(e.clientX)}
+            onMouseUp={onDragEnd}
+            onMouseLeave={onDragEnd}
+            onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
+            onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+            onTouchEnd={onDragEnd}
+            style={{ cursor: dragStart !== null ? 'grabbing' : 'grab' }}
+          >
+            <div
+              className="flex"
+              style={{
+                transform: `translateX(${translateX}%)`,
+                transition:
+                  isTransitioning && dragStart === null
+                    ? 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    : 'none',
+                willChange: 'transform',
+              }}
+            >
+              {BRANDS.map((brand, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 px-4 sm:px-6"
+                  style={{ width: `${slideW}%` }}
+                >
+                  {/* Card — white bg, light gray border */}
+                  <div className="
+                    flex items-center justify-center
+                    rounded-xl
+                    h-24 sm:h-28 lg:h-32
+                    bg-white
+                    border border-gray-100
+                    shadow-sm
+                    hover:shadow-md hover:border-[#e94560]/30
+                    transition-all duration-300
+                    select-none
+                  ">
+                    <img
+                      src={brand.src}
+                      alt={brand.alt}
+                      draggable={false}
+                      className="
+                        max-h-16 sm:max-h-20 lg:max-h-24
+                        max-w-[75%]
+                        object-contain
+                        transition-all duration-300
+                        select-none
+                      "
+                      style={{ pointerEvents: 'none' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
   );
 }
