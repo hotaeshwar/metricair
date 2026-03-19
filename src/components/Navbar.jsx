@@ -265,7 +265,7 @@ export default function Navbar() {
         target="_blank"
         rel="noopener noreferrer"
         title="Chat on WhatsApp"
-        className="ml-1 p-2 rounded-full transition-all duration-300 group text-gray-300 hover:text-[#25D366]"
+        className="ml-1 p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
       >
         <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
           <WhatsAppIcon size={20} />
@@ -325,7 +325,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               title="Chat on WhatsApp"
-              className="p-2 rounded-full transition-all duration-300 group text-gray-300 hover:text-[#25D366]"
+              className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
             >
               <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
                 <WhatsAppIcon size={22} />
