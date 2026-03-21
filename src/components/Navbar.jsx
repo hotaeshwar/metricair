@@ -294,15 +294,10 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Desktop left links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-start">
-            {leftNavLinks}
-          </div>
-
-          {/* Logo — always centered */}
+          {/* Logo — left on desktop, centered on mobile */}
           <Link
             to="/"
-            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-6"
+            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0"
           >
             <img
               src="/images/metric.png"
@@ -318,6 +313,13 @@ export default function Navbar() {
             />
           </Link>
 
+          {/* Desktop: all nav links on the right — xl and above */}
+          <div className="hidden xl:flex items-center gap-0.5 justify-end ml-6">
+            {leftNavLinks}
+            <div className={`w-px h-5 mx-1 xl:mx-2 transition-all duration-300 ${scrolled ? "bg-white/20" : "bg-white/40"}`} />
+            {rightNavLinks}
+          </div>
+
           {/* Mobile / Tablet: WhatsApp icon — below xl */}
           <div className="flex xl:hidden items-center flex-1 justify-end">
             <a
@@ -331,11 +333,6 @@ export default function Navbar() {
                 <WhatsAppIcon size={22} />
               </span>
             </a>
-          </div>
-
-          {/* Desktop right links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-end">
-            {rightNavLinks}
           </div>
 
         </div>
