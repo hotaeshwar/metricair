@@ -1,5 +1,6 @@
 // src/components/FreshAir.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import LeadForm from './LeadForm';
 import {
   Wind, Filter, Droplets, CloudOff, ArrowUpDown, Zap,
   CheckCircle, ChevronDown, ArrowRight,
@@ -10,12 +11,23 @@ function useInView(threshold = 0.1) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
+    let timer;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            setInView(true);
+          }, 100);
+          observer.disconnect();
+        }
+      },
       { threshold }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
   }, [threshold]);
   return [ref, inView];
 }
@@ -80,49 +92,6 @@ const BENEFITS = [
   'Certified GTA technicians — all makes and models serviced',
 ];
 
-/* ── Form data ── */
-const EQUIPMENT_OPTIONS = ['– Select –','Air Conditioner/Ductless AC','Boiler','Heat Pump Ductless','Heat Pump Central','Furnace','Fireplace','Tankless Water Heater','Water Filtration','Water Softener','Reverse Osmosis'];
-const WORKING_OPTIONS   = ['– Select –','Yes','No','Partially'];
-const PROVINCES         = ['Ontario','British Columbia','Alberta','Quebec','Manitoba','Saskatchewan','Nova Scotia','New Brunswick','Prince Edward Island','Newfoundland and Labrador'];
-const FORM_STEPS        = [
-  { id: 1, short: 'Contact'   },
-  { id: 2, short: 'Address'   },
-  { id: 3, short: 'Equipment' },
-  { id: 4, short: 'Details'   },
-];
-
-/* ── Custom Dropdown ── */
-function CustomDropdown({ value, onChange, options }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    function h(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false); }
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, []);
-  return (
-    <div ref={ref} className="relative w-full">
-      <button type="button" onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between bg-transparent border-b-2 border-white/20 px-0 py-3 text-sm text-left outline-none transition-colors duration-200 cursor-pointer hover:border-white/40"
-        style={{ borderColor: open ? A : undefined }}
-      >
-        <span className={value && value !== '– Select –' ? 'text-white' : 'text-gray-500'}>{value}</span>
-        <ChevronDown size={16} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} style={{ color: A }} />
-      </button>
-      {open && (
-        <ul className="absolute top-full left-0 right-0 mt-1 z-50 bg-[#0d1233] border border-white/15 rounded-lg overflow-hidden shadow-2xl max-h-56 overflow-y-auto">
-          {options.map((opt) => (
-            <li key={opt} onClick={() => { onChange(opt); setOpen(false); }}
-              className="px-4 py-3 text-sm cursor-pointer transition-colors duration-150 text-gray-300 hover:text-white"
-              style={value === opt ? { background: A, color: '#fff', fontWeight: '600' } : {}}
-            >{opt}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 /* ════════════════════════════════════════
    MAIN COMPONENT
 ════════════════════════════════════════ */
@@ -134,78 +103,16 @@ export default function FreshAir() {
   const [benefitsRef, benefitsInView] = useInView(0.08);
   const [formRef,     formInView]     = useInView(0.05);
 
-  /* ── Stepper ── */
-  const [currentStep, setCurrentStep] = useState(1);
-  const [direction,   setDirection]   = useState('forward');
-  const [animating,   setAnimating]   = useState(false);
-  const [status,      setStatus]      = useState('idle');
-
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', phone: '', email: '',
-    address: '', city: '', province: 'Ontario', postal: '',
-    equipment: '– Select –', working: '– Select –', message: '',
-  });
-
-  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
-
-  const goToStep = (next) => {
-    if (animating) return;
-    setDirection(next > currentStep ? 'forward' : 'back');
-    setAnimating(true);
-    setTimeout(() => { setCurrentStep(next); setAnimating(false); }, 260);
-  };
-
-  const canAdvance = () => {
-    if (currentStep === 1) return form.firstName && form.lastName && form.phone && form.email;
-    if (currentStep === 2) return form.address && form.city && form.postal;
-    if (currentStep === 3) return form.equipment !== '– Select –' && form.working !== '– Select –';
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('sending');
-    const payload = new FormData();
-    payload.append('access_key',  'ba99ae3b-60cc-404c-b207-2a42e86aafb6');
-    payload.append('subject',     `Quote Request – Fresh Air / IAQ – ${form.firstName} ${form.lastName}`);
-    payload.append('from_name',   'MetricAir Website');
-    payload.append('email',       form.email);
-    payload.append('reply_to',    form.email);
-    payload.append('to',          'metricairlimited.ca@gmail.com');
-    payload.append('message',
-      `FRESH AIR / IAQ QUOTE REQUEST – METRICAIR\n\n` +
-      `Name:      ${form.firstName} ${form.lastName}\nPhone:     ${form.phone}\nEmail:     ${form.email}\n\n` +
-      `Address:   ${form.address}, ${form.city}, ${form.province} ${form.postal}\n\n` +
-      `Equipment: ${form.equipment}\nWorking:   ${form.working}\n\nMessage:\n${form.message}\n\nSubmitted: ${new Date().toLocaleString()}`
-    );
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload });
-      const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-        setCurrentStep(1);
-        setForm({ firstName:'',lastName:'',phone:'',email:'',address:'',city:'',province:'Ontario',postal:'',equipment:'– Select –',working:'– Select –',message:'' });
-      } else throw new Error();
-    } catch { setStatus('error'); }
-  };
-
-  const slideClass = animating
-    ? direction === 'forward' ? 'opacity-0 translate-x-6' : 'opacity-0 -translate-x-6'
-    : 'opacity-100 translate-x-0';
-
-  const inputCls = `w-full bg-transparent border-b-2 border-white/20 px-0 py-3 text-white text-sm placeholder-gray-500 outline-none transition-colors duration-200`;
-
   return (
     <section className="w-full bg-[#1a1a2e] text-white pt-28 pb-20 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-32 px-4 sm:px-8 lg:px-16 overflow-hidden">
 
       <style>{`
         .split-btn-green{position:relative;overflow:hidden;}
-        .split-btn-green::before{content:'';position:absolute;inset:0;right:50%;background:${A};transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
-        .split-btn-green::after{content:'';position:absolute;inset:0;left:50%;background:${A};transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn-green::before{content:'';position:absolute;inset:0;right:50%;background:${A} !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn-green::after{content:'';position:absolute;inset:0;left:50%;background:${A} !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
         .split-btn-green:hover::before{transform:translateX(-100%);}
         .split-btn-green:hover::after{transform:translateX(100%);}
         .split-btn-green>span{position:relative;z-index:1;}
-        .step-slide{transition:opacity 0.26s ease,transform 0.26s ease;}
         .service-card:hover .service-icon{transform:scale(1.1) rotate(-6deg);}
         .service-icon{transition:transform 0.3s ease;}
       `}</style>
@@ -228,11 +135,12 @@ export default function FreshAir() {
             <span className="text-xs font-bold uppercase tracking-widest block mb-4" style={{ color: A }}>
               Residential Solutions
             </span>
-            <h1 className="text-white font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-              Fresh Air &<br />
-              <span style={{ color: A }}>Indoor Air Quality</span>
+            <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
+              <span className="text-[#e94560]">Fresh Air </span>
+              <span className="text-[#3b82f6]">& </span><br />
+              <span className="text-white">Indoor Air Quality</span>
             </h1>
-            <div className="w-14 h-1 rounded-full mb-6" style={{ background: A }} />
+            <div className="w-14 h-1 rounded-full mb-6 bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
               MetricAir is the GTA's trusted indoor air quality expert. We have a dedicated home air quality team focused on air duct cleaning, dehumidifiers, ionizers and more — because we care about your family's well-being.
             </p>
@@ -472,181 +380,19 @@ export default function FreshAir() {
           </div>
 
           <div
-            className="max-w-2xl mx-auto rounded-2xl bg-white/4 border border-white/10 overflow-hidden"
+            className="max-w-2xl mx-auto rounded-2xl bg-white/4 border border-white/10 p-7 sm:p-10"
             style={{
               opacity: formInView ? 1 : 0,
               transform: formInView ? 'translateY(0)' : 'translateY(32px)',
               transition: 'opacity 0.85s ease 0.1s, transform 0.85s ease 0.1s',
             }}
           >
-            {status === 'success' ? (
-              <div className="flex flex-col items-center gap-5 py-16 px-8 text-center">
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute w-20 h-20 rounded-full border animate-ping" style={{ borderColor: `${A}40`, animationDuration: '2s' }} />
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: `${A}15`, border: `1px solid ${A}40` }}>
-                    <CheckCircle size={32} style={{ color: A }} />
-                  </div>
-                </div>
-                <h3 className="text-white font-black text-2xl">Quote Request Sent!</h3>
-                <p className="text-gray-400 text-sm max-w-xs leading-relaxed">We'll review your details and get back to you within 24 hours with a personalized air quality quote.</p>
-                <button onClick={() => setStatus('idle')} className="text-gray-500 text-sm underline hover:text-white transition-colors">Submit another request</button>
-              </div>
-            ) : (
-              <div className="p-7 sm:p-10">
-
-                {/* Step indicator */}
-                <div className="flex items-center justify-between mb-8">
-                  {FORM_STEPS.map((step, idx) => {
-                    const isCompleted = currentStep > step.id;
-                    const isActive    = currentStep === step.id;
-                    return (
-                      <React.Fragment key={step.id}>
-                        <div className="flex flex-col items-center gap-1.5">
-                          <button type="button" onClick={() => { if (isCompleted) goToStep(step.id); }} disabled={!isCompleted} className="focus:outline-none">
-                            <div
-                              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 font-bold text-sm transition-all duration-300"
-                              style={
-                                isCompleted ? { background: A, borderColor: A, color: '#fff', cursor: 'pointer' }
-                                : isActive   ? { background: `${A}15`, borderColor: A, color: A }
-                                : { background: 'transparent', borderColor: 'rgba(255,255,255,0.2)', color: '#4b5563' }
-                              }
-                            >
-                              {isCompleted
-                                ? <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                                : step.id}
-                            </div>
-                          </button>
-                          <span
-                            className="text-xs font-semibold uppercase tracking-wide hidden sm:block transition-colors duration-300"
-                            style={{ color: isActive ? A : isCompleted ? '#d1d5db' : '#4b5563' }}
-                          >{step.short}</span>
-                        </div>
-                        {idx < FORM_STEPS.length - 1 && (
-                          <div className="flex-1 h-px mx-2 relative max-w-[60px]">
-                            <div className="absolute inset-0 bg-white/10 rounded" />
-                            <div className="absolute inset-0 rounded transition-all duration-500" style={{ background: A, width: currentStep > step.id ? '100%' : '0%' }} />
-                          </div>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-
-                {/* Step content */}
-                <form onSubmit={handleSubmit}>
-                  <div className={`step-slide ${slideClass}`}>
-
-                    {currentStep === 1 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: A }}>Step 1 of 4</p>
-                          <h3 className="text-white font-black text-xl">Contact Information</h3>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Name <span style={{ color: A }}>*</span></label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="First Name" required className={inputCls} style={{ '--tw-border-opacity': 1 }} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                            <input name="lastName"  value={form.lastName}  onChange={handleChange} placeholder="Last Name"  required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                          </div>
-                        </div>
-                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="Phone Number" required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                        <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email Address" required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                      </div>
-                    )}
-
-                    {currentStep === 2 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: A }}>Step 2 of 4</p>
-                          <h3 className="text-white font-black text-xl">Your Address</h3>
-                        </div>
-                        <input name="address" value={form.address} onChange={handleChange} placeholder="Address" required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                        <input name="city" value={form.city} onChange={handleChange} placeholder="City" required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-2">Province</label>
-                          <CustomDropdown value={form.province} onChange={(v) => setForm(p => ({ ...p, province: v }))} options={PROVINCES} />
-                        </div>
-                        <input name="postal" value={form.postal} onChange={handleChange} placeholder="Postal Code" required className={inputCls} onFocus={e => e.target.style.borderColor = A} onBlur={e => e.target.style.borderColor = ''} />
-                      </div>
-                    )}
-
-                    {currentStep === 3 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: A }}>Step 3 of 4</p>
-                          <h3 className="text-white font-black text-xl">Your Equipment</h3>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Select Equipment <span style={{ color: A }}>*</span></label>
-                          <CustomDropdown value={form.equipment} onChange={(v) => setForm(p => ({ ...p, equipment: v }))} options={EQUIPMENT_OPTIONS} />
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Is your equipment working? <span style={{ color: A }}>*</span></label>
-                          <CustomDropdown value={form.working} onChange={(v) => setForm(p => ({ ...p, working: v }))} options={WORKING_OPTIONS} />
-                        </div>
-                      </div>
-                    )}
-
-                    {currentStep === 4 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: A }}>Step 4 of 4</p>
-                          <h3 className="text-white font-black text-xl">How Can We Help?</h3>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <textarea name="message" value={form.message} onChange={handleChange}
-                            placeholder="How can we help you?"
-                            maxLength={500} rows={5}
-                            className={inputCls + ' resize-none border-2 rounded-lg px-4 py-3 border-white/15'}
-                            onFocus={e => e.target.style.borderColor = A}
-                            onBlur={e => e.target.style.borderColor = ''}
-                          />
-                          <p className="text-gray-600 text-xs text-right">{form.message.length} of 500 max characters</p>
-                        </div>
-                        <p className="text-gray-600 text-xs"><span style={{ color: A }}>*</span> Indicates a required field</p>
-                        {status === 'error' && <p className="text-red-400 text-xs">Something went wrong — please try again.</p>}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Navigation */}
-                  <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/8">
-                    <button type="button" onClick={() => goToStep(currentStep - 1)} disabled={currentStep === 1}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/15 text-gray-400 text-sm font-medium hover:border-white/35 hover:text-white transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-                      Back
-                    </button>
-
-                    <div className="flex items-center gap-2">
-                      {FORM_STEPS.map((s) => (
-                        <div key={s.id} className="rounded-full transition-all duration-300"
-                          style={{
-                            width: currentStep === s.id ? '20px' : '8px',
-                            height: '8px',
-                            background: currentStep === s.id ? A : currentStep > s.id ? `${A}50` : 'rgba(255,255,255,0.15)',
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    {currentStep < 4 ? (
-                      <button type="button" onClick={() => { if (canAdvance()) goToStep(currentStep + 1); }} disabled={!canAdvance()}
-                        className="flex items-center gap-2 split-btn-green px-6 py-2.5 rounded-lg text-white text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        <span className="flex items-center gap-2">Next <ArrowRight size={14} /></span>
-                      </button>
-                    ) : (
-                      <button type="submit" disabled={status === 'sending'}
-                        className="split-btn-green px-7 py-2.5 rounded-lg text-white text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed"
-                      >
-                        <span>{status === 'sending' ? 'Submitting…' : 'Submit'}</span>
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </div>
-            )}
+            <LeadForm 
+              subject="Fresh Air / IAQ Quote Request" 
+              fromName="MetricAir IAQ" 
+              buttonText="Get Free Quote" 
+              buttonClass="split-btn-green"
+            />
           </div>
         </div>
 

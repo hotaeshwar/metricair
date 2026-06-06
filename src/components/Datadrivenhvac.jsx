@@ -1,6 +1,7 @@
 // src/components/RealWorldApplications.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import LeadForm from './LeadForm';
 
 const applications = [
   {
@@ -181,11 +182,6 @@ function CloseButton({ onClick }) {
 
 // ── Quote Form Modal ──
 function QuoteFormModal({ onClose }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '', propertyType: '', serviceType: '', systemAge: '', urgency: '', message: '',
-  });
-
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
@@ -193,20 +189,13 @@ function QuoteFormModal({ onClose }) {
     return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
   }, [onClose]);
 
-  const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   return (
     <div
       className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-8 bg-black/75 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl overflow-y-auto max-h-[92vh]"
+        className="relative w-full max-w-lg bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl overflow-y-auto max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'modalIn 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
       >
@@ -228,131 +217,11 @@ function QuoteFormModal({ onClose }) {
 
         {/* Body */}
         <div className="px-6 sm:px-8 py-6">
-          {submitted ? (
-            <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
-              <div className="w-14 h-14 rounded-full bg-[#e94560]/10 border border-[#e94560]/30 flex items-center justify-center text-[#e94560]">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h4 className="text-white font-bold text-xl">Quote Request Sent!</h4>
-              <p className="text-gray-400 text-sm max-w-sm">A MetricAir specialist will review your details and contact you within 1 business day.</p>
-              <button onClick={onClose} className="mt-2 px-6 py-2.5 rounded-full text-white text-sm font-bold uppercase tracking-widest transition-all hover:brightness-110" style={{ background: '#e94560' }}>
-                Close
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-              {/* Row 1 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClass}>Full Name *</label>
-                  <input name="name" required value={form.name} onChange={handle} placeholder="John Smith" className={inputClass} />
-                </div>
-                <div>
-                  <label className={labelClass}>Email Address *</label>
-                  <input name="email" type="email" required value={form.email} onChange={handle} placeholder="john@example.com" className={inputClass} />
-                </div>
-              </div>
-
-              {/* Row 2 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClass}>Phone Number</label>
-                  <input name="phone" type="tel" value={form.phone} onChange={handle} placeholder="+1 (555) 000-0000" className={inputClass} />
-                </div>
-                <div>
-                  <label className={labelClass}>Property Type *</label>
-                  <select name="propertyType" required value={form.propertyType} onChange={handle} className={inputClass}>
-                    <option value="" disabled>Select type</option>
-                    <option>Residential Home</option>
-                    <option>Restaurant / Kitchen</option>
-                    <option>Office / Retail</option>
-                    <option>Light Industrial</option>
-                    <option>Other Commercial</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 3 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClass}>Service Needed *</label>
-                  <select name="serviceType" required value={form.serviceType} onChange={handle} className={inputClass}>
-                    <option value="" disabled>Select service</option>
-                    <option>New Installation</option>
-                    <option>Replacement / Upgrade</option>
-                    <option>Repair</option>
-                    <option>Maintenance / Tune-up</option>
-                    <option>Air Quality Assessment</option>
-                    <option>Permit & Drawings</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelClass}>Current System Age</label>
-                  <select name="systemAge" value={form.systemAge} onChange={handle} className={inputClass}>
-                    <option value="">Select age</option>
-                    <option>No existing system</option>
-                    <option>0–5 years</option>
-                    <option>6–10 years</option>
-                    <option>11–15 years</option>
-                    <option>15+ years</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 4 */}
-              <div>
-                <label className={labelClass}>Urgency</label>
-                <div className="flex flex-wrap gap-2">
-                  {['Not urgent', 'Within a week', 'Within 48 hrs', 'Emergency'].map((u) => (
-                    <button
-                      type="button"
-                      key={u}
-                      onClick={() => setForm({ ...form, urgency: u })}
-                      className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
-                        form.urgency === u
-                          ? 'bg-[#e94560] border-[#e94560] text-white'
-                          : 'bg-white/5 border-white/10 text-gray-400 hover:border-[#e94560]/40 hover:text-white'
-                      }`}
-                    >
-                      {u}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className={labelClass}>Additional Details</label>
-                <textarea
-                  name="message"
-                  rows={3}
-                  value={form.message}
-                  onChange={handle}
-                  placeholder="Describe your space, existing issues, or any specific requirements..."
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full py-3 rounded-full text-white text-sm font-bold uppercase tracking-widest transition-all hover:brightness-110 flex items-center justify-center gap-2"
-                style={{ background: '#e94560' }}
-              >
-                Submit Quote Request
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-
-              <p className="text-gray-600 text-xs text-center">
-                No spam. No obligation. We respect your privacy.
-              </p>
-            </form>
-          )}
+          <LeadForm 
+            subject="Free Quote Request" 
+            fromName="MetricAir Quote Modal" 
+            buttonText="Submit Quote Request" 
+          />
         </div>
       </div>
     </div>
@@ -361,24 +230,12 @@ function QuoteFormModal({ onClose }) {
 
 // ── Expert Contact Form Modal ──
 function ExpertFormModal({ onClose }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '', topic: '', preferredTime: '', message: '',
-  });
-
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
   }, [onClose]);
-
-  const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
 
   return (
     <div
@@ -408,106 +265,11 @@ function ExpertFormModal({ onClose }) {
 
         {/* Body */}
         <div className="px-6 sm:px-8 py-6">
-          {submitted ? (
-            <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
-              <div className="w-14 h-14 rounded-full bg-[#e94560]/10 border border-[#e94560]/30 flex items-center justify-center text-[#e94560]">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h4 className="text-white font-bold text-xl">We'll Be in Touch!</h4>
-              <p className="text-gray-400 text-sm max-w-sm">One of our HVAC specialists will reach out at your preferred time to discuss your needs.</p>
-              <button onClick={onClose} className="mt-2 px-6 py-2.5 rounded-full text-white text-sm font-bold uppercase tracking-widest transition-all hover:brightness-110" style={{ background: '#e94560' }}>
-                Close
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-              {/* Row 1 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClass}>Full Name *</label>
-                  <input name="name" required value={form.name} onChange={handle} placeholder="John Smith" className={inputClass} />
-                </div>
-                <div>
-                  <label className={labelClass}>Email Address *</label>
-                  <input name="email" type="email" required value={form.email} onChange={handle} placeholder="john@example.com" className={inputClass} />
-                </div>
-              </div>
-
-              {/* Row 2 */}
-              <div>
-                <label className={labelClass}>Phone Number</label>
-                <input name="phone" type="tel" value={form.phone} onChange={handle} placeholder="+1 (555) 000-0000" className={inputClass} />
-              </div>
-
-              {/* Topic */}
-              <div>
-                <label className={labelClass}>What do you need help with? *</label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    'Heating', 'Cooling', 'Ventilation',
-                    'Commercial Kitchen', 'Industrial', 'Rentals', 'Other'
-                  ].map((t) => (
-                    <button
-                      type="button"
-                      key={t}
-                      onClick={() => setForm({ ...form, topic: t })}
-                      className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
-                        form.topic === t
-                          ? 'bg-[#e94560] border-[#e94560] text-white'
-                          : 'bg-white/5 border-white/10 text-gray-400 hover:border-[#e94560]/40 hover:text-white'
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Preferred time */}
-              <div>
-                <label className={labelClass}>Preferred Call Time</label>
-                <select name="preferredTime" value={form.preferredTime} onChange={handle} className={inputClass}>
-                  <option value="">Select a time slot</option>
-                  <option>Morning (8am – 12pm)</option>
-                  <option>Afternoon (12pm – 4pm)</option>
-                  <option>Evening (4pm – 7pm)</option>
-                  <option>Anytime</option>
-                </select>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className={labelClass}>Brief Description</label>
-                <textarea
-                  name="message"
-                  rows={3}
-                  value={form.message}
-                  onChange={handle}
-                  placeholder="Tell us a bit about your situation so we can prepare..."
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full py-3 rounded-full text-white text-sm font-bold uppercase tracking-widest transition-all hover:brightness-110 flex items-center justify-center gap-2"
-                style={{ background: '#e94560' }}
-              >
-                Book My Consultation
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-
-              <p className="text-gray-600 text-xs text-center">
-                Free consultation. No commitment required.
-              </p>
-            </form>
-          )}
+          <LeadForm 
+            subject="Expert Consultation Request" 
+            fromName="MetricAir Expert Modal" 
+            buttonText="Book My Consultation" 
+          />
         </div>
       </div>
     </div>
@@ -586,12 +348,23 @@ function useInView(threshold = 0.15) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
+    let timer;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            setInView(true);
+          }, 100);
+          observer.disconnect();
+        }
+      },
       { threshold }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
   }, [threshold]);
   return [ref, inView];
 }
@@ -664,15 +437,16 @@ export default function RealWorldApplications() {
             <p className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-3">
               Real World Applications
             </p>
-            <h2 className="text-white font-bold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-              HVAC Solutions Built for <br className="hidden sm:block" />
-              Every Environment
+            <h2 className="font-bold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+              <span className="text-[#e94560]">HVAC Solutions </span>
+              <span className="text-[#3b82f6]">Built for </span><br className="hidden sm:block" />
+              <span className="text-white">Every Environment</span>
             </h2>
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
               Whether it's a bustling restaurant kitchen, a family home, or a light industrial facility —
               MetricAir engineers the right system for your space, your climate, and your budget.
             </p>
-            <div className="mt-6 w-12 h-1 rounded-full bg-[#e94560] mx-auto" />
+            <div className="mt-6 w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto" />
           </AnimatedSection>
 
           {/* ── Application blocks ── */}

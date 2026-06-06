@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar                from "./components/Navbar";
 import Hero                  from "./components/Hero";
+import ServicesOverview      from "./components/ServicesOverview";
 import RealWorldApplications from "./components/RealWorldApplications";
 import IndustryLeader        from "./components/IndustryLeader";
 import AboutUs               from "./components/Aboutus";
@@ -10,11 +11,29 @@ import ContactUs             from "./components/Contactus";
 import Careers               from "./components/Careers";
 import Feedback              from "./components/Feedback";
 import Store                 from "./components/Store";
+import ResidentialSolutions  from "./components/ResidentialSolutions";
+import CommercialSolutions   from "./components/CommercialSolutions";
 import ResidentialHeating    from "./components/Residentialheating";
 import ResidentialCooling    from "./components/ResidentialCooling";
 import FreshAir              from "./components/Freshair";
 import CommercialRestaurant  from "./components/CommercialRestaurant";
+import LightIndustrial       from "./components/LightIndustrial";
+import DrawingsPermits       from "./components/DrawingsPermits";
+import CustomHoses           from "./components/CustomHoses";
+import CustomDuctwork        from "./components/CustomDuctwork";
+import WaterHeatersRental    from "./components/WaterHeatersRental";
+import FurnacesAcRental      from "./components/FurnacesAcRental";
+import WaterPurification    from "./components/WaterPurification";
+import OfficeRetailSpaces    from "./components/OfficeRetailSpaces";
+import CompleteConstructionPackage from "./components/CompleteConstructionPackage";
+import IndustrialExhaust     from "./components/IndustrialExhaust";
+import HvlsFans              from "./components/HvlsFans";
+import RadiantHeating        from "./components/RadiantHeating";
+import DustCompliance        from "./components/DustCompliance";
+import EngineeredDrawings    from "./components/EngineeredDrawings";
+import AirQualityAssessments from "./components/AirQualityAssessments";
 import Footer                from "./components/Footer";
+import AdminPanel            from "./components/AdminPanel";
 
 /* ── Scroll to top on every route change ── */
 function ScrollToTop() {
@@ -151,6 +170,59 @@ function SplashScreen({ onComplete }) {
   );
 }
 
+/* ── App Content Wrapper (to access React Router location) ── */
+function AppContent() {
+  const location = useLocation();
+  const showNavbar = location.pathname !== "/admin";
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        {/* ── Main pages ── */}
+        <Route path="/"         element={<><Hero /><ServicesOverview /><RealWorldApplications /><IndustryLeader /><Footer /></>} />
+        <Route path="/about"    element={<><AboutUs /><Footer /></>} />
+        <Route path="/contact"  element={<><ContactUs /><Footer /></>} />
+        <Route path="/careers"  element={<><Careers /><Footer /></>} />
+        <Route path="/feedback" element={<><Feedback /><Footer /></>} />
+        <Route path="/store"    element={<><Store /><Footer /></>} />
+
+        {/* ── Rentals Solutions ── */}
+        <Route path="/rentals/water-heaters"           element={<><WaterHeatersRental /><Footer /></>} />
+        <Route path="/rentals/furnaces-ac"             element={<><FurnacesAcRental /><Footer /></>} />
+        <Route path="/water-purification"              element={<><WaterPurification /><Footer /></>} />
+
+        {/* ── Residential Solutions ── */}
+        <Route path="/residential-solutions"           element={<><ResidentialSolutions /><Footer /></>} />
+        <Route path="/residential-solutions/heating"   element={<><ResidentialHeating /><Footer /></>} />
+        <Route path="/residential-solutions/cooling"   element={<><ResidentialCooling /><Footer /></>} />
+        <Route path="/residential-solutions/fresh-air" element={<><FreshAir /><Footer /></>} />
+
+        {/* ── Commercial Solutions ── */}
+        <Route path="/commercial-solutions"            element={<><CommercialSolutions /><Footer /></>} />
+        <Route path="/commercial-solutions/restaurants" element={<><CommercialRestaurant /><Footer /></>} />
+        <Route path="/commercial-solutions/office-retail" element={<><OfficeRetailSpaces /><Footer /></>} />
+        <Route path="/light-industrial"                 element={<><LightIndustrial /><Footer /></>} />
+        <Route path="/light-industrial/exhaust-systems" element={<><IndustrialExhaust /><Footer /></>} />
+        <Route path="/light-industrial/hvls-fans"        element={<><HvlsFans /><Footer /></>} />
+        <Route path="/light-industrial/radiant-heating"  element={<><RadiantHeating /><Footer /></>} />
+        <Route path="/light-industrial/dust-compliance"  element={<><DustCompliance /><Footer /></>} />
+        <Route path="/light-industrial/permit-drawings"  element={<><EngineeredDrawings /><Footer /></>} />
+        <Route path="/light-industrial/air-quality"      element={<><AirQualityAssessments /><Footer /></>} />
+
+        {/* ── Other Services ── */}
+        <Route path="/other-services/drawings-permits"  element={<><DrawingsPermits /><Footer /></>} />
+        <Route path="/other-services/custom-hoses"      element={<><CustomHoses /><Footer /></>} />
+        <Route path="/other-services/custom-ductwork"   element={<><CustomDuctwork /><Footer /></>} />
+        <Route path="/other-services/construction-package" element={<><CompleteConstructionPackage /><Footer /></>} />
+
+        {/* ── Admin Portal Route (Clean layout without global header/footer) ── */}
+        <Route path="/admin"                            element={<AdminPanel />} />
+      </Routes>
+    </>
+  );
+}
+
 /* ── App ── */
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -160,24 +232,7 @@ export default function App() {
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       <BrowserRouter>
         <ScrollToTop />
-        <Navbar />
-        <Routes>
-          {/* ── Main pages ── */}
-          <Route path="/"         element={<><Hero /><RealWorldApplications /><IndustryLeader /><Footer /></>} />
-          <Route path="/about"    element={<><AboutUs /><Footer /></>} />
-          <Route path="/contact"  element={<><ContactUs /><Footer /></>} />
-          <Route path="/careers"  element={<><Careers /><Footer /></>} />
-          <Route path="/feedback" element={<><Feedback /><Footer /></>} />
-          <Route path="/store"    element={<><Store /><Footer /></>} />
-
-          {/* ── Residential Solutions ── */}
-          <Route path="/residential-solutions/heating"   element={<><ResidentialHeating /><Footer /></>} />
-          <Route path="/residential-solutions/cooling"   element={<><ResidentialCooling /><Footer /></>} />
-          <Route path="/residential-solutions/fresh-air" element={<><FreshAir /><Footer /></>} />
-
-          {/* ── Commercial Solutions ── */}
-          <Route path="/commercial-solutions/restaurants" element={<><CommercialRestaurant /><Footer /></>} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </>
   );

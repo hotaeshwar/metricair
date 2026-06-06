@@ -1,74 +1,47 @@
 import { useState } from "react";
 
-const FOOTER_DATA = {
-  residential: [
-    {
-      heading: "RESIDENTIAL SOLUTIONS",
-      href: "/residential-solutions",
-      links: [
-        { label: "Heating", href: "/residential-solutions/heating" },
-        { label: "Cooling", href: "/residential-solutions/cooling" },
-        { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
-      ],
-    },
-    {
-      heading: "RENTALS",
-      href: "/rentals",
-      links: [
-        { label: "Water Heaters", href: "/rentals/water-heaters" },
-        { label: "Furnaces and A/C", href: "/rentals/furnaces-ac" },
-      ],
-    },
-    {
-      heading: "WATER PURIFICATION",
-      href: "/water-purification",
-      links: [],
-    },
-    {
-      heading: "OTHER SERVICES",
-      href: "/other-services",
-      links: [
-        { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
-        { label: "Custom Houses", href: "/other-services/custom-houses" },
-        { label: "Custom Ductwork Manufacturing", href: "/other-services/custom-ductwork" },
-      ],
-    },
-  ],
-  commercial: [
-    {
-      heading: "COMMERCIAL SOLUTIONS",
-      href: "/commercial-solutions",
-      links: [
-        { label: "Restaurants / Commercial Kitchens", href: "/commercial-solutions/restaurants" },
-        { label: "Office and Retail Spaces", href: "/commercial-solutions/office-retail" },
-      ],
-    },
-    {
-      heading: "LIGHT INDUSTRIAL",
-      href: "/light-industrial",
-      links: [],
-    },
-    {
-      heading: "WATER PURIFICATION",
-      href: "/water-purification",
-      links: [],
-    },
-    {
-      heading: "OTHER SERVICES",
-      href: "/other-services",
-      links: [
-        { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
-        { label: "Complete Construction Package for Restaurants", href: "/other-services/construction-package" },
-        { label: "Custom Ductwork Manufacturing", href: "/other-services/custom-ductwork" },
-      ],
-    },
-  ],
-};
+const FOOTER_COLUMNS = [
+  {
+    heading: "RESIDENTIAL SOLUTIONS",
+    links: [
+      { label: "Heating", href: "/residential-solutions/heating" },
+      { label: "Cooling", href: "/residential-solutions/cooling" },
+      { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
+      { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
+      { label: "Furnaces & A/C Rental", href: "/rentals/furnaces-ac" },
+    ],
+  },
+  {
+    heading: "COMMERCIAL & INDUSTRIAL",
+    links: [
+      { label: "Restaurants / Kitchens", href: "/commercial-solutions/restaurants" },
+      { label: "Office & Retail Spaces", href: "/commercial-solutions/office-retail" },
+      { label: "Light Industrial Solutions", href: "/light-industrial" },
+      { label: "Industrial Ventilation", href: "/light-industrial" },
+    ],
+  },
+  {
+    heading: "OTHER SERVICES",
+    links: [
+      { label: "Drawings & Permits", href: "/other-services/drawings-permits" },
+      { label: "Custom Hoses", href: "/other-services/custom-hoses" },
+      { label: "Construction Packages", href: "/other-services/construction-package" },
+      { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
+      { label: "Water Purification", href: "/water-purification" },
+    ],
+  },
+  {
+    heading: "QUICK LINKS",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "About Us", href: "/about" },
+      { label: "Careers", href: "/careers" },
+      { label: "Feedback", href: "/feedback" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Store", href: "/store" },
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "About Us", href: "/about" },
+    ],
+  },
 ];
 
 const socialLinks = [
@@ -94,9 +67,6 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const [activeTab, setActiveTab] = useState("residential");
-  const currentLinks = FOOTER_DATA[activeTab];
-
   return (
     <footer className="w-full bg-[#0f0f1a] text-white relative overflow-hidden">
       {/* Subtle top accent line */}
@@ -110,110 +80,77 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-14 pb-8 relative z-10">
 
-        {/* ── TOP SECTION ── */}
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-10 mb-12">
+        {/* ── LOGO ROW ── */}
+        <div className="mb-10 border-b border-white/5 pb-8 flex justify-center md:justify-start">
+          <a href="/" className="block">
+            <img
+              src="/images/metric.png"
+              alt="MetricAir Logo"
+              className="h-24 sm:h-32 lg:h-36 w-auto object-contain"
+            />
+          </a>
+        </div>
 
-          {/* LEFT: Logo + tagline + nav + subscribe */}
-          <div className="flex flex-col gap-6 lg:w-[220px] xl:w-[240px] shrink-0">
-            <a href="/" className="block">
-              <img
-                src="/images/metric.png"
-                alt="MetricAir"
-                className="w-full object-contain"
-                style={{ maxWidth: "270px", minHeight: "88px" }}
-              />
-            </a>
+        {/* ── CONTENT ROW ── */}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 mb-12 items-start">
 
-            <p className="text-gray-500 text-xs leading-relaxed tracking-wide">
+          {/* LEFT: Tagline + contact info */}
+          <div className="flex flex-col gap-5 lg:w-[280px] shrink-0 w-full text-center md:text-left">
+            <p className="text-gray-300 text-sm leading-relaxed tracking-wide font-medium">
               Delivering premium HVAC solutions for homes, businesses, and industrial spaces across Canada.
             </p>
 
-            <nav className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="group flex items-center gap-2 text-gray-400 text-sm hover:text-[#e94560] transition-colors duration-200"
-                >
-                  <span className="block w-3 h-px bg-gray-600 group-hover:w-5 group-hover:bg-[#e94560] transition-all duration-300" />
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-
-          </div>
-
-          {/* CENTER: Switcher + Links grid */}
-          <div className="flex-1">
-            {/* Switcher */}
-            <div className="flex items-center gap-4 mb-8">
-              <span className="text-gray-600 text-[10px] uppercase tracking-widest font-semibold hidden sm:block whitespace-nowrap">
-                Browse by
-              </span>
-              <div className="relative flex bg-white/5 border border-white/10 rounded-full p-1 gap-1">
-                {/* Sliding pill */}
-                <span
-                  className="absolute top-1 bottom-1 rounded-full bg-[#e94560] transition-all duration-300 ease-in-out"
-                  style={{
-                    width: "calc(50% - 4px)",
-                    left: activeTab === "residential" ? "4px" : "calc(50%)",
-                  }}
-                />
-                <button
-                  onClick={() => setActiveTab("residential")}
-                  className={`relative z-10 px-5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-colors duration-200 ${
-                    activeTab === "residential" ? "text-white" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  Residential
-                </button>
-                <button
-                  onClick={() => setActiveTab("commercial")}
-                  className={`relative z-10 px-5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-colors duration-200 ${
-                    activeTab === "commercial" ? "text-white" : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  Commercial
-                </button>
+            <div className="flex flex-col gap-2.5 text-xs text-gray-400 mt-2 border-t border-white/5 pt-4">
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <span className="text-[#e94560] font-semibold">Call:</span>
+                <a href="tel:+16479241421" className="hover:text-[#e94560] transition-colors">+1 (647) 924-1421</a>
+              </div>
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <span className="text-[#e94560] font-semibold">Email:</span>
+                <a href="mailto:metricairlimited.ca@gmail.com" className="hover:text-[#e94560] transition-colors break-all">metricairlimited.ca@gmail.com</a>
+              </div>
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <span className="text-[#e94560] font-semibold">Area:</span>
+                <span>Greater Toronto Area</span>
               </div>
             </div>
+          </div>
 
-            {/* Divider */}
-            <div className="h-px bg-white/8 mb-8" />
+          {/* RIGHT: Links grid */}
+          <div className="flex-1 w-full">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+              {FOOTER_COLUMNS.map((column, index) => {
+                const accentColors = [
+                  "bg-[#e94560]", // Red
+                  "bg-[#3b82f6]", // Blue
+                  "bg-white",     // White
+                  "bg-[#e94560]", // Red
+                ];
+                const accentBg = accentColors[index] || "bg-white";
 
-            {/* Link columns — animate on tab change */}
-            <div
-              key={activeTab}
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4"
-              style={{ animation: "fadeSlideIn 0.25s ease forwards" }}
-            >
-              {currentLinks.map((section) => (
-                <div key={section.heading} className="flex flex-col gap-3">
-                  <a
-                    href={section.href}
-                    className="text-[#e94560] text-[10px] font-extrabold tracking-widest uppercase leading-tight hover:text-white transition-colors duration-150 border-b border-[#e94560]/20 pb-2"
-                  >
-                    {section.heading}
-                  </a>
-                  {section.links.length > 0 && (
-                    <ul className="flex flex-col gap-2">
-                      {section.links.map((link) => (
+                return (
+                  <div key={column.heading} className="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div className="relative pb-2 w-full">
+                      <h4 className="text-white text-xs font-black tracking-widest uppercase">
+                        {column.heading}
+                      </h4>
+                      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-8 h-[2px] ${accentBg}`} />
+                    </div>
+                    <ul className="flex flex-col gap-2.5 items-center text-center md:items-start md:text-left w-full">
+                      {column.links.map((link) => (
                         <li key={link.label}>
                           <a
                             href={link.href}
-                            className="group flex items-start gap-1.5 text-gray-500 text-xs hover:text-gray-200 transition-colors duration-150 leading-snug"
+                            className="block text-gray-300 text-sm font-medium hover:text-[#e94560] hover:translate-x-1.5 transition-all duration-200 leading-snug"
                           >
-                            <span className="mt-1.5 block w-1 h-1 rounded-full bg-gray-700 group-hover:bg-[#e94560] shrink-0 transition-colors duration-150" />
                             {link.label}
                           </a>
                         </li>
                       ))}
                     </ul>
-                  )}
-                  {section.links.length === 0 && null}
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -221,13 +158,9 @@ export default function Footer() {
 
         {/* ── BOTTOM BAR ── */}
         <div className="border-t border-white/10 mt-2 pt-8">
-          {/* Sign In + Feedback + Socials row */}
+          {/* Socials row */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
-            <div className="flex items-center gap-6">
-              <a href="#" className="text-gray-400 text-sm font-medium hover:text-[#e94560] transition-colors duration-150">Sign In</a>
-              <span className="w-px h-4 bg-white/10" />
-              <a href="#" className="text-gray-400 text-sm font-medium hover:text-[#e94560] transition-colors duration-150">Feedback</a>
-            </div>
+            <div className="flex items-center gap-6" />
 
             <div className="flex items-center gap-2">
               {socialLinks.map((s) => (

@@ -4,18 +4,30 @@ import {
   Shield, Wrench, RefreshCw, Thermometer, Wind, Droplets,
   ArrowRight, ChevronDown, CheckCircle,
 } from 'lucide-react';
+import LeadForm from './LeadForm';
 
 /* ── useInView ── */
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
+    let timer;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            setInView(true);
+          }, 100);
+          observer.disconnect();
+        }
+      },
       { threshold }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
   }, [threshold]);
   return [ref, inView];
 }
@@ -198,68 +210,6 @@ export default function ResidentialCooling() {
   const [ductlessRef, ductlessInView] = useInView(0.08);
   const [formRef,     formInView]     = useInView(0.05);
 
-  /* ── Stepper ── */
-  const [currentStep, setCurrentStep] = useState(1);
-  const [direction,   setDirection]   = useState('forward');
-  const [animating,   setAnimating]   = useState(false);
-  const [status,      setStatus]      = useState('idle');
-
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', phone: '', email: '',
-    address: '', city: '', province: 'Ontario', postal: '',
-    equipment: '– Select –', working: '– Select –',
-    message: '',
-  });
-
-  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
-
-  const goToStep = (next) => {
-    if (animating) return;
-    setDirection(next > currentStep ? 'forward' : 'back');
-    setAnimating(true);
-    setTimeout(() => { setCurrentStep(next); setAnimating(false); }, 260);
-  };
-
-  const canAdvance = () => {
-    if (currentStep === 1) return form.firstName && form.lastName && form.phone && form.email;
-    if (currentStep === 2) return form.address && form.city && form.postal;
-    if (currentStep === 3) return form.equipment !== '– Select –' && form.working !== '– Select –';
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('sending');
-    const payload = new FormData();
-    payload.append('access_key',  'ba99ae3b-60cc-404c-b207-2a42e86aafb6');
-    payload.append('subject',     `Quote Request – Cooling – ${form.firstName} ${form.lastName}`);
-    payload.append('from_name',   'MetricAir Website');
-    payload.append('email',       form.email);
-    payload.append('reply_to',    form.email);
-    payload.append('to',          'metricairlimited.ca@gmail.com');
-    payload.append('message',
-      `COOLING QUOTE REQUEST – METRICAIR\n\n` +
-      `Name:       ${form.firstName} ${form.lastName}\nPhone:      ${form.phone}\nEmail:      ${form.email}\n\n` +
-      `Address:    ${form.address}, ${form.city}, ${form.province} ${form.postal}\n\n` +
-      `Equipment:  ${form.equipment}\nWorking:    ${form.working}\n\nMessage:\n${form.message}\n\nSubmitted: ${new Date().toLocaleString()}`
-    );
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload });
-      const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-        setCurrentStep(1);
-        setForm({ firstName:'',lastName:'',phone:'',email:'',address:'',city:'',province:'Ontario',postal:'',equipment:'– Select –',working:'– Select –',message:'' });
-      } else throw new Error();
-    } catch { setStatus('error'); }
-  };
-
-  const slideClass = animating
-    ? direction === 'forward' ? 'opacity-0 translate-x-6' : 'opacity-0 -translate-x-6'
-    : 'opacity-100 translate-x-0';
-
-  const inputCls = `w-full bg-transparent border-b-2 border-white/20 px-0 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-[#3b82f6] transition-colors duration-200`;
-
   /* accent is blue for cooling */
   const ACCENT = '#3b82f6';
 
@@ -289,10 +239,12 @@ export default function ResidentialCooling() {
           }}
         >
           <span className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest block mb-4">Residential Solutions</span>
-          <h1 className="text-white font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-            Home Cooling &<br /><span className="text-[#3b82f6]">Air Conditioning</span>
+          <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
+            <span className="text-[#e94560]">Home Cooling </span>
+            <span className="text-[#3b82f6]">& Air </span><br />
+            <span className="text-white">Conditioning</span>
           </h1>
-          <div className="w-14 h-1 rounded-full bg-[#3b82f6] mx-auto mb-6" />
+          <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Stay cool all summer with MetricAir's professional air conditioning services. From installation to repair and annual maintenance — we've got the GTA covered.
           </p>
@@ -458,179 +410,13 @@ export default function ResidentialCooling() {
               transition: 'opacity 0.85s ease 0.1s, transform 0.85s ease 0.1s',
             }}
           >
-            {status === 'success' ? (
-              <div className="flex flex-col items-center gap-5 py-16 px-8 text-center">
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute w-20 h-20 rounded-full border border-[#3b82f6]/30 animate-ping" style={{ animationDuration: '2s' }} />
-                  <div className="w-16 h-16 rounded-full bg-[#3b82f6]/15 border border-[#3b82f6]/40 flex items-center justify-center">
-                    <CheckCircle size={32} className="text-[#3b82f6]" />
-                  </div>
-                </div>
-                <h3 className="text-white font-black text-2xl">Quote Request Sent!</h3>
-                <p className="text-gray-400 text-sm max-w-xs leading-relaxed">We'll review your details and get back to you within 24 hours with a personalized cooling quote.</p>
-                <button onClick={() => setStatus('idle')} className="text-gray-500 text-sm underline hover:text-white transition-colors">Submit another request</button>
-              </div>
-            ) : (
-              <div className="p-7 sm:p-10">
-
-                {/* Step indicator */}
-                <div className="flex items-center justify-between mb-8">
-                  {FORM_STEPS.map((step, idx) => {
-                    const isCompleted = currentStep > step.id;
-                    const isActive    = currentStep === step.id;
-                    return (
-                      <React.Fragment key={step.id}>
-                        <div className="flex flex-col items-center gap-1.5">
-                          <button type="button" onClick={() => { if (isCompleted) goToStep(step.id); }} disabled={!isCompleted} className="focus:outline-none">
-                            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 font-bold text-sm transition-all duration-300 ${
-                              isCompleted ? 'bg-[#3b82f6] border-[#3b82f6] text-white cursor-pointer hover:scale-110'
-                              : isActive   ? 'bg-[#3b82f6]/15 border-[#3b82f6] text-[#3b82f6]'
-                              : 'bg-transparent border-white/20 text-gray-600 cursor-default'
-                            }`}>
-                              {isCompleted
-                                ? <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                                : step.id}
-                            </div>
-                          </button>
-                          <span className={`text-xs font-semibold uppercase tracking-wide hidden sm:block transition-colors duration-300 ${isActive ? 'text-[#3b82f6]' : isCompleted ? 'text-gray-300' : 'text-gray-600'}`}>{step.short}</span>
-                        </div>
-                        {idx < FORM_STEPS.length - 1 && (
-                          <div className="flex-1 h-px mx-2 relative max-w-[60px]">
-                            <div className="absolute inset-0 bg-white/10 rounded" />
-                            <div className="absolute inset-0 bg-[#3b82f6] rounded transition-all duration-500" style={{ width: currentStep > step.id ? '100%' : '0%' }} />
-                          </div>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-
-                {/* Step content */}
-                <form onSubmit={handleSubmit}>
-                  <div className={`step-slide ${slideClass}`}>
-
-                    {/* STEP 1 */}
-                    {currentStep === 1 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1">Step 1 of 4</p>
-                          <h3 className="text-white font-black text-xl">Contact Information</h3>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Name <span className="text-[#3b82f6]">*</span></label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="First Name" required className={inputCls} />
-                            <input name="lastName"  value={form.lastName}  onChange={handleChange} placeholder="Last Name"  required className={inputCls} />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Phone Number <span className="text-[#3b82f6]">*</span></label>
-                          <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="Phone" required className={inputCls} />
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Email Address <span className="text-[#3b82f6]">*</span></label>
-                          <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" required className={inputCls} />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* STEP 2 */}
-                    {currentStep === 2 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1">Step 2 of 4</p>
-                          <h3 className="text-white font-black text-xl">Your Address</h3>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Address <span className="text-[#3b82f6]">*</span></label>
-                          <input name="address" value={form.address} onChange={handleChange} placeholder="Address" required className={inputCls} />
-                        </div>
-                        <input name="city" value={form.city} onChange={handleChange} placeholder="City" required className={inputCls} />
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-2">Province</label>
-                          <CustomDropdown value={form.province} onChange={(v) => setForm(p => ({ ...p, province: v }))} options={PROVINCES} />
-                        </div>
-                        <input name="postal" value={form.postal} onChange={handleChange} placeholder="Postal Code" required className={inputCls} />
-                      </div>
-                    )}
-
-                    {/* STEP 3 */}
-                    {currentStep === 3 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1">Step 3 of 4</p>
-                          <h3 className="text-white font-black text-xl">Your Equipment</h3>
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Select Equipment <span className="text-[#3b82f6]">*</span></label>
-                          <CustomDropdown value={form.equipment} onChange={(v) => setForm(p => ({ ...p, equipment: v }))} options={EQUIPMENT_OPTIONS} />
-                        </div>
-                        <div>
-                          <label className="text-gray-500 text-xs font-semibold uppercase tracking-wider block mb-3">Is your equipment working? <span className="text-[#3b82f6]">*</span></label>
-                          <CustomDropdown value={form.working} onChange={(v) => setForm(p => ({ ...p, working: v }))} options={WORKING_OPTIONS} />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* STEP 4 */}
-                    {currentStep === 4 && (
-                      <div className="flex flex-col gap-5">
-                        <div>
-                          <p className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1">Step 4 of 4</p>
-                          <h3 className="text-white font-black text-xl">How Can We Help?</h3>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <textarea name="message" value={form.message} onChange={handleChange}
-                            placeholder="How can we help you?"
-                            maxLength={500} rows={5}
-                            className={inputCls + ' resize-none border-2 rounded-lg px-4 py-3 border-white/15 focus:border-[#3b82f6]'}
-                          />
-                          <p className="text-gray-600 text-xs text-right">{form.message.length} of 500 max characters</p>
-                        </div>
-                        <p className="text-gray-600 text-xs"><span className="text-[#3b82f6]">*</span> Indicates a required field</p>
-                        {status === 'error' && <p className="text-red-400 text-xs">Something went wrong — please try again.</p>}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Navigation */}
-                  <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/8">
-                    <button type="button" onClick={() => goToStep(currentStep - 1)} disabled={currentStep === 1}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/15 text-gray-400 text-sm font-medium hover:border-white/35 hover:text-white transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-                      Back
-                    </button>
-
-                    {/* Dots */}
-                    <div className="flex items-center gap-2">
-                      {FORM_STEPS.map((s) => (
-                        <div key={s.id} className={`rounded-full transition-all duration-300 ${
-                          currentStep === s.id ? 'w-5 h-2 bg-[#3b82f6]' : currentStep > s.id ? 'w-2 h-2 bg-[#3b82f6]/50' : 'w-2 h-2 bg-white/15'
-                        }`} />
-                      ))}
-                    </div>
-
-                    {currentStep < 4 ? (
-                      <button type="button" onClick={() => { if (canAdvance()) goToStep(currentStep + 1); }} disabled={!canAdvance()}
-                        className="flex items-center gap-2 split-btn-blue px-6 py-2.5 rounded-lg text-white text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        <span className="flex items-center gap-2">
-                          Next
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-                        </span>
-                      </button>
-                    ) : (
-                      <button type="submit" disabled={status === 'sending'}
-                        className="split-btn-blue px-7 py-2.5 rounded-lg text-white text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed"
-                      >
-                        <span>{status === 'sending' ? 'Submitting…' : 'Submit'}</span>
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </div>
-            )}
+            <div className="p-7 sm:p-10">
+              <LeadForm
+                subject="Quote Request – Residential Cooling (Air Conditioning)"
+                fromName="MetricAir Website"
+                buttonText="Submit Request"
+              />
+            </div>
           </div>
         </div>
 

@@ -16,69 +16,32 @@ const WhatsAppIcon = ({ size = 20 }) => (
   </svg>
 );
 
-const MENU_DATA = {
+
+const PRODUCT_MENU = {
   residential: [
-    {
-      group: "Residential Solutions",
-      href: "/residential-solutions",
-      items: [
-        { label: "Heating", href: "/residential-solutions/heating" },
-        { label: "Cooling", href: "/residential-solutions/cooling" },
-        { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
-      ],
-    },
-    {
-      group: "Rentals",
-      href: "/rentals",
-      items: [
-        { label: "Water Heaters", href: "/rentals/water-heaters" },
-        { label: "Furnaces and A/C", href: "/rentals/furnaces-ac" },
-      ],
-    },
-    {
-      group: "Water Purification System",
-      href: "/water-purification",
-      items: [],
-    },
-    {
-      group: "Other Services",
-      href: "/other-services",
-      items: [
-        { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
-        { label: "Custom Houses", href: "/other-services/custom-houses" },
-        { label: "Custom Ductwork Manufacturing", href: "/other-services/custom-ductwork" },
-      ],
-    },
+    { label: "Heating", href: "/residential-solutions/heating" },
+    { label: "Cooling", href: "/residential-solutions/cooling" },
+    { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
+    { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
+    { label: "Furnaces & A/C Rental", href: "/rentals/furnaces-ac" },
+    { label: "Water Purification", href: "/water-purification" },
+    { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
+    { label: "Custom Hoses", href: "/other-services/custom-hoses" },
+    { label: "Custom Ductwork", href: "/other-services/custom-ductwork" }
   ],
   commercial: [
-    {
-      group: "Commercial Solutions",
-      href: "/commercial-solutions",
-      items: [
-        { label: "Restaurants / Commercial Kitchens", href: "/commercial-solutions/restaurants" },
-        { label: "Office and Retail Spaces", href: "/commercial-solutions/office-retail" },
-      ],
-    },
-    {
-      group: "Light Industrial Solutions",
-      href: "/light-industrial",
-      items: [],
-    },
-    {
-      group: "Water Purification System",
-      href: "/water-purification",
-      items: [],
-    },
-    {
-      group: "Other Services",
-      href: "/other-services",
-      items: [
-        { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
-        { label: "Complete Construction Package for Restaurants", href: "/other-services/construction-package" },
-        { label: "Custom Ductwork Manufacturing", href: "/other-services/custom-ductwork" },
-      ],
-    },
+    { label: "Restaurants / Kitchens", href: "/commercial-solutions/restaurants" },
+    { label: "Office & Retail Spaces", href: "/commercial-solutions/office-retail" },
+    { label: "Complete Construction Package", href: "/other-services/construction-package" }
   ],
+  lightIndustrial: [
+    { label: "Industrial Exhaust Systems", href: "/light-industrial/exhaust-systems" },
+    { label: "HVLS Destratification Fans", href: "/light-industrial/hvls-fans" },
+    { label: "Radiant Tube Heating", href: "/light-industrial/radiant-heating" },
+    { label: "Combustible Dust Compliance", href: "/light-industrial/dust-compliance" },
+    { label: "Engineered Permit Drawings", href: "/light-industrial/permit-drawings" },
+    { label: "Air Quality Assessments", href: "/light-industrial/air-quality" }
+  ]
 };
 
 const WHATSAPP_NUMBER  = "16479241421";
@@ -88,29 +51,26 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
 export default function Navbar() {
-  const [mobileOpen,         setMobileOpen]         = useState(false);
-  const [productsOpen,       setProductsOpen]       = useState(false);
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [hoveredGroup,       setHoveredGroup]       = useState(null);
-  const [scrolled,           setScrolled]           = useState(false);
-  const [activeTab,          setActiveTab]          = useState("residential");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null); // 'product' | null
+  const [scrolled, setScrolled] = useState(false);
 
-  const dropdownRef = useRef(null);
-  const timeoutRef  = useRef(null);
-  const location    = useLocation();
+  // Mobile submenu state for Products
+  const [mobileResOpen, setMobileResOpen] = useState(false);
 
-  const PRODUCTS_MENU = MENU_DATA[activeTab];
+  const timeoutRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     setMobileOpen(false);
-    setMobileProductsOpen(false);
+    setMobileResOpen(false);
+    setActiveDropdown(null);
   }, [location.pathname]);
 
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 1280) {
         setMobileOpen(false);
-        setMobileProductsOpen(false);
       }
     }
     window.addEventListener("resize", handleResize);
@@ -123,15 +83,32 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseEnter = () => { clearTimeout(timeoutRef.current); setProductsOpen(true); };
+  const handleMouseEnter = (menuName) => {
+    clearTimeout(timeoutRef.current);
+    setActiveDropdown(menuName);
+  };
+
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => { setProductsOpen(false); setHoveredGroup(null); }, 150);
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
   };
 
   const isActive = (path) => location.pathname === path;
 
+  const isProductActive = () => {
+    return (
+      location.pathname.startsWith("/residential-solutions") ||
+      location.pathname.startsWith("/commercial-solutions") ||
+      location.pathname.startsWith("/light-industrial") ||
+      location.pathname.startsWith("/rentals") ||
+      location.pathname === "/water-purification" ||
+      location.pathname.startsWith("/other-services")
+    );
+  };
+
   const navLinkClass = (path) =>
-    `px-2.5 xl:px-4 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+    `px-2 xl:px-3 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
       isActive(path)
         ? "text-[#e94560] bg-white/5"
         : scrolled
@@ -139,126 +116,151 @@ export default function Navbar() {
         : "text-white hover:text-[#e94560]"
     }`;
 
-  const SwitcherTab = () => (
-    <div className="flex items-center justify-center mb-5">
-      <div className="relative flex bg-white/5 border border-white/10 rounded-full p-1 gap-1">
-        <span
-          className="absolute top-1 bottom-1 rounded-full bg-[#e94560] transition-all duration-300 ease-in-out"
-          style={{ width: "calc(50% - 4px)", left: activeTab === "residential" ? "4px" : "calc(50%)" }}
-        />
-        <button
-          onClick={(e) => { e.stopPropagation(); setActiveTab("residential"); setHoveredGroup(null); }}
-          className={`relative z-10 px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-colors duration-200 ${
-            activeTab === "residential" ? "text-white" : "text-gray-400 hover:text-gray-200"
-          }`}
-        >Residential</button>
-        <button
-          onClick={(e) => { e.stopPropagation(); setActiveTab("commercial"); setHoveredGroup(null); }}
-          className={`relative z-10 px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-colors duration-200 ${
-            activeTab === "commercial" ? "text-white" : "text-gray-400 hover:text-gray-200"
-          }`}
-        >Commercial</button>
-      </div>
-    </div>
-  );
+  const productNavLinkClass = () =>
+    `px-2 xl:px-3 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+      isProductActive()
+        ? "text-[#e94560] bg-white/5"
+        : scrolled
+        ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+        : "text-white hover:text-[#e94560]"
+    }`;
 
-  const leftNavLinks = (
+  const renderDropdown = (tab) => {
+    if (activeDropdown !== tab) return null;
+    return (
+      <div
+        className="fixed bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl p-8 z-50 transition-all duration-300"
+        style={{
+          top: "80px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "980px",
+          maxWidth: "calc(100vw - 32px)"
+        }}
+        onMouseEnter={() => handleMouseEnter("product")}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="grid grid-cols-3 gap-8">
+          {/* Column 1: Residential Solutions */}
+          <div>
+            <Link
+              to="/residential-solutions"
+              className="flex items-center text-[#e94560] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#e94560]/20"
+            >
+              Residential Solutions
+            </Link>
+            <div className="space-y-4">
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">HVAC Systems</span>
+                <ul className="space-y-1">
+                  <li><Link to="/residential-solutions/heating" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Heating</Link></li>
+                  <li><Link to="/residential-solutions/cooling" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Cooling</Link></li>
+                  <li><Link to="/residential-solutions/fresh-air" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Fresh Air</Link></li>
+                </ul>
+              </div>
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Equipment Rentals</span>
+                <ul className="space-y-1">
+                  <li><Link to="/rentals/water-heaters" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Water Heaters Rental</Link></li>
+                  <li><Link to="/rentals/furnaces-ac" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Furnaces and A/C Rental</Link></li>
+                </ul>
+              </div>
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Other Services</span>
+                <ul className="space-y-1">
+                  <li><Link to="/water-purification" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Water Purification</Link></li>
+                  <li><Link to="/other-services/drawings-permits" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Drawings and Permits</Link></li>
+                  <li><Link to="/other-services/custom-hoses" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Custom Hoses</Link></li>
+                  <li><Link to="/other-services/custom-ductwork" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Custom Ductwork</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: Commercial Solutions */}
+          <div>
+            <Link
+              to="/commercial-solutions"
+              className="flex items-center text-[#3b82f6] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#3b82f6]/20"
+            >
+              Commercial Solutions
+            </Link>
+            <div className="space-y-4">
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Kitchens & Retail</span>
+                <ul className="space-y-1">
+                  <li><Link to="/commercial-solutions/restaurants" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Restaurants / Commercial Kitchens</Link></li>
+                  <li><Link to="/commercial-solutions/office-retail" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Office and Retail Spaces</Link></li>
+                </ul>
+              </div>
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Construction Packages</span>
+                <ul className="space-y-1">
+                  <li><Link to="/other-services/construction-package" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Complete Construction Package</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 3: Light Industrial */}
+          <div>
+            <Link
+              to="/light-industrial"
+              className="flex items-center text-white text-sm font-black uppercase tracking-wider mb-4 hover:text-[#e94560] transition-colors duration-150 pb-2 border-b border-white/10"
+            >
+              Light Industrial
+            </Link>
+            <div className="space-y-4">
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Engineered Systems</span>
+                <ul className="space-y-1">
+                  <li><Link to="/light-industrial/exhaust-systems" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Industrial Exhaust Systems</Link></li>
+                  <li><Link to="/light-industrial/hvls-fans" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">HVLS Destratification Fans</Link></li>
+                  <li><Link to="/light-industrial/radiant-heating" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Radiant Tube Heating</Link></li>
+                  <li><Link to="/light-industrial/dust-compliance" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Combustible Dust Compliance</Link></li>
+                  <li><Link to="/light-industrial/permit-drawings" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Engineered Permit Drawings</Link></li>
+                  <li><Link to="/light-industrial/air-quality" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Air Quality Assessments</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const leftDesktopLinks = (
     <>
       <Link to="/"      className={navLinkClass("/")}>Home</Link>
       <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
+    </>
+  );
 
+  const rightDesktopLinks = (
+    <>
+      {/* Product Dropdown */}
       <div
-        ref={dropdownRef}
         className="relative"
-        onMouseEnter={handleMouseEnter}
+        onMouseEnter={() => handleMouseEnter("product")}
         onMouseLeave={handleMouseLeave}
       >
-        <button
-          className={`flex items-center gap-1 px-2.5 xl:px-4 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
-            productsOpen
-              ? "text-[#e94560] bg-white/5"
-              : scrolled
-              ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-              : "text-white hover:text-[#e94560]"
-          }`}
+        <Link 
+          to="#" 
+          className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
+          onClick={(e) => e.preventDefault()}
         >
-          Products
-          <ChevronDown size={16} className={`transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`} />
-        </button>
-
-        {productsOpen && (
-          <div
-            className="fixed bg-[#16213e] border border-white/10 rounded-xl shadow-2xl p-6 z-50"
-            style={{ top: "80px", left: "50%", transform: "translateX(-50%)", width: "860px", maxWidth: "calc(100vw - 32px)" }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <SwitcherTab />
-            <div className="border-t border-white/10 mb-5" />
-            <div className="grid grid-cols-3 gap-x-8 gap-y-6">
-              {PRODUCTS_MENU.map((group) => (
-                <div
-                  key={group.group}
-                  className="relative"
-                  onMouseEnter={() => setHoveredGroup(group.group)}
-                  onMouseLeave={() => setHoveredGroup(null)}
-                >
-                  <Link
-                    to={group.href}
-                    className="flex items-center justify-between text-[#e94560] text-xs font-bold uppercase tracking-widest mb-2 hover:text-white transition-colors duration-150"
-                  >
-                    <span>{group.group}</span>
-                    {group.items.length > 0 && (
-                      <ChevronDown
-                        size={12}
-                        className={`ml-1 transition-transform duration-200 ${hoveredGroup === group.group ? "rotate-180" : ""}`}
-                      />
-                    )}
-                  </Link>
-                  {group.items.length > 0 && (
-                    <ul className={`space-y-1 overflow-hidden transition-all duration-200 ${
-                      hoveredGroup === group.group ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
-                    }`}>
-                      {group.items.map((item) => (
-                        <li key={item.label}>
-                          <Link
-                            to={item.href}
-                            className="block text-gray-400 text-sm hover:text-[#e94560] hover:pl-1.5 transition-all duration-150"
-                          >{item.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          Product
+          <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === "product" ? "rotate-180" : ""}`} />
+        </Link>
+        {renderDropdown("product")}
       </div>
 
       <Link to="/store" className={navLinkClass("/store")}>Store</Link>
     </>
   );
 
-  const rightNavLinks = (
+  const rightActions = (
     <>
-      <Link to="/feedback" className={navLinkClass("/feedback")}>Feedback</Link>
-      <Link to="/careers"  className={navLinkClass("/careers")}>Careers</Link>
-      <Link to="/contact"  className={navLinkClass("/contact")}>Contact Us</Link>
-
-      <div className={`w-px h-5 mx-1 xl:mx-2 transition-all duration-300 ${scrolled ? "bg-white/20" : "bg-white/40"}`} />
-
-      <Link
-        to="/login"
-        className={`px-3 xl:px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-300 border ${
-          scrolled
-            ? "text-gray-300 hover:text-[#e94560] border-white/20 hover:border-[#e94560]"
-            : "text-white hover:text-[#e94560] border-white/40 hover:border-[#e94560]"
-        }`}
-      >
-        Log In
-      </Link>
-
       {/* WhatsApp icon — desktop */}
       <a
         href={WHATSAPP_URL}
@@ -279,30 +281,33 @@ export default function Navbar() {
       scrolled ? "bg-[#1a1a2e] shadow-lg" : "bg-transparent shadow-none"
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center h-20 overflow-visible">
+        <div className="flex items-center h-20 overflow-visible justify-between">
 
-          {/* Mobile / Tablet: Hamburger — below xl */}
-          <div className="flex xl:hidden items-center flex-1 justify-start">
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
-                scrolled ? "text-gray-300 hover:text-white" : "text-white"
-              }`}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          {/* Left Portion: Mobile Hamburger (left-aligned) or Desktop Left Links (right-aligned to end of this flex-1 item) */}
+          <div className="flex-1 flex items-center justify-start xl:justify-end overflow-visible">
+            {/* Mobile / Tablet: Hamburger — below xl */}
+            <div className="flex xl:hidden items-center">
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
+                  scrolled ? "text-gray-300 hover:text-white" : "text-white"
+                }`}
+                aria-label="Toggle menu"
+              >
+                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+
+            {/* Desktop: Home and About Us — xl and above */}
+            <div className="hidden xl:flex items-center gap-1.5 mr-6">
+              {leftDesktopLinks}
+            </div>
           </div>
 
-          {/* Desktop left links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-start">
-            {leftNavLinks}
-          </div>
-
-          {/* Logo — always centered */}
+          {/* Logo — left on desktop, centered on mobile */}
           <Link
             to="/"
-            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-6"
+            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-8"
           >
             <img
               src="/images/metric.png"
@@ -318,24 +323,29 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Mobile / Tablet: WhatsApp icon — below xl */}
-          <div className="flex xl:hidden items-center flex-1 justify-end">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Chat on WhatsApp"
-              className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
-            >
-              <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
-                <WhatsAppIcon size={22} />
-              </span>
-            </a>
-          </div>
+          {/* Right Portion: Mobile WhatsApp (right-aligned) or Desktop Right Links (left-aligned from start of this flex-1 item) */}
+          <div className="flex-1 flex items-center justify-end xl:justify-start overflow-visible">
+            {/* Desktop: Products & Store, separator, WhatsApp — xl and above */}
+            <div className="hidden xl:flex items-center gap-1.5 ml-6">
+              {rightDesktopLinks}
+              <div className={`w-px h-5 mx-1 xl:mx-2 transition-all duration-300 ${scrolled ? "bg-white/20" : "bg-white/40"}`} />
+              {rightActions}
+            </div>
 
-          {/* Desktop right links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-end">
-            {rightNavLinks}
+            {/* Mobile / Tablet: WhatsApp icon — below xl */}
+            <div className="flex xl:hidden items-center">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Chat on WhatsApp"
+                className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
+              >
+                <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
+                  <WhatsAppIcon size={22} />
+                </span>
+              </a>
+            </div>
           </div>
 
         </div>
@@ -350,53 +360,65 @@ export default function Navbar() {
               isActive("/") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
             }`}>Home</Link>
 
+          {/* Product Collapsible */}
           <div>
             <button
-              onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+              onClick={() => setMobileResOpen(!mobileResOpen)}
               className={`w-full flex items-center justify-between px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-                mobileProductsOpen ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+                mobileResOpen ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
               }`}
             >
-              Products
-              <ChevronDown size={16} className={`transition-transform duration-200 ${mobileProductsOpen ? "rotate-180" : ""}`} />
+              Product
+              <ChevronDown size={16} className={`transition-transform duration-200 ${mobileResOpen ? "rotate-180" : ""}`} />
             </button>
-
-            {mobileProductsOpen && (
-              <div className="mt-3 mx-1">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="relative flex bg-white/5 border border-white/10 rounded-full p-1 gap-1 w-full max-w-xs">
-                    <span
-                      className="absolute top-1 bottom-1 rounded-full bg-[#e94560] transition-all duration-300 ease-in-out"
-                      style={{ width: "calc(50% - 4px)", left: activeTab === "residential" ? "4px" : "calc(50%)" }}
-                    />
-                    <button onClick={() => setActiveTab("residential")}
-                      className={`relative z-10 flex-1 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-colors duration-200 ${activeTab === "residential" ? "text-white" : "text-gray-400"}`}
-                    >Residential</button>
-                    <button onClick={() => setActiveTab("commercial")}
-                      className={`relative z-10 flex-1 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-colors duration-200 ${activeTab === "commercial" ? "text-white" : "text-gray-400"}`}
-                    >Commercial</button>
-                  </div>
+            {mobileResOpen && (
+              <div className="mt-2 pl-4 border-l border-white/10 space-y-4 py-1">
+                {/* Residential */}
+                <div>
+                  <Link to="/residential-solutions" onClick={() => setMobileOpen(false)}
+                    className="block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                  >Residential Solutions</Link>
+                  <ul className="space-y-1.5 pl-2">
+                    {PRODUCT_MENU.residential.map((item) => (
+                      <li key={item.label}>
+                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                          className="block text-gray-400 text-sm hover:text-white transition-colors"
+                        >{item.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div className="border-l-2 border-[#e94560]/40 pl-4 space-y-5 py-2">
-                  {PRODUCTS_MENU.map((group) => (
-                    <div key={group.group}>
-                      <Link to={group.href} onClick={() => setMobileOpen(false)}
-                        className="block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
-                      >{group.group}</Link>
-                      {group.items.length > 0 && (
-                        <ul className="space-y-1.5">
-                          {group.items.map((item) => (
-                            <li key={item.label}>
-                              <Link to={item.href} onClick={() => setMobileOpen(false)}
-                                className="block text-gray-400 text-sm hover:text-[#e94560] transition-colors"
-                              >{item.label}</Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
+                {/* Commercial */}
+                <div>
+                  <Link to="/commercial-solutions" onClick={() => setMobileOpen(false)}
+                    className="block text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                  >Commercial Solutions</Link>
+                  <ul className="space-y-1.5 pl-2">
+                    {PRODUCT_MENU.commercial.map((item) => (
+                      <li key={item.label}>
+                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                          className="block text-gray-400 text-sm hover:text-white transition-colors"
+                        >{item.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Light Industrial */}
+                <div>
+                  <Link to="/light-industrial" onClick={() => setMobileOpen(false)}
+                    className="block text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#e94560] transition-colors"
+                  >Light Industrial</Link>
+                  <ul className="space-y-1.5 pl-2">
+                    {PRODUCT_MENU.lightIndustrial.map((item) => (
+                      <li key={item.label}>
+                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                          className="block text-gray-400 text-sm hover:text-white transition-colors"
+                        >{item.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             )}
@@ -411,29 +433,6 @@ export default function Navbar() {
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
               isActive("/store") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
             }`}>Store</Link>
-
-          <div className="border-t border-white/10 my-2" />
-
-          <Link to="/feedback" onClick={() => setMobileOpen(false)}
-            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/feedback") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>Feedback</Link>
-
-          <Link to="/careers" onClick={() => setMobileOpen(false)}
-            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/careers") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>Careers</Link>
-
-          <Link to="/contact" onClick={() => setMobileOpen(false)}
-            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/contact") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>Contact Us</Link>
-
-          <div className="pt-3">
-            <Link to="/login" onClick={() => setMobileOpen(false)}
-              className="block text-center text-gray-300 hover:text-[#e94560] border border-white/20 hover:border-[#e94560] px-5 py-2.5 rounded-lg text-sm font-medium transition-all"
-            >Log In</Link>
-          </div>
         </div>
       )}
     </nav>

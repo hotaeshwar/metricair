@@ -1,5 +1,9 @@
 // src/components/Store.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import { db } from "../firebase";
+import { collection, getDocs, addDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
+import LeadForm from './LeadForm';
+import { Lock, Truck, BadgeCheck, MessageSquare } from 'lucide-react';
 
 /* ── useInView ── */
 function useInView(threshold = 0.1) {
@@ -11,7 +15,15 @@ function useInView(threshold = 0.1) {
       { threshold }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    
+    const fallbackTimer = setTimeout(() => {
+      setInView(true);
+    }, 450);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, [threshold]);
   return [ref, inView];
 }
@@ -253,37 +265,9 @@ function CartDrawer({ cart, onClose, onRemove, onQtyChange, onCheckout }) {
 
 /* ── Purchase Modal (since no Stripe yet) ── */
 function PurchaseModal({ cart, onClose, total }) {
-  const [form, setForm]     = useState({ name: '', email: '', phone: '' });
-  const [status, setStatus] = useState('idle');
-
-  const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('sending');
-    const payload = new FormData();
-    payload.append('access_key',  'ba99ae3b-60cc-404c-b207-2a42e86aafb6');
-    payload.append('subject',     `Store Order Request – $${total.toFixed(2)} CAD – ${form.name}`);
-    payload.append('from_name',   'MetricAir Store');
-    payload.append('email',       form.email);
-    payload.append('reply_to',    form.email);
-    payload.append('to',          'metricairlimited.ca@gmail.com');
-    payload.append('message',
-      `STORE ORDER REQUEST – METRICAIR\n\n` +
-      `Customer: ${form.name}\nEmail:    ${form.email}\nPhone:    ${form.phone}\n\n` +
-      `ORDER ITEMS:\n` +
-      cart.map(i => `  • ${i.name} × ${i.qty}  =  $${(i.price * i.qty).toFixed(2)} CAD`).join('\n') +
-      `\n\nORDER TOTAL: $${total.toFixed(2)} CAD\n\nSubmitted: ${new Date().toLocaleString()}`
-    );
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload });
-      const data = await res.json();
-      if (data.success) setStatus('success');
-      else throw new Error();
-    } catch { setStatus('error'); }
-  };
-
-  const inputCls = `w-full bg-white/5 border border-white/15 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-[#e94560] focus:ring-1 focus:ring-[#e94560]/20 transition-all duration-200`;
+  const orderDetails = `ORDER ITEMS:\n` +
+    cart.map(i => `  • ${i.name} × ${i.qty}  =  $${(i.price * i.qty).toFixed(2)} CAD`).join('\n') +
+    `\n\nORDER TOTAL: $${total.toFixed(2)} CAD`;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
@@ -294,65 +278,45 @@ function PurchaseModal({ cart, onClose, total }) {
         <div className="h-1 w-full bg-gradient-to-r from-[#e94560] to-[#c73652]"/>
 
         <div className="p-7">
-          {status === 'success' ? (
-            <div className="flex flex-col items-center gap-4 py-6 text-center">
-              <div className="w-16 h-16 rounded-full bg-green-500/15 border border-green-500/40 flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
-                </svg>
-              </div>
-              <h3 className="text-white font-black text-xl">Order Submitted!</h3>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                We've received your order request. Our team will contact you within 24 hours to confirm and arrange payment.
-              </p>
-              <button onClick={onClose}
-                className="mt-2 px-6 py-2.5 rounded-lg bg-[#e94560] hover:bg-[#c73652] text-white text-sm font-semibold transition-all duration-300">
-                Continue Shopping
-              </button>
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h3 className="text-white font-black text-xl">Complete Your Order</h3>
+              <p className="text-gray-500 text-sm mt-1">Total: <span className="text-[#e94560] font-bold">${total.toFixed(2)} CAD</span></p>
             </div>
-          ) : (
-            <>
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <h3 className="text-white font-black text-xl">Complete Your Order</h3>
-                  <p className="text-gray-500 text-sm mt-1">Total: <span className="text-[#e94560] font-bold">${total.toFixed(2)} CAD</span></p>
-                </div>
-                <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors p-1">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                </button>
+            <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors p-1">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Order summary */}
+          <div className="mb-5 p-4 rounded-xl bg-white/5 border border-white/8 flex flex-col gap-1.5 max-h-32 overflow-y-auto">
+            {cart.map(i => (
+              <div key={i.id} className="flex items-center justify-between text-xs">
+                <span className="text-gray-400 truncate mr-2">{i.name} × {i.qty}</span>
+                <span className="text-white font-semibold shrink-0">${(i.price * i.qty).toFixed(2)}</span>
               </div>
+            ))}
+          </div>
 
-              {/* Order summary */}
-              <div className="mb-5 p-4 rounded-xl bg-white/5 border border-white/8 flex flex-col gap-1.5 max-h-32 overflow-y-auto">
-                {cart.map(i => (
-                  <div key={i.id} className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 truncate mr-2">{i.name} × {i.qty}</span>
-                    <span className="text-white font-semibold shrink-0">${(i.price * i.qty).toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
+          <LeadForm
+            subject={`Store Order Request – $${total.toFixed(2)} CAD`}
+            fromName="MetricAir Store"
+            buttonText="Submit Order Request"
+            buttonSubmittingText="Submitting…"
+            buttonClass="w-full py-3 px-0 justify-center rounded-xl bg-[#e94560] text-white font-bold"
+            customMessage={orderDetails}
+            onSuccess={() => {
+              setTimeout(() => {
+                onClose();
+              }, 2000);
+            }}
+          />
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <input type="text"  name="name"  value={form.name}  onChange={handleChange} placeholder="Full Name *"     required className={inputCls}/>
-                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Email Address *" required className={inputCls}/>
-                <input type="tel"   name="phone" value={form.phone} onChange={handleChange} placeholder="Phone Number *"  required className={inputCls}/>
-
-                {status === 'error' && (
-                  <p className="text-red-400 text-xs">Something went wrong — please try again.</p>
-                )}
-
-                <button type="submit" disabled={status === 'sending'}
-                  className="w-full py-3.5 rounded-xl bg-[#e94560] hover:bg-[#c73652] text-white font-bold text-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                  {status === 'sending' ? 'Submitting…' : 'Submit Order Request'}
-                </button>
-                <p className="text-gray-600 text-xs text-center leading-relaxed">
-                  We'll contact you within 24 hours to confirm your order and arrange secure payment.
-                </p>
-              </form>
-            </>
-          )}
+          <p className="text-gray-600 text-xs text-center leading-relaxed mt-4">
+            We'll contact you within 24 hours to confirm your order and arrange secure payment.
+          </p>
         </div>
       </div>
     </div>
@@ -448,6 +412,9 @@ export default function Store() {
   const [heroRef,     heroInView]     = useInView(0.05);
   const [productsRef, productsInView] = useInView(0.05);
 
+  const [products, setProducts]       = useState([]);
+  const [loading, setLoading]         = useState(true);
+
   const [cart,           setCart]           = useState([]);
   const [cartOpen,       setCartOpen]       = useState(false);
   const [purchaseOpen,   setPurchaseOpen]   = useState(false);
@@ -455,240 +422,336 @@ export default function Store() {
   const [sortBy,         setSortBy]         = useState('default');
   const [searchQuery,    setSearchQuery]    = useState('');
 
-  /* ── Derived data ── */
-  const filtered = PRODUCTS
-    .filter(p => activeCategory === 'All' || p.category === activeCategory)
-    .filter(p => !searchQuery ||
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (sortBy === 'price-asc')  return a.price - b.price;
-      if (sortBy === 'price-desc') return b.price - a.price;
-      if (sortBy === 'name')       return a.name.localeCompare(b.name);
-      return 0;
+  // 1. Fetch Products from Firestore with Realtime Sync and Local Fallback
+  useEffect(() => {
+    const q = collection(db, "products");
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      if (querySnapshot.empty) {
+        setProducts(PRODUCTS);
+        setLoading(false);
+      } else {
+        const items = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            name: String(data.name || "Unnamed Product"),
+            category: String(data.category || "General"),
+            price: typeof data.price === 'number' ? data.price : parseFloat(data.price) || 0,
+            stock: typeof data.stock === 'number' ? data.stock : parseInt(data.stock, 10) || 0,
+            badge: String(data.badge || ""),
+            description: String(data.description || ""),
+            image: String(data.image || "")
+          };
+        });
+        setProducts(items);
+        setLoading(false);
+      }
+    }, (err) => {
+      console.error("Error subscribing to products in Firestore, falling back to local list:", err);
+      setProducts(PRODUCTS);
+      setLoading(false);
     });
 
-  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
-  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    return () => unsubscribe();
+  }, []);
 
-  /* ── Cart helpers ── */
-  const addToCart = (product) => {
-    setCart(prev => {
-      const ex = prev.find(i => i.id === product.id);
-      if (ex) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
-      return [...prev, { ...product, qty: 1 }];
-    });
-  };
-  const removeFromCart = (id) => setCart(prev => prev.filter(i => i.id !== id));
-  const changeQty = (id, qty) => {
-    if (qty <= 0) return removeFromCart(id);
-    setCart(prev => prev.map(i => i.id === id ? { ...i, qty } : i));
-  };
+  // 2. Track Visitor Session
+  useEffect(() => {
+    const trackSession = async () => {
+      const sessionTracked = sessionStorage.getItem("store_visit_logged");
+      if (!sessionTracked) {
+        try {
+          const userAgent = navigator.userAgent;
+          let os = "Other OS";
+          if (userAgent.indexOf("Win") !== -1) os = "Windows";
+          else if (userAgent.indexOf("Mac") !== -1) os = "macOS";
+          else if (userAgent.indexOf("Linux") !== -1) os = "Linux";
+          else if (userAgent.indexOf("Android") !== -1) os = "Android";
+          else if (userAgent.indexOf("like Mac") !== -1) os = "iOS";
 
-  const handleCheckout = () => {
-    setCartOpen(false);
-    setTimeout(() => setPurchaseOpen(true), 200);
-  };
+          let browser = "Other Browser";
+          if (userAgent.indexOf("Chrome") !== -1) browser = "Chrome";
+          else if (userAgent.indexOf("Safari") !== -1) browser = "Safari";
+          else if (userAgent.indexOf("Firefox") !== -1) browser = "Firefox";
+          else if (userAgent.indexOf("Edge") !== -1) browser = "Edge";
 
-  return (
-    <section className="w-full bg-[#1a1a2e] text-white pt-28 pb-20 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-32 px-4 sm:px-8 lg:px-16 overflow-hidden min-h-screen">
+          await addDoc(collection(db, "visits"), {
+            timestamp: serverTimestamp(),
+            os,
+            browser,
+            userAgent,
+            page: "Store"
+          });
+          sessionStorage.setItem("store_visit_logged", "true");
+        } catch (err) {
+          console.error("Failed to track visitor session:", err);
+        }
+      }
+    };
+    trackSession();
+  }, []);
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-12 lg:gap-16">
-
-        {/* ══ HERO ══ */}
-        <div
-          ref={heroRef}
-          className="text-center max-w-3xl mx-auto"
-          style={{
-            opacity: heroInView ? 1 : 0,
-            transform: heroInView ? 'translateY(0)' : 'translateY(28px)',
-            transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
-          }}
-        >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">MetricAir Store</span>
-          <h1 className="text-white font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-            HVAC Products &<br /><span className="text-[#e94560]">Accessories</span>
-          </h1>
-          <div className="w-14 h-1 rounded-full bg-[#e94560] mx-auto mb-6" />
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Premium HVAC products, filters, thermostats and accessories — delivered across the GTA. Add items to your cart and we'll confirm your order within 24 hours.
-          </p>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#1a1a2e] text-white flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-400 text-sm">Loading Premium Store...</p>
         </div>
+      </div>
+    );
+  }
 
-        {/* ══ FILTERS BAR ══ */}
-        <div
-          className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center"
-          style={{
-            opacity: heroInView ? 1 : 0,
-            transform: heroInView ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
-          }}
-        >
-          {/* Search */}
-          <div className="relative flex-1">
-            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <input
-              type="text"
-              placeholder="Search products…"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/15 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 outline-none focus:border-[#e94560] transition-colors duration-200"
-            />
+  try {
+    /* ── Derived data ── */
+    const filtered = products
+      .filter(p => activeCategory === 'All' || p.category === activeCategory)
+      .filter(p => !searchQuery ||
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortBy === 'price-asc')  return a.price - b.price;
+        if (sortBy === 'price-desc') return b.price - a.price;
+        if (sortBy === 'name')       return a.name.localeCompare(b.name);
+        return 0;
+      });
+
+    const categories = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
+
+    const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+    const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+    /* ── Cart helpers ── */
+    const addToCart = (product) => {
+      setCart(prev => {
+        const ex = prev.find(i => i.id === product.id);
+        if (ex) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
+        return [...prev, { ...product, qty: 1 }];
+      });
+    };
+    const removeFromCart = (id) => setCart(prev => prev.filter(i => i.id !== id));
+    const changeQty = (id, qty) => {
+      if (qty <= 0) return removeFromCart(id);
+      setCart(prev => prev.map(i => i.id === id ? { ...i, qty } : i));
+    };
+
+    const handleCheckout = () => {
+      setCartOpen(false);
+      setTimeout(() => setPurchaseOpen(true), 200);
+    };
+
+    return (
+      <section className="w-full bg-[#1a1a2e] text-white pt-28 pb-20 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-32 px-4 sm:px-8 lg:px-16 overflow-hidden min-h-screen">
+
+        <div className="max-w-7xl mx-auto flex flex-col gap-12 lg:gap-16">
+
+          {/* ══ HERO ══ */}
+          <div
+            ref={heroRef}
+            className="text-center max-w-3xl mx-auto"
+            style={{
+              opacity: heroInView ? 1 : 0,
+              transform: heroInView ? 'translateY(0)' : 'translateY(28px)',
+              transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
+            }}
+          >
+            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">MetricAir Store</span>
+            <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
+              <span className="text-[#e94560]">HVAC Products </span>
+              <span className="text-[#3b82f6]">& </span><br />
+              <span className="text-white">Accessories</span>
+            </h1>
+            <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Premium HVAC products, filters, thermostats and accessories — delivered across the GTA. Add items to your cart and we'll confirm your order within 24 hours.
+            </p>
           </div>
 
-          {/* Sort */}
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value)}
-              className="w-full sm:w-auto bg-white/5 border border-white/15 rounded-lg px-4 py-2.5 text-gray-300 text-sm outline-none focus:border-[#e94560] transition-colors duration-200 cursor-pointer pr-8"
-              style={{ appearance: 'none' }}
-            >
-              <option value="default"    className="bg-[#16213e]">Sort: Default</option>
-              <option value="price-asc"  className="bg-[#16213e]">Price: Low → High</option>
-              <option value="price-desc" className="bg-[#16213e]">Price: High → Low</option>
-              <option value="name"       className="bg-[#16213e]">Name: A → Z</option>
-            </select>
-            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
-
-          {/* Cart button */}
-          {cartCount > 0 && (
-            <button
-              onClick={() => setCartOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#e94560] hover:bg-[#c73652] text-white text-sm font-bold transition-all duration-300 hover:scale-[1.02] shrink-0"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-              Cart ({cartCount}) · ${cartTotal.toFixed(2)}
-            </button>
-          )}
-        </div>
-
-        {/* ══ CATEGORY TABS ══ */}
-        <div
-          className="flex flex-wrap gap-2"
-          style={{
-            opacity: heroInView ? 1 : 0,
-            transition: 'opacity 0.7s ease 0.3s',
-          }}
-        >
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
-                activeCategory === cat
-                  ? 'bg-[#e94560] border-[#e94560] text-white shadow-[0_0_12px_rgba(233,69,96,0.4)]'
-                  : 'bg-transparent border-white/15 text-gray-400 hover:border-white/35 hover:text-white'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-          <span className="ml-auto text-gray-600 text-xs self-center">
-            {filtered.length} product{filtered.length !== 1 ? 's' : ''}
-          </span>
-        </div>
-
-        {/* ══ PRODUCTS GRID ══ */}
-        <div ref={productsRef}>
-          {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-4 py-24 text-center">
-              <svg className="w-20 h-20 text-white/8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* ══ FILTERS BAR ══ */}
+          <div
+            className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center"
+            style={{
+              opacity: heroInView ? 1 : 0,
+              transform: heroInView ? 'translateY(0)' : 'translateY(16px)',
+              transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
+            }}
+          >
+            {/* Search */}
+            <div className="relative flex-1">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
               </svg>
-              <p className="text-white font-semibold text-lg">No products found</p>
-              <p className="text-gray-500 text-sm">
-                {searchQuery ? `No results for "${searchQuery}"` : 'No products in this category.'}
-              </p>
+              <input
+                type="text"
+                placeholder="Search products…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/15 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 outline-none focus:border-[#e94560] transition-colors duration-200"
+              />
+            </div>
+
+            {/* Sort */}
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="w-full sm:w-auto bg-white/5 border border-white/15 rounded-lg px-4 py-2.5 text-gray-300 text-sm outline-none focus:border-[#e94560] transition-colors duration-200 cursor-pointer pr-8"
+                style={{ appearance: 'none' }}
+              >
+                <option value="default"    className="bg-[#16213e]">Sort: Default</option>
+                <option value="price-asc"  className="bg-[#16213e]">Price: Low → High</option>
+                <option value="price-desc" className="bg-[#16213e]">Price: High → Low</option>
+                <option value="name"       className="bg-[#16213e]">Name: A → Z</option>
+              </select>
+              <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+
+            {/* Cart button */}
+            {cartCount > 0 && (
               <button
-                onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
-                className="px-5 py-2.5 rounded-lg border border-white/20 text-gray-300 text-sm hover:border-[#e94560] hover:text-white transition-all duration-200"
-              >Clear Filters</button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filtered.map((product, i) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onAddToCart={addToCart}
-                  inView={productsInView}
-                  delay={Math.min(i * 0.07, 0.42)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+                onClick={() => setCartOpen(true)}
+                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#e94560] hover:bg-[#c73652] text-white text-sm font-bold transition-all duration-300 hover:scale-[1.02] shrink-0"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                Cart ({cartCount}) · ${cartTotal.toFixed(2)}
+              </button>
+            )}
+          </div>
 
-        {/* ══ TRUST BADGES ══ */}
-        <div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-4"
-          style={{
-            opacity: productsInView ? 1 : 0,
-            transition: 'opacity 0.8s ease 0.4s',
-          }}
-        >
-          {[
-            { emoji: '🔒', label: 'Secure Orders',   sub: 'Your data is safe'    },
-            { emoji: '🚚', label: 'GTA Delivery',     sub: 'Fast & reliable'      },
-            { emoji: '✅', label: 'Genuine Products', sub: 'Verified brands'      },
-            { emoji: '💬', label: '24hr Response',    sub: 'We confirm all orders'},
-          ].map(b => (
-            <div key={b.label} className="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 hover:border-white/15 transition-colors duration-200">
-              <span className="text-xl shrink-0">{b.emoji}</span>
-              <div>
-                <p className="text-white text-xs font-semibold">{b.label}</p>
-                <p className="text-gray-600 text-xs">{b.sub}</p>
+          {/* ══ CATEGORY TABS ══ */}
+          <div
+            className="flex flex-wrap gap-2"
+            style={{
+              opacity: heroInView ? 1 : 0,
+              transition: 'opacity 0.7s ease 0.3s',
+            }}
+          >
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
+                  activeCategory === cat
+                    ? 'bg-[#e94560] border-[#e94560] text-white shadow-[0_0_12px_rgba(233,69,96,0.4)]'
+                    : 'bg-transparent border-white/15 text-gray-400 hover:border-white/35 hover:text-white'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+            <span className="ml-auto text-gray-600 text-xs self-center">
+              {filtered.length} product{filtered.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+
+          {/* ══ PRODUCTS GRID ══ */}
+          <div ref={productsRef}>
+            {filtered.length === 0 ? (
+              <div className="flex flex-col items-center gap-4 py-24 text-center">
+                <svg className="w-20 h-20 text-white/8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <p className="text-white font-semibold text-lg">No products found</p>
+                <p className="text-gray-500 text-sm">
+                  {searchQuery ? `No results for "${searchQuery}"` : 'No products in this category.'}
+                </p>
+                <button
+                  onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
+                  className="px-5 py-2.5 rounded-lg border border-white/20 text-gray-300 text-sm hover:border-[#e94560] hover:text-white transition-all duration-200"
+                >Clear Filters</button>
               </div>
-            </div>
-          ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filtered.map((product, i) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={addToCart}
+                    inView={productsInView}
+                    delay={Math.min(i * 0.07, 0.42)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* ══ TRUST BADGES ══ */}
+          <div
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4"
+            style={{
+              opacity: productsInView ? 1 : 0,
+              transition: 'opacity 0.8s ease 0.4s',
+            }}
+          >
+            {[
+              { icon: <Lock size={20} className="text-[#e94560]" />, label: 'Secure Orders',   sub: 'Your data is safe'    },
+              { icon: <Truck size={20} className="text-[#e94560]" />, label: 'GTA Delivery',     sub: 'Fast & reliable'      },
+              { icon: <BadgeCheck size={20} className="text-[#e94560]" />, label: 'Genuine Products', sub: 'Verified brands'      },
+              { icon: <MessageSquare size={20} className="text-[#e94560]" />, label: '24hr Response',    sub: 'We confirm all orders'},
+            ].map(b => (
+              <div key={b.label} className="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 hover:border-white/15 transition-colors duration-200">
+                <span className="shrink-0">{b.icon}</span>
+                <div>
+                  <p className="text-white text-xs font-semibold">{b.label}</p>
+                  <p className="text-gray-600 text-xs">{b.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
 
+        {/* ══ FLOATING CART BUTTON (mobile) ══ */}
+        {cartCount > 0 && (
+          <button
+            onClick={() => setCartOpen(true)}
+            className="fixed bottom-6 right-6 z-40 sm:hidden flex items-center gap-2 bg-[#e94560] hover:bg-[#c73652] text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            Cart ({cartCount}) · ${cartTotal.toFixed(2)}
+          </button>
+        )}
+
+        {/* ══ CART DRAWER ══ */}
+        {cartOpen && (
+          <CartDrawer
+            cart={cart}
+            onClose={() => setCartOpen(false)}
+            onRemove={removeFromCart}
+            onQtyChange={changeQty}
+            onCheckout={handleCheckout}
+          />
+        )}
+
+        {/* ══ PURCHASE MODAL ══ */}
+        {purchaseOpen && (
+          <PurchaseModal
+            cart={cart}
+            total={cartTotal}
+            onClose={() => { setPurchaseOpen(false); setCart([]); }}
+          />
+        )}
+      </section>
+    );
+  } catch (renderError) {
+    console.error("Store render error:", renderError);
+    return (
+      <div className="min-h-screen bg-[#1a1a2e] text-white flex items-center justify-center p-6 text-center">
+        <div>
+          <h2 className="text-xl font-bold text-[#e94560] mb-2">Something went wrong</h2>
+          <p className="text-gray-400 text-sm">Failed to render store page. Please reload.</p>
+        </div>
       </div>
-
-      {/* ══ FLOATING CART BUTTON (mobile) ══ */}
-      {cartCount > 0 && (
-        <button
-          onClick={() => setCartOpen(true)}
-          className="fixed bottom-6 right-6 z-40 sm:hidden flex items-center gap-2 bg-[#e94560] hover:bg-[#c73652] text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
-        >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          Cart ({cartCount}) · ${cartTotal.toFixed(2)}
-        </button>
-      )}
-
-      {/* ══ CART DRAWER ══ */}
-      {cartOpen && (
-        <CartDrawer
-          cart={cart}
-          onClose={() => setCartOpen(false)}
-          onRemove={removeFromCart}
-          onQtyChange={changeQty}
-          onCheckout={handleCheckout}
-        />
-      )}
-
-      {/* ══ PURCHASE MODAL ══ */}
-      {purchaseOpen && (
-        <PurchaseModal
-          cart={cart}
-          total={cartTotal}
-          onClose={() => { setPurchaseOpen(false); setCart([]); }}
-        />
-      )}
-    </section>
-  );
+    );
+  }
 }

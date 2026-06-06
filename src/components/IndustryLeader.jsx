@@ -22,6 +22,31 @@ function getSlidesVisible() {
   return 3;
 }
 
+function useInView(threshold = 0.1) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    let timer;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            setInView(true);
+          }, 100);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => {
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
+  }, [threshold]);
+  return [ref, inView];
+}
+
 export default function BrandCarousel() {
   const [current, setCurrent]                 = useState(0);
   const [slidesVisible, setSlidesVisible]     = useState(getSlidesVisible);
@@ -31,6 +56,8 @@ export default function BrandCarousel() {
   const [dragOffset, setDragOffset]           = useState(0);
   const autoRef  = useRef(null);
   const trackRef = useRef(null);
+
+  const [sectionRef, sectionInView] = useInView(0.05);
 
   // ── Resize ──
   useEffect(() => {
@@ -93,7 +120,14 @@ export default function BrandCarousel() {
 
   return (
     // ── White section background ──
-    <section className="w-full bg-white py-14 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className="w-full bg-white py-14 sm:py-16 lg:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden transition-all duration-1000 ease-out"
+      style={{
+        opacity: sectionInView ? 1 : 0,
+        transform: sectionInView ? 'translateY(0)' : 'translateY(30px)',
+      }}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* ── Header ── */}
@@ -101,10 +135,12 @@ export default function BrandCarousel() {
           <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">
             Trusted Partners
           </span>
-          <h2 className="text-gray-900 font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">
-            Brands We Work With
+          <h2 className="font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">
+            <span className="text-[#e94560]">Brands </span>
+            <span className="text-[#3b82f6]">We Work </span>
+            <span className="text-gray-900">With</span>
           </h2>
-          <div className="w-12 h-1 rounded-full bg-[#e94560] mx-auto mt-4" />
+          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-gray-300 mx-auto mt-4" />
         </div>
 
         {/* ── Carousel ── */}

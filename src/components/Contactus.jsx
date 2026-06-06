@@ -1,17 +1,29 @@
 // src/components/ContactUs.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import LeadForm from './LeadForm';
 
 /* ── useInView hook ── */
 function useInView(threshold = 0.12) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
+    let timer;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => {
+            setInView(true);
+          }, 100);
+          observer.disconnect();
+        }
+      },
       { threshold }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
   }, [threshold]);
   return [ref, inView];
 }
@@ -49,101 +61,10 @@ const INFO_CARDS = [
   },
 ];
 
-const SERVICE_OPTIONS = ['Repair', 'Installation', 'Maintenance', 'Products & Services', 'General Inquiry', 'Other'];
-
-/* ── Custom Dropdown ── */
-function CustomDropdown({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const dropRef = useRef(null);
-
-  useEffect(() => {
-    function handleClick(e) {
-      if (dropRef.current && !dropRef.current.contains(e.target)) setOpen(false);
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
-
-  return (
-    <div ref={dropRef} className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between bg-transparent border border-white/15 rounded-lg px-4 py-3 text-sm text-white outline-none focus:border-[#e94560] focus:ring-1 focus:ring-[#e94560]/30 transition-all duration-200 cursor-pointer"
-      >
-        <span>{value}</span>
-        <svg
-          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-          fill="none" stroke="currentColor" viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {open && (
-        <ul className="absolute top-full left-0 right-0 mt-1 z-50 bg-[#16213e] border border-white/15 rounded-lg overflow-hidden shadow-2xl">
-          {SERVICE_OPTIONS.map((option) => (
-            <li
-              key={option}
-              onClick={() => { onChange(option); setOpen(false); }}
-              className={`px-4 py-3 text-sm cursor-pointer transition-colors duration-150 ${
-                value === option
-                  ? 'bg-[#e94560] text-white font-semibold'
-                  : 'text-gray-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              {option}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-/* ── Main Component ── */
 export default function ContactUs() {
   const [cardsRef,  cardsInView]  = useInView(0.1);
   const [detailRef, detailInView] = useInView(0.08);
   const [formRef,   formInView]   = useInView(0.08);
-
-  const [form, setForm]     = useState({ fullName: '', phone: '', email: '', service: 'Repair', message: '' });
-  const [status, setStatus] = useState('idle');
-
-  const handleChange = (e) =>
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    const payload = new FormData();
-    payload.append('access_key',  'ba99ae3b-60cc-404c-b207-2a42e86aafb6');
-    payload.append('subject',     `Contact Form – ${form.service} – ${form.fullName}`);
-    payload.append('from_name',   'MetricAir Website');
-    payload.append('email',       form.email);
-    payload.append('reply_to',    form.email);
-    payload.append('to',          'metricairlimited.ca@gmail.com');
-    payload.append('message',
-      `CONTACT FORM – METRICAIR\n\nName:    ${form.fullName}\nPhone:   ${form.phone}\nEmail:   ${form.email}\nService: ${form.service}\n\nMessage:\n${form.message}\n\nSubmitted: ${new Date().toLocaleString()}`
-    );
-
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload });
-      const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-        setForm({ fullName: '', phone: '', email: '', service: 'Repair', message: '' });
-      } else { throw new Error('failed'); }
-    } catch { setStatus('error'); }
-  };
-
-  const inputCls = `
-    w-full bg-transparent border border-white/15 rounded-lg
-    px-4 py-3 text-white text-sm placeholder-gray-500
-    outline-none focus:border-[#e94560] focus:ring-1 focus:ring-[#e94560]/30
-    transition-all duration-200
-  `;
 
   return (
     <section className="w-full bg-[#1a1a2e] text-white
@@ -162,10 +83,12 @@ export default function ContactUs() {
           }}
         >
           <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Get In Touch</span>
-          <h1 className="text-white font-black text-3xl sm:text-4xl lg:text-5xl leading-tight mb-4">
-            Contact <span className="text-[#e94560]">Us</span>
+          <h1 className="font-black text-3xl sm:text-4xl lg:text-5xl leading-tight mb-4">
+            <span className="text-[#e94560]">Contact</span>{' '}
+            <span className="text-[#3b82f6]">Us</span>{' '}
+            <span className="text-white">Today</span>
           </h1>
-          <div className="w-12 h-1 rounded-full bg-[#e94560] mx-auto" />
+          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto" />
         </div>
 
         {/* ── Three info cards ── */}
@@ -288,69 +211,11 @@ export default function ContactUs() {
               Send us a Message
             </h2>
 
-            {status === 'success' ? (
-              <div className="flex flex-col gap-4 p-8 rounded-2xl bg-white/5 border border-[#e94560]/30 text-center">
-                <div className="w-14 h-14 rounded-full bg-[#e94560]/15 border border-[#e94560]/40 flex items-center justify-center mx-auto">
-                  <svg className="w-7 h-7 text-[#e94560]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-                <p className="text-white font-semibold text-lg">Message sent!</p>
-                <p className="text-gray-400 text-sm">We'll get back to you shortly.</p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="self-center text-gray-500 text-sm underline hover:text-white transition-colors duration-200 mt-1"
-                >Send another message</button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
-                <input
-                  type="text" name="fullName" value={form.fullName}
-                  onChange={handleChange} placeholder="Full Name" required
-                  className={inputCls}
-                />
-
-                <input
-                  type="tel" name="phone" value={form.phone}
-                  onChange={handleChange} placeholder="Phone Number" required
-                  className={inputCls}
-                />
-
-                <input
-                  type="email" name="email" value={form.email}
-                  onChange={handleChange} placeholder="Email Address" required
-                  className={inputCls}
-                />
-
-                <CustomDropdown
-                  value={form.service}
-                  onChange={(val) => setForm(prev => ({ ...prev, service: val }))}
-                />
-
-                <textarea
-                  name="message" value={form.message}
-                  onChange={handleChange} placeholder="Message"
-                  rows={5} required
-                  className={inputCls + ' resize-none'}
-                />
-
-                {status === 'error' && (
-                  <p className="text-red-400 text-xs">Something went wrong — please try again.</p>
-                )}
-
-                <div>
-                  <button
-                    type="submit"
-                    disabled={status === 'sending'}
-                    className="split-btn px-8 py-3 rounded-lg text-white text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <span>{status === 'sending' ? 'Sending…' : 'Send Message'}</span>
-                  </button>
-                </div>
-
-              </form>
-            )}
+            <LeadForm 
+              subject="Contact Form Message" 
+              fromName="MetricAir Contact Us" 
+              buttonText="Send Message" 
+            />
           </div>
 
         </div>
