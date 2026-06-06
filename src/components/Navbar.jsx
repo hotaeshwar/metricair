@@ -298,16 +298,15 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Desktop: Home and About Us — xl and above */}
-            <div className="hidden xl:flex items-center gap-1.5 mr-6">
-              {leftDesktopLinks}
-            </div>
+          {/* Desktop left links — xl and above */}
+          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-start">
+            {leftNavLinks}
           </div>
 
-          {/* Logo — left on desktop, centered on mobile */}
+          {/* Logo — always centered */}
           <Link
             to="/"
-            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-8"
+            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-6"
           >
             <img
               src="/images/metric.png"
@@ -323,29 +322,24 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Right Portion: Mobile WhatsApp (right-aligned) or Desktop Right Links (left-aligned from start of this flex-1 item) */}
-          <div className="flex-1 flex items-center justify-end xl:justify-start overflow-visible">
-            {/* Desktop: Products & Store, separator, WhatsApp — xl and above */}
-            <div className="hidden xl:flex items-center gap-1.5 ml-6">
-              {rightDesktopLinks}
-              <div className={`w-px h-5 mx-1 xl:mx-2 transition-all duration-300 ${scrolled ? "bg-white/20" : "bg-white/40"}`} />
-              {rightActions}
-            </div>
+          {/* Mobile / Tablet: WhatsApp icon — below xl */}
+          <div className="flex xl:hidden items-center flex-1 justify-end">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Chat on WhatsApp"
+              className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
+            >
+              <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
+                <WhatsAppIcon size={22} />
+              </span>
+            </a>
+          </div>
 
-            {/* Mobile / Tablet: WhatsApp icon — below xl */}
-            <div className="flex xl:hidden items-center">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Chat on WhatsApp"
-                className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
-              >
-                <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
-                  <WhatsAppIcon size={22} />
-                </span>
-              </a>
-            </div>
+          {/* Desktop right links — xl and above */}
+          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-end">
+            {rightNavLinks}
           </div>
 
         </div>
