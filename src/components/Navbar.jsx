@@ -300,7 +300,7 @@ export default function Navbar() {
 
           {/* Desktop left links — xl and above */}
           <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-start">
-            {leftNavLinks}
+            {leftDesktopLinks}
           </div>
 
           {/* Logo — always centered */}
@@ -339,7 +339,7 @@ export default function Navbar() {
 
           {/* Desktop right links — xl and above */}
           <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-end">
-            {rightNavLinks}
+            {rightDesktopLinks}
           </div>
 
         </div>
@@ -429,6 +429,7 @@ export default function Navbar() {
             }`}>Store</Link>
         </div>
       )}
+      </div>
     </nav>
   );
 }
