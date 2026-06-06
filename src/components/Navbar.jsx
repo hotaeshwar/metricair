@@ -12,10 +12,9 @@ const WhatsAppIcon = ({ size = 20 }) => (
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M16.003 2.667C8.636 2.667 2.667 8.636 2.667 16.003c0 2.354.636 4.653 1.845 6.664L2.667 29.333l6.865-1.797A13.28 13.28 0 0 0 16.003 29.34c7.367 0 13.33-5.969 13.33-13.337S23.37 2.667 16.003 2.667Zm0 24.394a11.03 11.03 0 0 1-5.627-1.543l-.403-.24-4.074 1.067 1.087-3.966-.264-.407a11.037 11.037 0 0 1-1.691-5.969c0-6.1 4.969-11.063 11.072-11.063 6.1 0 11.063 4.963 11.063 11.063S22.103 27.061 16.003 27.061Zm6.07-8.279c-.333-.167-1.97-.972-2.275-1.083-.306-.11-.529-.167-.751.167-.222.333-.861 1.083-1.056 1.305-.194.222-.389.25-.722.083-.333-.167-1.406-.518-2.678-1.652-.99-.883-1.658-1.972-1.853-2.305-.194-.333-.021-.513.147-.68.15-.148.333-.389.5-.583.167-.194.222-.333.333-.556.111-.222.056-.417-.028-.583-.083-.167-.75-1.806-1.028-2.472-.27-.65-.547-.562-.75-.572-.194-.009-.417-.011-.639-.011a1.225 1.225 0 0 0-.889.417c-.305.333-1.166 1.139-1.166 2.778s1.194 3.222 1.36 3.444c.167.222 2.349 3.583 5.694 5.028.796.344 1.417.549 1.9.703.799.254 1.527.218 2.102.132.641-.095 1.97-.806 2.247-1.584.278-.778.278-1.444.194-1.583-.083-.14-.305-.222-.638-.39Z"/>
+    <path d="M16.003 2.667C8.636 2.667 2.667 8.636 2.667 16.003c0 2.354.636 4.653 1.845 6.664L2.667 29.333l6.865-1.797A13.28 13.28 0 0 0 16.003 29.34c7.367 0 13.33-5.969 13.33-13.337S23.37 2.667 16.003 2.667Zm0 24.394a11.03 11.03 0 0 1-5.627-1.543l-.403-.24-4.074 1.067 1.087-3.966-.264-.407a11.037 11.037 0 0 1-1.691-5.969c0-6.1 4.969-11.063 11.072-11.063 6.1 0 11.063 4.963 11.063 11.063S22.103 27.061 16.003 27.061Zm6.07-8.279c-.333-.167-1.97-.972-2.275-1.083-.306-.11-.529-.167-.751.167-.222.333-.861 1.083-1.056 1.305-.194.222-.389.25-.722.083-.333-.167-1.406-.518-2.678-1.652-.99-.883-1.658-1.972-1.853-2.305-.194-.333-.021-.513.147-.68.15-.148.333-.389.5-.583.167-.194.222-.333.333-.556.111-.222.056-.417-.028-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01a1.225 1.225 0 0 0-.889.417c-.305.333-1.166 1.139-1.166 2.778s1.194 3.222 1.36 3.444c.167.222 2.349 3.583 5.694 5.028.796.344 1.417.549 1.9.703.799.254 1.527.218 2.102.132.641-.095 1.97-.806 2.247-1.584.278-.778.278-1.444.194-1.583-.083-.14-.305-.222-.638-.39Z" />
   </svg>
 );
-
 
 const PRODUCT_MENU = {
   residential: [
@@ -27,12 +26,12 @@ const PRODUCT_MENU = {
     { label: "Water Purification", href: "/water-purification" },
     { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
     { label: "Custom Hoses", href: "/other-services/custom-hoses" },
-    { label: "Custom Ductwork", href: "/other-services/custom-ductwork" }
+    { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
   ],
   commercial: [
     { label: "Restaurants / Kitchens", href: "/commercial-solutions/restaurants" },
     { label: "Office & Retail Spaces", href: "/commercial-solutions/office-retail" },
-    { label: "Complete Construction Package", href: "/other-services/construction-package" }
+    { label: "Complete Construction Package", href: "/other-services/construction-package" },
   ],
   lightIndustrial: [
     { label: "Industrial Exhaust Systems", href: "/light-industrial/exhaust-systems" },
@@ -40,11 +39,11 @@ const PRODUCT_MENU = {
     { label: "Radiant Tube Heating", href: "/light-industrial/radiant-heating" },
     { label: "Combustible Dust Compliance", href: "/light-industrial/dust-compliance" },
     { label: "Engineered Permit Drawings", href: "/light-industrial/permit-drawings" },
-    { label: "Air Quality Assessments", href: "/light-industrial/air-quality" }
-  ]
+    { label: "Air Quality Assessments", href: "/light-industrial/air-quality" },
+  ],
 };
 
-const WHATSAPP_NUMBER  = "16479241421";
+const WHATSAPP_NUMBER = "16479241421";
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hi MetricAir! I found you on your website and I'd like to inquire about your HVAC services. Could you please help me?"
 );
@@ -52,10 +51,8 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null); // 'product' | null
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-
-  // Mobile submenu state for Products
   const [mobileResOpen, setMobileResOpen] = useState(false);
 
   const timeoutRef = useRef(null);
@@ -69,9 +66,7 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth >= 1280) {
-        setMobileOpen(false);
-      }
+      if (window.innerWidth >= 1280) setMobileOpen(false);
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -89,23 +84,18 @@ export default function Navbar() {
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 150);
+    timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
   };
 
   const isActive = (path) => location.pathname === path;
 
-  const isProductActive = () => {
-    return (
-      location.pathname.startsWith("/residential-solutions") ||
-      location.pathname.startsWith("/commercial-solutions") ||
-      location.pathname.startsWith("/light-industrial") ||
-      location.pathname.startsWith("/rentals") ||
-      location.pathname === "/water-purification" ||
-      location.pathname.startsWith("/other-services")
-    );
-  };
+  const isProductActive = () =>
+    location.pathname.startsWith("/residential-solutions") ||
+    location.pathname.startsWith("/commercial-solutions") ||
+    location.pathname.startsWith("/light-industrial") ||
+    location.pathname.startsWith("/rentals") ||
+    location.pathname === "/water-purification" ||
+    location.pathname.startsWith("/other-services");
 
   const navLinkClass = (path) =>
     `px-2 xl:px-3 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
@@ -125,23 +115,23 @@ export default function Navbar() {
         : "text-white hover:text-[#e94560]"
     }`;
 
-  const renderDropdown = (tab) => {
-    if (activeDropdown !== tab) return null;
+  const renderDropdown = () => {
+    if (activeDropdown !== "product") return null;
     return (
       <div
-        className="fixed bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl p-8 z-50 transition-all duration-300"
+        className="fixed bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl p-8 z-50"
         style={{
           top: "80px",
           left: "50%",
           transform: "translateX(-50%)",
           width: "980px",
-          maxWidth: "calc(100vw - 32px)"
+          maxWidth: "calc(100vw - 32px)",
         }}
         onMouseEnter={() => handleMouseEnter("product")}
         onMouseLeave={handleMouseLeave}
       >
         <div className="grid grid-cols-3 gap-8">
-          {/* Column 1: Residential Solutions */}
+          {/* Residential */}
           <div>
             <Link
               to="/residential-solutions"
@@ -177,7 +167,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Column 2: Commercial Solutions */}
+          {/* Commercial */}
           <div>
             <Link
               to="/commercial-solutions"
@@ -202,7 +192,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Column 3: Light Industrial */}
+          {/* Light Industrial */}
           <div>
             <Link
               to="/light-industrial"
@@ -229,84 +219,40 @@ export default function Navbar() {
     );
   };
 
-  const leftDesktopLinks = (
-    <>
-      <Link to="/"      className={navLinkClass("/")}>Home</Link>
-      <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
-    </>
-  );
-
-  const rightDesktopLinks = (
-    <>
-      {/* Product Dropdown */}
-      <div
-        className="relative"
-        onMouseEnter={() => handleMouseEnter("product")}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Link 
-          to="#" 
-          className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
-          onClick={(e) => e.preventDefault()}
-        >
-          Product
-          <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === "product" ? "rotate-180" : ""}`} />
-        </Link>
-        {renderDropdown("product")}
-      </div>
-
-      <Link to="/store" className={navLinkClass("/store")}>Store</Link>
-    </>
-  );
-
-  const rightActions = (
-    <>
-      {/* WhatsApp icon — desktop */}
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Chat on WhatsApp"
-        className="ml-1 p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
-      >
-        <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
-          <WhatsAppIcon size={20} />
-        </span>
-      </a>
-    </>
-  );
-
   return (
-    <nav className={`w-full fixed top-0 left-0 z-50 overflow-visible transition-all duration-500 ${
-      scrolled ? "bg-[#1a1a2e] shadow-lg" : "bg-transparent shadow-none"
-    }`}>
+    <nav
+      className={`w-full fixed top-0 left-0 z-50 overflow-visible transition-all duration-500 ${
+        scrolled ? "bg-[#1a1a2e] shadow-lg" : "bg-transparent shadow-none"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center h-20 overflow-visible justify-between">
+        {/* ── Main row ── */}
+        <div className="flex items-center h-20 overflow-visible">
 
-          {/* Left Portion: Mobile Hamburger (left-aligned) or Desktop Left Links (right-aligned to end of this flex-1 item) */}
-          <div className="flex-1 flex items-center justify-start xl:justify-end overflow-visible">
-            {/* Mobile / Tablet: Hamburger — below xl */}
-            <div className="flex xl:hidden items-center">
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className={`p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
-                  scrolled ? "text-gray-300 hover:text-white" : "text-white"
-                }`}
-                aria-label="Toggle menu"
-              >
-                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
+          {/* LEFT: hamburger (mobile) | nav links (desktop) */}
+          <div className="flex items-center flex-1">
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`xl:hidden p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
+                scrolled ? "text-gray-300 hover:text-white" : "text-white"
+              }`}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Desktop left links */}
+            <div className="hidden xl:flex items-center justify-end w-full gap-6 pr-36">
+              <Link to="/" className={navLinkClass("/")}>Home</Link>
+              <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
             </div>
-
-          {/* Desktop left links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-start">
-            {leftDesktopLinks}
           </div>
 
-          {/* Logo — always centered */}
+          {/* CENTER: Logo */}
           <Link
             to="/"
-            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 xl:mx-6"
+            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2"
           >
             <img
               src="/images/metric.png"
@@ -322,39 +268,76 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Mobile / Tablet: WhatsApp icon — below xl */}
-          <div className="flex xl:hidden items-center flex-1 justify-end">
+          {/* RIGHT: WhatsApp + nav links */}
+          <div className="flex items-center justify-end flex-1 gap-0.5">
+            {/* Mobile: WhatsApp only */}
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               title="Chat on WhatsApp"
-              className="p-2 rounded-full transition-all duration-300 group text-[#25D366] hover:text-[#25D366]"
+              className="xl:hidden p-2 rounded-full transition-all duration-300 group text-[#25D366]"
             >
               <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
                 <WhatsAppIcon size={22} />
               </span>
             </a>
-          </div>
 
-          {/* Desktop right links — xl and above */}
-          <div className="hidden xl:flex items-center gap-0.5 flex-1 justify-end">
-            {rightDesktopLinks}
+            {/* Desktop right links + WhatsApp */}
+            <div className="hidden xl:flex items-center justify-start w-full gap-6 pl-36">
+              {/* Product dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("product")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button
+                  className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
+                >
+                  Product
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "product" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {renderDropdown()}
+              </div>
+
+              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
+
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Chat on WhatsApp"
+                className="ml-1 p-2 rounded-full transition-all duration-300 group text-[#25D366]"
+              >
+                <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
+                  <WhatsAppIcon size={20} />
+                </span>
+              </a>
+            </div>
           </div>
 
         </div>
       </div>
 
-      {/* Mobile / Tablet Drawer — below xl */}
+      {/* ── Mobile Drawer ── */}
       {mobileOpen && (
         <div className="xl:hidden bg-[#16213e] border-t border-white/10 px-4 pt-3 pb-5 space-y-1">
-
-          <Link to="/" onClick={() => setMobileOpen(false)}
+          <Link
+            to="/"
+            onClick={() => setMobileOpen(false)}
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
               isActive("/") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>Home</Link>
+            }`}
+          >
+            Home
+          </Link>
 
-          {/* Product Collapsible */}
+          {/* Product collapsible */}
           <div>
             <button
               onClick={() => setMobileResOpen(!mobileResOpen)}
@@ -363,21 +346,33 @@ export default function Navbar() {
               }`}
             >
               Product
-              <ChevronDown size={16} className={`transition-transform duration-200 ${mobileResOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-200 ${mobileResOpen ? "rotate-180" : ""}`}
+              />
             </button>
+
             {mobileResOpen && (
               <div className="mt-2 pl-4 border-l border-white/10 space-y-4 py-1">
                 {/* Residential */}
                 <div>
-                  <Link to="/residential-solutions" onClick={() => setMobileOpen(false)}
+                  <Link
+                    to="/residential-solutions"
+                    onClick={() => setMobileOpen(false)}
                     className="block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
-                  >Residential Solutions</Link>
+                  >
+                    Residential Solutions
+                  </Link>
                   <ul className="space-y-1.5 pl-2">
                     {PRODUCT_MENU.residential.map((item) => (
                       <li key={item.label}>
-                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                        <Link
+                          to={item.href}
+                          onClick={() => setMobileOpen(false)}
                           className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >{item.label}</Link>
+                        >
+                          {item.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -385,15 +380,23 @@ export default function Navbar() {
 
                 {/* Commercial */}
                 <div>
-                  <Link to="/commercial-solutions" onClick={() => setMobileOpen(false)}
+                  <Link
+                    to="/commercial-solutions"
+                    onClick={() => setMobileOpen(false)}
                     className="block text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
-                  >Commercial Solutions</Link>
+                  >
+                    Commercial Solutions
+                  </Link>
                   <ul className="space-y-1.5 pl-2">
                     {PRODUCT_MENU.commercial.map((item) => (
                       <li key={item.label}>
-                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                        <Link
+                          to={item.href}
+                          onClick={() => setMobileOpen(false)}
                           className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >{item.label}</Link>
+                        >
+                          {item.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -401,15 +404,23 @@ export default function Navbar() {
 
                 {/* Light Industrial */}
                 <div>
-                  <Link to="/light-industrial" onClick={() => setMobileOpen(false)}
+                  <Link
+                    to="/light-industrial"
+                    onClick={() => setMobileOpen(false)}
                     className="block text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#e94560] transition-colors"
-                  >Light Industrial</Link>
+                  >
+                    Light Industrial
+                  </Link>
                   <ul className="space-y-1.5 pl-2">
                     {PRODUCT_MENU.lightIndustrial.map((item) => (
                       <li key={item.label}>
-                        <Link to={item.href} onClick={() => setMobileOpen(false)}
+                        <Link
+                          to={item.href}
+                          onClick={() => setMobileOpen(false)}
                           className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >{item.label}</Link>
+                        >
+                          {item.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -418,18 +429,27 @@ export default function Navbar() {
             )}
           </div>
 
-          <Link to="/about" onClick={() => setMobileOpen(false)}
+          <Link
+            to="/about"
+            onClick={() => setMobileOpen(false)}
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
               isActive("/about") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>About Us</Link>
+            }`}
+          >
+            About Us
+          </Link>
 
-          <Link to="/store" onClick={() => setMobileOpen(false)}
+          <Link
+            to="/store"
+            onClick={() => setMobileOpen(false)}
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
               isActive("/store") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}>Store</Link>
+            }`}
+          >
+            Store
+          </Link>
         </div>
       )}
-      </div>
     </nav>
   );
 }
