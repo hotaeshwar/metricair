@@ -59,11 +59,11 @@ export default function DustCompliance() {
           Combustible Dust Mitigation & Compliance
         </span>
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Combustible Dust</span>{' '}
-          <span className="text-[#3b82f6]">NFPA Compliance</span>{' '}
+          <span className="text-[#c3252e]">Combustible Dust</span>{' '}
+          <span className="text-[#8f8cff]">NFPA Compliance</span>{' '}
           <span className="text-white">Ventilation</span>
         </h1>
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           Protect your active facility against dust explosion hazards and local Ministry of Labour citations with engineered dust collection, NFPA 652 safety compliance layouts, and grounding.
         </p>
@@ -106,7 +106,7 @@ export default function DustCompliance() {
                         transitionDelay: gridInView ? `${idx * 100}ms` : '0ms'
                       }}
                     >
-                      <span className="text-[#e94560] font-bold mt-0.5">✓</span>
+                      <span className="text-[#c3252e] font-bold mt-0.5">✓</span>
                       <span>{feat}</span>
                     </div>
                   ))}

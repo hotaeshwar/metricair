@@ -7,6 +7,7 @@ import ServicesOverview      from "./components/ServicesOverview";
 import RealWorldApplications from "./components/RealWorldApplications";
 import IndustryLeader        from "./components/IndustryLeader";
 import AboutUs               from "./components/Aboutus";
+import Services              from "./components/Services";
 import ContactUs             from "./components/Contactus";
 import Careers               from "./components/Careers";
 import Feedback              from "./components/Feedback";
@@ -18,6 +19,7 @@ import ResidentialCooling    from "./components/ResidentialCooling";
 import FreshAir              from "./components/Freshair";
 import CommercialRestaurant  from "./components/CommercialRestaurant";
 import LightIndustrial       from "./components/LightIndustrial";
+import MepSolutions          from "./components/MepSolutions";
 import DrawingsPermits       from "./components/DrawingsPermits";
 import CustomHoses           from "./components/CustomHoses";
 import CustomDuctwork        from "./components/CustomDuctwork";
@@ -34,6 +36,10 @@ import EngineeredDrawings    from "./components/EngineeredDrawings";
 import AirQualityAssessments from "./components/AirQualityAssessments";
 import Footer                from "./components/Footer";
 import AdminPanel            from "./components/AdminPanel";
+import FeaturedProjects      from "./components/FeaturedProjects";
+import GlanceWork            from "./components/GlanceWork";
+import FAQ                   from "./components/FAQ";
+import { LanguageProvider } from "./LanguageContext";
 
 /* ── Scroll to top on every route change ── */
 function ScrollToTop() {
@@ -120,7 +126,7 @@ function SplashScreen({ onComplete }) {
         {/* Outer ring */}
         <svg viewBox="0 0 180 180" style={{ position: "absolute", inset: 0, animation: "spinRing 1.4s linear infinite" }}>
           <circle cx="90" cy="90" r="82" fill="none" stroke="rgba(233,69,96,0.15)" strokeWidth="2" />
-          <circle cx="90" cy="90" r="82" fill="none" stroke="#e94560" strokeWidth="2.5"
+          <circle cx="90" cy="90" r="82" fill="none" stroke="#c3252e" strokeWidth="2.5"
             strokeLinecap="round" strokeDasharray="80 436" strokeDashoffset="0" />
         </svg>
         {/* Inner ring */}
@@ -146,7 +152,7 @@ function SplashScreen({ onComplete }) {
       }}>
         <div style={{
           height: "100%", width: `${progress}%`,
-          background: "linear-gradient(90deg, #c73652, #e94560, #ff6b81)",
+          background: "linear-gradient(90deg, #c73652, #c3252e, #ff6b81)",
           borderRadius: "9999px", transition: "width 0.08s linear",
           boxShadow: "0 0 8px rgba(233,69,96,0.7)",
         }} />
@@ -180,8 +186,9 @@ function AppContent() {
       {showNavbar && <Navbar />}
       <Routes>
         {/* ── Main pages ── */}
-        <Route path="/"         element={<><Hero /><ServicesOverview /><RealWorldApplications /><IndustryLeader /><Footer /></>} />
+        <Route path="/"         element={<><Hero /><ServicesOverview /><RealWorldApplications /><IndustryLeader /><FeaturedProjects /><GlanceWork /><FAQ /><Footer /></>} />
         <Route path="/about"    element={<><AboutUs /><Footer /></>} />
+        <Route path="/services" element={<><Services /><Footer /></>} />
         <Route path="/contact"  element={<><ContactUs /><Footer /></>} />
         <Route path="/careers"  element={<><Careers /><Footer /></>} />
         <Route path="/feedback" element={<><Feedback /><Footer /></>} />
@@ -203,6 +210,7 @@ function AppContent() {
         <Route path="/commercial-solutions/restaurants" element={<><CommercialRestaurant /><Footer /></>} />
         <Route path="/commercial-solutions/office-retail" element={<><OfficeRetailSpaces /><Footer /></>} />
         <Route path="/light-industrial"                 element={<><LightIndustrial /><Footer /></>} />
+        <Route path="/mep-solutions"                    element={<><MepSolutions /><Footer /></>} />
         <Route path="/light-industrial/exhaust-systems" element={<><IndustrialExhaust /><Footer /></>} />
         <Route path="/light-industrial/hvls-fans"        element={<><HvlsFans /><Footer /></>} />
         <Route path="/light-industrial/radiant-heating"  element={<><RadiantHeating /><Footer /></>} />
@@ -228,12 +236,12 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
 
   return (
-    <>
+    <LanguageProvider>
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       <BrowserRouter>
         <ScrollToTop />
         <AppContent />
       </BrowserRouter>
-    </>
+    </LanguageProvider>
   );
 }

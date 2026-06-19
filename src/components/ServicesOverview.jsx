@@ -28,7 +28,7 @@ function useInView(threshold = 0.1) {
   return [ref, inView];
 }
 
-export default function ServicesOverview() {
+export default function ServicesOverview({ hideHeader = false }) {
   const [sectionRef, sectionInView] = useInView(0.02);
   const [resRef, resInView] = useInView(0.08);
   const [comRef, comInView] = useInView(0.08);
@@ -59,20 +59,22 @@ export default function ServicesOverview() {
       >
         <div className="max-w-7xl mx-auto">
           {/* ── Section Title ── */}
-          <header className="text-center mb-16 sm:mb-24">
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">
-              Full-Service HVAC Engineering
-            </span>
-            <h2 className="font-black text-3xl sm:text-4xl lg:text-5xl leading-tight">
-              <span className="text-[#e94560]">Our Core </span>
-              <span className="text-[#3b82f6]">Expertise & </span>
-              <span className="text-white">Solutions</span>
-            </h2>
-            <div className="w-16 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mt-5" />
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mt-4">
-              Providing professional heating, cooling, ventilation, and custom permit designs for residential, commercial, and industrial clients across the Greater Toronto Area.
-            </p>
-          </header>
+          {!hideHeader && (
+            <header className="text-center mb-16 sm:mb-24">
+              <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">
+                Full-Service HVAC Engineering
+              </span>
+              <h2 className="font-black text-3xl sm:text-4xl lg:text-5xl leading-tight">
+                <span className="text-[#c3252e]">Our Core </span>
+                <span className="text-[#8f8cff]">Expertise & </span>
+                <span className="text-white">Solutions</span>
+              </h2>
+              <div className="w-16 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mt-5" />
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mt-4">
+                Providing professional heating, cooling, ventilation, and custom permit designs for residential, commercial, and industrial clients across the Greater Toronto Area.
+              </p>
+            </header>
+          )}
 
           {/* ── Staggered Content Grid ── */}
           <div className="space-y-20 sm:space-y-28 lg:space-y-36">
@@ -85,7 +87,7 @@ export default function ServicesOverview() {
               }`}
             >
               {/* Image Column */}
-              <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#e94560]/40 transition-all duration-300">
+              <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#c3252e]/40 transition-all duration-300">
                 <img
                   src="/images/residential.jpg"
                   alt="Energy-efficient Residential Heating and Cooling Services in GTA"
@@ -96,7 +98,7 @@ export default function ServicesOverview() {
               </div>
               {/* Text Column */}
               <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                <span className="text-[#e94560] text-xs font-black uppercase tracking-wider mb-2 block">
+                <span className="text-[#c3252e] text-xs font-black uppercase tracking-wider mb-2 block">
                   Home Climate Systems
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black mb-4 text-white">
@@ -107,22 +109,22 @@ export default function ServicesOverview() {
                 </p>
                 <ul className="grid grid-cols-2 gap-x-4 gap-y-2 mb-8 text-xs sm:text-sm font-medium text-gray-400">
                   <li className="flex items-center gap-2">
-                    <span className="text-[#e94560] text-lg">✓</span> Gas Furnaces & Radiant Heating
+                    <span className="text-[#c3252e] text-lg">✓</span> Gas Furnaces & Radiant Heating
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#e94560] text-lg">✓</span> Central Air Conditioners
+                    <span className="text-[#c3252e] text-lg">✓</span> Central Air Conditioners
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#e94560] text-lg">✓</span> Heat Recovery Ventilators (HRV)
+                    <span className="text-[#c3252e] text-lg">✓</span> Heat Recovery Ventilators (HRV)
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#e94560] text-lg">✓</span> Water Heater Rentals & Filters
+                    <span className="text-[#c3252e] text-lg">✓</span> Water Heater Rentals & Filters
                   </li>
                 </ul>
                 <div className="flex flex-wrap gap-4">
                   <Link
                     to="/residential-solutions/heating"
-                    className="px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#e94560] text-white hover:bg-[#c73652] transition-colors shadow-lg shadow-[#e94560]/20"
+                    className="px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#c3252e] text-white hover:bg-[#c73652] transition-colors shadow-lg shadow-[#c3252e]/20"
                   >
                     Heating Systems
                   </Link>
@@ -144,9 +146,9 @@ export default function ServicesOverview() {
               }`}
             >
               {/* Image Column */}
-              <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#3b82f6]/40 transition-all duration-300">
+              <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#8f8cff]/40 transition-all duration-300">
                 <img
-                  src="/images/commercial.jpg"
+                  src="/images/office.jpg"
                   alt="Commercial Restaurant Kitchen Exhaust and HVAC Installation GTA"
                   className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                   draggable="false"
@@ -155,7 +157,7 @@ export default function ServicesOverview() {
               </div>
               {/* Text Column */}
               <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                <span className="text-[#3b82f6] text-xs font-black uppercase tracking-wider mb-2 block">
+                <span className="text-[#8f8cff] text-xs font-black uppercase tracking-wider mb-2 block">
                   Enterprise & Kitchen Climate
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black mb-4 text-white">
@@ -166,22 +168,22 @@ export default function ServicesOverview() {
                 </p>
                 <ul className="grid grid-cols-2 gap-x-4 gap-y-2 mb-8 text-xs sm:text-sm font-medium text-gray-400">
                   <li className="flex items-center gap-2">
-                    <span className="text-[#3b82f6] text-lg">✓</span> Commercial Kitchen Hoods
+                    <span className="text-[#8f8cff] text-lg">✓</span> Commercial Kitchen Hoods
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#3b82f6] text-lg">✓</span> Rooftop HVAC Units (RTU)
+                    <span className="text-[#8f8cff] text-lg">✓</span> Rooftop HVAC Units (RTU)
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#3b82f6] text-lg">✓</span> Makeup Air & Exhaust fans
+                    <span className="text-[#8f8cff] text-lg">✓</span> Makeup Air & Exhaust fans
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#3b82f6] text-lg">✓</span> Permit Drawing Approvals
+                    <span className="text-[#8f8cff] text-lg">✓</span> Permit Drawing Approvals
                   </li>
                 </ul>
                 <div className="flex flex-wrap gap-4">
                   <Link
                     to="/commercial-solutions/restaurants"
-                    className="px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#3b82f6] text-white hover:bg-[#2563eb] transition-colors shadow-lg shadow-[#3b82f6]/20"
+                    className="px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#8f8cff] text-white hover:bg-[#2563eb] transition-colors shadow-lg shadow-[#8f8cff]/20"
                   >
                     Restaurant Exhaust
                   </Link>
@@ -205,9 +207,9 @@ export default function ServicesOverview() {
               {/* Image Column */}
               <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-white/40 transition-all duration-300">
                 <img
-                  src="/images/industrial.jpg"
+                  src="/images/industrial.png"
                   alt="Light Industrial Warehouse Destratification and Exhaust Ventilation GTA"
-                  className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105 select-none"
+                  className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-contain transition-transform duration-700 group-hover:scale-105 select-none"
                   draggable="false"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f1a]/60 via-transparent to-transparent pointer-events-none" />
@@ -218,7 +220,7 @@ export default function ServicesOverview() {
                   Industrial Scale Airflow
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black mb-4 text-white">
-                  Light Industrial HVAC & NFPA Compliance
+                  Industrial HVAC & NFPA Compliance
                 </h3>
                 <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
                   Improve industrial plant safety and manage warehouse thermal boundaries. MetricAir provides engineered exhaust setups, NFPA-compliant combustible dust collectors, high-volume low-speed (HVLS) destratification ceiling fans, and high-efficiency radiant gas tube heaters that warm spaces instantly.

@@ -63,12 +63,12 @@ export default function OtherServices({ activeSection = "ductwork" }) {
 
         {/* Heading styled with RED followed by BLUE and WHITE */}
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Other</span>{' '}
-          <span className="text-[#3b82f6]">HVAC</span>{' '}
+          <span className="text-[#c3252e]">Other</span>{' '}
+          <span className="text-[#8f8cff]">HVAC</span>{' '}
           <span className="text-white">Services</span>
         </h1>
 
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
       </section>
 
       {/* ── SERVICE TAB LAYOUT ── */}
@@ -79,7 +79,7 @@ export default function OtherServices({ activeSection = "ductwork" }) {
             href="/other-services/drawings-permits"
             className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider text-center transition-all ${
               activeSection === 'drawings' 
-                ? 'bg-[#e94560] text-white shadow-lg shadow-[#e94560]/20' 
+                ? 'bg-[#c3252e] text-white shadow-lg shadow-[#c3252e]/20' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -89,7 +89,7 @@ export default function OtherServices({ activeSection = "ductwork" }) {
             href="/other-services/custom-hoses"
             className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider text-center transition-all ${
               activeSection === 'hoses' 
-                ? 'bg-[#3b82f6] text-white shadow-lg shadow-[#3b82f6]/20' 
+                ? 'bg-[#8f8cff] text-white shadow-lg shadow-[#8f8cff]/20' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -113,14 +113,14 @@ export default function OtherServices({ activeSection = "ductwork" }) {
           {/* Text block */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             <div>
-              <span className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest block mb-2">
+              <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-2">
                 {current.subtitle}
               </span>
               <h2 className="font-black text-2xl sm:text-4xl text-white">{current.title}</h2>
             </div>
             
             <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{current.desc}</p>
-            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed border-l-2 border-[#e94560]/40 pl-4 py-1">
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed border-l-2 border-[#c3252e]/40 pl-4 py-1">
               {current.details}
             </p>
           </div>
@@ -133,7 +133,7 @@ export default function OtherServices({ activeSection = "ductwork" }) {
             <ul className="flex flex-col gap-4">
               {current.features.map((feat) => (
                 <li key={feat} className="flex items-start gap-3 text-xs sm:text-sm text-gray-300 leading-snug">
-                  <div className="w-5 h-5 rounded-full bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560] shrink-0 mt-0.5">
+                  <div className="w-5 h-5 rounded-full bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e] shrink-0 mt-0.5">
                     ✓
                   </div>
                   <span>{feat}</span>
@@ -154,7 +154,7 @@ export default function OtherServices({ activeSection = "ductwork" }) {
           </p>
           <a 
             href="/contact" 
-            className="inline-block bg-[#e94560] hover:brightness-110 transition-all px-8 py-3 rounded-full text-white text-xs sm:text-sm font-bold uppercase tracking-wider cursor-pointer"
+            className="inline-block bg-[#c3252e] hover:brightness-110 transition-all px-8 py-3 rounded-full text-white text-xs sm:text-sm font-bold uppercase tracking-wider cursor-pointer"
           >
             Get in Touch
           </a>

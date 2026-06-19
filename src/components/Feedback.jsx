@@ -62,14 +62,14 @@ function StatCard({ raw, suffix, label, started, delay = 0 }) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center text-center p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#e94560]/30 transition-all duration-300"
+      className="flex flex-col items-center justify-center text-center p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#c3252e]/30 transition-all duration-300"
       style={{
         opacity: started ? 1 : 0,
         transform: started ? 'translateY(0)' : 'translateY(24px)',
         transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
       }}
     >
-      <span className="text-[#e94560] font-black text-4xl sm:text-5xl tracking-tight">
+      <span className="text-[#c3252e] font-black text-4xl sm:text-5xl tracking-tight">
         {isNum ? `${count}${suffix}` : raw}
       </span>
       <span className="text-gray-500 text-xs mt-2 uppercase tracking-widest font-semibold">{label}</span>
@@ -95,8 +95,8 @@ function StarRating({ value, onChange }) {
           <svg
             className="w-9 h-9 sm:w-10 sm:h-10 transition-all duration-150"
             viewBox="0 0 24 24"
-            fill={(hovered || value) >= star ? '#e94560' : 'none'}
-            stroke={(hovered || value) >= star ? '#e94560' : 'rgba(255,255,255,0.2)'}
+            fill={(hovered || value) >= star ? '#c3252e' : 'none'}
+            stroke={(hovered || value) >= star ? '#c3252e' : 'rgba(255,255,255,0.2)'}
             strokeWidth={1.5}
           >
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -104,7 +104,7 @@ function StarRating({ value, onChange }) {
         </button>
       ))}
       {(hovered || value) > 0 && (
-        <span className="text-[#e94560] text-sm font-bold ml-1 transition-all duration-150">
+        <span className="text-[#c3252e] text-sm font-bold ml-1 transition-all duration-150">
           {labels[hovered || value]}
         </span>
       )}
@@ -146,8 +146,8 @@ export default function Feedback() {
     >
       <style>{`
         .split-btn { position:relative; overflow:hidden; }
-        .split-btn::before { content:''; position:absolute; inset:0; right:50%; background:#e94560; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
-        .split-btn::after  { content:''; position:absolute; inset:0; left:50%;  background:#e94560; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
+        .split-btn::before { content:''; position:absolute; inset:0; right:50%; background:#c3252e; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
+        .split-btn::after  { content:''; position:absolute; inset:0; left:50%;  background:#c3252e; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
         .split-btn:hover::before { transform:translateX(-100%); }
         .split-btn:hover::after  { transform:translateX(100%); }
         .split-btn > span { position:relative; z-index:1; }
@@ -166,15 +166,15 @@ export default function Feedback() {
             transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-4">
             Your Voice Matters
           </span>
           <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-            <span className="text-[#e94560]">Share </span>
-            <span className="text-[#3b82f6]">Your </span>
+            <span className="text-[#c3252e]">Share </span>
+            <span className="text-[#8f8cff]">Your </span>
             <span className="text-white">Feedback</span>
           </h1>
-          <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+          <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
             We take every piece of feedback seriously. Tell us about your experience with MetricAir — your input directly shapes how we serve the GTA community.
           </p>

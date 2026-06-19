@@ -59,11 +59,11 @@ export default function CustomDuctwork() {
           Precision Sheet Metal Fabrication
         </span>
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Custom Ductwork</span>{' '}
-          <span className="text-[#3b82f6]">Sheet Metal</span>{' '}
+          <span className="text-[#c3252e]">Custom Ductwork</span>{' '}
+          <span className="text-[#8f8cff]">Sheet Metal</span>{' '}
           <span className="text-white">Manufacturing</span>
         </h1>
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           We operate a modern sheet metal fabrication shop, manufacturing custom fittings, plenums, transitions, and rectangular ductwork runs with absolute precision and fast turnaround times.
         </p>
@@ -106,7 +106,7 @@ export default function CustomDuctwork() {
                         transitionDelay: gridInView ? `${idx * 100}ms` : '0ms'
                       }}
                     >
-                      <span className="text-[#e94560] font-bold mt-0.5">✓</span>
+                      <span className="text-[#c3252e] font-bold mt-0.5">✓</span>
                       <span>{feat}</span>
                     </div>
                   ))}

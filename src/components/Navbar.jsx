@@ -41,6 +41,11 @@ const PRODUCT_MENU = {
     { label: "Engineered Permit Drawings", href: "/light-industrial/permit-drawings" },
     { label: "Air Quality Assessments", href: "/light-industrial/air-quality" },
   ],
+  mep: [
+    { label: "Mechanical (HVAC)", href: "/mep-solutions" },
+    { label: "Electrical Layouts", href: "/mep-solutions" },
+    { label: "Plumbing & Piping", href: "/mep-solutions" },
+  ],
 };
 
 const WHATSAPP_NUMBER = "16479241421";
@@ -56,13 +61,30 @@ export default function Navbar() {
   const [mobileResOpen, setMobileResOpen] = useState(false);
 
   const timeoutRef = useRef(null);
+  const dropdownRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
     setMobileOpen(false);
     setMobileResOpen(false);
-    setActiveDropdown(null);
+    if (location.pathname !== "/mep-solutions") {
+      setActiveDropdown(null);
+    }
   }, [location.pathname]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    }
+    if (activeDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeDropdown]);
 
   useEffect(() => {
     function handleResize() {
@@ -93,6 +115,7 @@ export default function Navbar() {
     location.pathname.startsWith("/residential-solutions") ||
     location.pathname.startsWith("/commercial-solutions") ||
     location.pathname.startsWith("/light-industrial") ||
+    location.pathname.startsWith("/mep-solutions") ||
     location.pathname.startsWith("/rentals") ||
     location.pathname === "/water-purification" ||
     location.pathname.startsWith("/other-services");
@@ -100,19 +123,19 @@ export default function Navbar() {
   const navLinkClass = (path) =>
     `px-2 xl:px-3 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
       isActive(path)
-        ? "text-[#e94560] bg-white/5"
+        ? "text-[#c3252e] bg-white/5"
         : scrolled
-        ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-        : "text-white hover:text-[#e94560]"
+        ? "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
+        : "text-white hover:text-[#c3252e]"
     }`;
 
   const productNavLinkClass = () =>
     `px-2 xl:px-3 py-2 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
       isProductActive()
-        ? "text-[#e94560] bg-white/5"
+        ? "text-[#c3252e] bg-white/5"
         : scrolled
-        ? "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-        : "text-white hover:text-[#e94560]"
+        ? "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
+        : "text-white hover:text-[#c3252e]"
     }`;
 
   const renderDropdown = () => {
@@ -124,18 +147,16 @@ export default function Navbar() {
           top: "80px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "980px",
+          width: "1200px",
           maxWidth: "calc(100vw - 32px)",
         }}
-        onMouseEnter={() => handleMouseEnter("product")}
-        onMouseLeave={handleMouseLeave}
       >
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-4 gap-8">
           {/* Residential */}
           <div>
             <Link
               to="/residential-solutions"
-              className="flex items-center text-[#e94560] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#e94560]/20"
+              className="flex items-center text-[#c3252e] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#c3252e]/20"
             >
               Residential Solutions
             </Link>
@@ -143,25 +164,25 @@ export default function Navbar() {
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">HVAC Systems</span>
                 <ul className="space-y-1">
-                  <li><Link to="/residential-solutions/heating" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Heating</Link></li>
-                  <li><Link to="/residential-solutions/cooling" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Cooling</Link></li>
-                  <li><Link to="/residential-solutions/fresh-air" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Fresh Air</Link></li>
+                  <li><Link to="/residential-solutions/heating" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Heating</Link></li>
+                  <li><Link to="/residential-solutions/cooling" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Cooling</Link></li>
+                  <li><Link to="/residential-solutions/fresh-air" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Fresh Air</Link></li>
                 </ul>
               </div>
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Equipment Rentals</span>
                 <ul className="space-y-1">
-                  <li><Link to="/rentals/water-heaters" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Water Heaters Rental</Link></li>
-                  <li><Link to="/rentals/furnaces-ac" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Furnaces and A/C Rental</Link></li>
+                  <li><Link to="/rentals/water-heaters" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Water Heaters Rental</Link></li>
+                  <li><Link to="/rentals/furnaces-ac" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Furnaces and A/C Rental</Link></li>
                 </ul>
               </div>
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Other Services</span>
                 <ul className="space-y-1">
-                  <li><Link to="/water-purification" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Water Purification</Link></li>
-                  <li><Link to="/other-services/drawings-permits" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Drawings and Permits</Link></li>
-                  <li><Link to="/other-services/custom-hoses" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Custom Hoses</Link></li>
-                  <li><Link to="/other-services/custom-ductwork" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Custom Ductwork</Link></li>
+                  <li><Link to="/water-purification" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Water Purification</Link></li>
+                  <li><Link to="/other-services/drawings-permits" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Drawings and Permits</Link></li>
+                  <li><Link to="/other-services/custom-hoses" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Custom Hoses</Link></li>
+                  <li><Link to="/other-services/custom-ductwork" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Custom Ductwork</Link></li>
                 </ul>
               </div>
             </div>
@@ -171,7 +192,7 @@ export default function Navbar() {
           <div>
             <Link
               to="/commercial-solutions"
-              className="flex items-center text-[#3b82f6] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#3b82f6]/20"
+              className="flex items-center text-[#8f8cff] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#8f8cff]/20"
             >
               Commercial Solutions
             </Link>
@@ -179,14 +200,14 @@ export default function Navbar() {
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Kitchens & Retail</span>
                 <ul className="space-y-1">
-                  <li><Link to="/commercial-solutions/restaurants" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Restaurants / Commercial Kitchens</Link></li>
-                  <li><Link to="/commercial-solutions/office-retail" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Office and Retail Spaces</Link></li>
+                  <li><Link to="/commercial-solutions/restaurants" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Restaurants / Commercial Kitchens</Link></li>
+                  <li><Link to="/commercial-solutions/office-retail" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Office and Retail Spaces</Link></li>
                 </ul>
               </div>
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Construction Packages</span>
                 <ul className="space-y-1">
-                  <li><Link to="/other-services/construction-package" className="block text-gray-300 text-sm hover:text-[#3b82f6] hover:pl-1 transition-all duration-150">Complete Construction Package</Link></li>
+                  <li><Link to="/other-services/construction-package" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Complete Construction Package</Link></li>
                 </ul>
               </div>
             </div>
@@ -196,20 +217,46 @@ export default function Navbar() {
           <div>
             <Link
               to="/light-industrial"
-              className="flex items-center text-white text-sm font-black uppercase tracking-wider mb-4 hover:text-[#e94560] transition-colors duration-150 pb-2 border-b border-white/10"
+              className="flex items-center text-white text-sm font-black uppercase tracking-wider mb-4 hover:text-[#c3252e] transition-colors duration-150 pb-2 border-b border-white/10"
             >
-              Light Industrial
+              Industrial
             </Link>
             <div className="space-y-4">
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Engineered Systems</span>
                 <ul className="space-y-1">
-                  <li><Link to="/light-industrial/exhaust-systems" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Industrial Exhaust Systems</Link></li>
-                  <li><Link to="/light-industrial/hvls-fans" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">HVLS Destratification Fans</Link></li>
-                  <li><Link to="/light-industrial/radiant-heating" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Radiant Tube Heating</Link></li>
-                  <li><Link to="/light-industrial/dust-compliance" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Combustible Dust Compliance</Link></li>
-                  <li><Link to="/light-industrial/permit-drawings" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Engineered Permit Drawings</Link></li>
-                  <li><Link to="/light-industrial/air-quality" className="block text-gray-300 text-sm hover:text-[#e94560] hover:pl-1 transition-all duration-150">Air Quality Assessments</Link></li>
+                  <li><Link to="/light-industrial/exhaust-systems" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Industrial Exhaust Systems</Link></li>
+                  <li><Link to="/light-industrial/hvls-fans" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">HVLS Destratification Fans</Link></li>
+                  <li><Link to="/light-industrial/radiant-heating" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Radiant Tube Heating</Link></li>
+                  <li><Link to="/light-industrial/dust-compliance" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Combustible Dust Compliance</Link></li>
+                  <li><Link to="/light-industrial/permit-drawings" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Engineered Permit Drawings</Link></li>
+                  <li><Link to="/light-industrial/air-quality" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Air Quality Assessments</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {/* MEP Solutions */}
+          <div>
+            <Link
+              to="/mep-solutions"
+              className="flex items-center text-[#8f8cff] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#8f8cff]/20"
+            >
+              MEP Solutions
+            </Link>
+            <div className="space-y-4">
+              <div>
+                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Integrated Services</span>
+                <ul className="space-y-1">
+                  {PRODUCT_MENU.mep.map((item) => (
+                    <li key={item.label}>
+                      <Link
+                        to={item.href}
+                        className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -245,7 +292,29 @@ export default function Navbar() {
             {/* Desktop left links */}
             <div className="hidden xl:flex items-center justify-end w-full gap-6 pr-36">
               <Link to="/" className={navLinkClass("/")}>Home</Link>
-              <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
+              
+              {/* Product dropdown */}
+              <div
+                ref={dropdownRef}
+                className="relative"
+              >
+                <Link
+                  to="/mep-solutions"
+                  onClick={() => setActiveDropdown(activeDropdown === "product" ? null : "product")}
+                  className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
+                >
+                  Product
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "product" ? "rotate-180" : ""
+                    }`}
+                  />
+                </Link>
+                {renderDropdown()}
+              </div>
+
+              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
             </div>
           </div>
 
@@ -258,9 +327,9 @@ export default function Navbar() {
               src="/images/metric.png"
               alt="MetricAir Logo"
               style={{
-                height: "220px",
+                height: "250px",
                 width: "auto",
-                maxWidth: "260px",
+                maxWidth: "300px",
                 transition: "opacity 0.5s ease",
                 opacity: scrolled ? 1 : 0.92,
               }}
@@ -285,27 +354,7 @@ export default function Navbar() {
 
             {/* Desktop right links + WhatsApp */}
             <div className="hidden xl:flex items-center justify-start w-full gap-6 pl-36">
-              {/* Product dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("product")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button
-                  className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
-                >
-                  Product
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform duration-200 ${
-                      activeDropdown === "product" ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {renderDropdown()}
-              </div>
-
-              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
+              <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
 
               <a
                 href={WHATSAPP_URL}
@@ -331,7 +380,7 @@ export default function Navbar() {
             to="/"
             onClick={() => setMobileOpen(false)}
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+              isActive("/") ? "text-[#c3252e] bg-white/5" : "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
             }`}
           >
             Home
@@ -339,10 +388,14 @@ export default function Navbar() {
 
           {/* Product collapsible */}
           <div>
-            <button
-              onClick={() => setMobileResOpen(!mobileResOpen)}
+            <Link
+              to="/mep-solutions"
+              onClick={() => {
+                setMobileResOpen(!mobileResOpen);
+                setMobileOpen(false);
+              }}
               className={`w-full flex items-center justify-between px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-                mobileResOpen ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+                mobileResOpen ? "text-[#c3252e] bg-white/5" : "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
               }`}
             >
               Product
@@ -350,7 +403,7 @@ export default function Navbar() {
                 size={16}
                 className={`transition-transform duration-200 ${mobileResOpen ? "rotate-180" : ""}`}
               />
-            </button>
+            </Link>
 
             {mobileResOpen && (
               <div className="mt-2 pl-4 border-l border-white/10 space-y-4 py-1">
@@ -359,7 +412,7 @@ export default function Navbar() {
                   <Link
                     to="/residential-solutions"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                    className="block text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
                   >
                     Residential Solutions
                   </Link>
@@ -383,7 +436,7 @@ export default function Navbar() {
                   <Link
                     to="/commercial-solutions"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-[#3b82f6] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                    className="block text-[#8f8cff] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
                   >
                     Commercial Solutions
                   </Link>
@@ -407,12 +460,36 @@ export default function Navbar() {
                   <Link
                     to="/light-industrial"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#e94560] transition-colors"
+                    className="block text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#c3252e] transition-colors"
                   >
-                    Light Industrial
+                    Industrial
                   </Link>
                   <ul className="space-y-1.5 pl-2">
                     {PRODUCT_MENU.lightIndustrial.map((item) => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="block text-gray-400 text-sm hover:text-white transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* MEP Solutions */}
+                <div>
+                  <Link
+                    to="/mep-solutions"
+                    onClick={() => setMobileOpen(false)}
+                    className="block text-[#8f8cff] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                  >
+                    MEP Solutions
+                  </Link>
+                  <ul className="space-y-1.5 pl-2">
+                    {PRODUCT_MENU.mep.map((item) => (
                       <li key={item.label}>
                         <Link
                           to={item.href}
@@ -430,23 +507,24 @@ export default function Navbar() {
           </div>
 
           <Link
-            to="/about"
-            onClick={() => setMobileOpen(false)}
-            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/about") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
-            }`}
-          >
-            About Us
-          </Link>
-
-          <Link
             to="/store"
             onClick={() => setMobileOpen(false)}
             className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
-              isActive("/store") ? "text-[#e94560] bg-white/5" : "text-gray-300 hover:text-[#e94560] hover:bg-white/5"
+              isActive("/store") ? "text-[#c3252e] bg-white/5" : "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
             }`}
           >
             Store
+          </Link>
+
+
+          <Link
+            to="/about"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+              isActive("/about") ? "text-[#c3252e] bg-white/5" : "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
+            }`}
+          >
+            About Us
           </Link>
         </div>
       )}

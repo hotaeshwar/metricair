@@ -1,10 +1,7 @@
 // src/components/FreshAir.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import LeadForm from './LeadForm';
-import {
-  Wind, Filter, Droplets, CloudOff, ArrowUpDown, Zap,
-  CheckCircle, ChevronDown, ArrowRight,
-} from 'lucide-react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 
 /* ── useInView ── */
 function useInView(threshold = 0.1) {
@@ -33,42 +30,42 @@ function useInView(threshold = 0.1) {
 }
 
 /* ── accent ── */
-const A = '#10b981'; // emerald green — fresh, clean air feel
+const A = '#8f8cff'; // brand blue — fresh, clean air feel
 
 /* ── Services data ── */
 const SERVICES = [
   {
-    Icon: Filter,
+    img: '/images/exhaust.png',
     title: 'Air Cleaners',
     desc: 'We offer air cleaners to remove contaminants from your home\'s air. Our solutions integrate seamlessly with your HVAC system to filter out particles and allergens, providing cleaner and healthier air throughout your living space.',
     highlight: 'Removes particles & allergens',
   },
   {
-    Icon: Wind,
+    img: '/images/car.png',
     title: 'Air Filters',
     desc: 'MetricAir ensures every air filter we encounter is clean and properly functioning — a key component of any HVAC system. We educate customers on the importance of regularly cleaning and replacing filters to maintain healthy air quality.',
     highlight: 'Regular inspection & replacement',
   },
   {
-    Icon: Droplets,
+    img: '/images/humidifier.png',
     title: 'Humidifiers',
     desc: 'Let us help you maintain the right humidity level in your home with our humidifier services. We integrate humidifiers with your existing HVAC system to ensure consistent humidity levels throughout your property.',
     highlight: 'Consistent whole-home humidity',
   },
   {
-    Icon: CloudOff,
+    img: '/images/dehumdifier.png',
     title: 'Dehumidifiers',
     desc: 'Our goal is to create a healthy living environment for everyone in your home. We offer comprehensive dehumidifier services — ensuring your unit integrates with your HVAC system to remove excess moisture and prevent mold and mildew.',
     highlight: 'Prevents mold & mildew',
   },
   {
-    Icon: ArrowUpDown,
+    img: '/images/ventilation.png',
     title: 'Ventilation Systems',
     desc: 'A crucial part of maintaining a healthy indoor environment is a reliable ventilation system. With our advanced services, we don\'t stop until fresh air is continuously and reliably circulating throughout your home.',
     highlight: 'Continuous fresh air circulation',
   },
   {
-    Icon: Zap,
+    img: '/images/uv.png',
     title: 'UV Germicidal Lights',
     desc: 'We use UV germicidal lights to target bacteria, viruses, and mold spores. MetricAir eliminates air contaminants to create a healthier indoor environment for every household member.',
     highlight: 'Kills bacteria, viruses & mold spores',
@@ -107,14 +104,15 @@ export default function FreshAir() {
     <section className="w-full bg-[#1a1a2e] text-white pt-28 pb-20 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-32 px-4 sm:px-8 lg:px-16 overflow-hidden">
 
       <style>{`
-        .split-btn-green{position:relative;overflow:hidden;}
-        .split-btn-green::before{content:'';position:absolute;inset:0;right:50%;background:${A} !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
-        .split-btn-green::after{content:'';position:absolute;inset:0;left:50%;background:${A} !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
-        .split-btn-green:hover::before{transform:translateX(-100%);}
-        .split-btn-green:hover::after{transform:translateX(100%);}
-        .split-btn-green>span{position:relative;z-index:1;}
+        .split-btn-red{position:relative;overflow:hidden;}
+        .split-btn-red::before{content:'';position:absolute;inset:0;right:50%;background:#c3252e !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn-red::after{content:'';position:absolute;inset:0;left:50%;background:#c3252e !important;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn-red:hover::before{transform:translateX(-100%);}
+        .split-btn-red:hover::after{transform:translateX(100%);}
+        .split-btn-red>span{position:relative;z-index:1;}
         .service-card:hover .service-icon{transform:scale(1.1) rotate(-6deg);}
         .service-icon{transition:transform 0.3s ease;}
+        .white-icon{filter: brightness(0) invert(1) !important;}
       `}</style>
 
       <div className="max-w-7xl mx-auto flex flex-col gap-20 lg:gap-28">
@@ -132,15 +130,16 @@ export default function FreshAir() {
               transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            <span className="text-xs font-bold uppercase tracking-widest block mb-4" style={{ color: A }}>
-              Residential Solutions
+            <span className="text-xs font-bold uppercase tracking-widest block mb-4">
+              <span className="text-[#c3252e]">Residential </span>
+              <span className="text-[#8f8cff]">Solutions</span>
             </span>
             <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-              <span className="text-[#e94560]">Fresh Air </span>
-              <span className="text-[#3b82f6]">& </span><br />
+              <span className="text-[#c3252e]">Fresh Air </span>
+              <span className="text-[#8f8cff]">& </span><br />
               <span className="text-white">Indoor Air Quality</span>
             </h1>
-            <div className="w-14 h-1 rounded-full mb-6 bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white" />
+            <div className="w-14 h-1 rounded-full mb-6 bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
               MetricAir is the GTA's trusted indoor air quality expert. We have a dedicated home air quality team focused on air duct cleaning, dehumidifiers, ionizers and more — because we care about your family's well-being.
             </p>
@@ -149,7 +148,7 @@ export default function FreshAir() {
             </p>
             <button
               onClick={() => document.getElementById('freshair-quote')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 split-btn-green px-7 py-3.5 rounded-xl text-white text-sm font-bold"
+              className="inline-flex items-center gap-2 split-btn-red px-7 py-3.5 rounded-xl text-white text-sm font-bold"
             >
               <span className="flex items-center gap-2">
                 Schedule an Appointment
@@ -172,11 +171,11 @@ export default function FreshAir() {
             <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-br-2xl z-10 pointer-events-none" style={{ borderBottom: `4px solid ${A}`, borderRight: `4px solid ${A}` }} />
             {/* Shadow card */}
             <div className="absolute inset-0 rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)', border: '1px solid rgba(255,255,255,0.1)', transform: 'translate(8px,8px)' }} />
-            <div className="relative rounded-2xl overflow-hidden" style={{ background: '#1a1a2e' }}>
+            <div className="relative rounded-2xl overflow-hidden bg-white" style={{ background: '#ffffff' }}>
               <img
                 src="/images/freshair.jpg"
                 alt="Fresh air and indoor air quality"
-                className="w-full h-[280px] sm:h-[360px] lg:h-[420px] object-cover object-center rounded-2xl"
+                className="w-full h-[280px] sm:h-[360px] lg:h-[420px] object-contain object-center rounded-2xl"
               />
             </div>
           </div>
@@ -223,7 +222,8 @@ export default function FreshAir() {
             </span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl leading-tight mb-5">
               Comprehensive Indoor Air Quality<br />
-              <span style={{ color: A }}>Services for the GTA</span>
+              <span className="text-[#c3252e]">Services </span>
+              <span className="text-[#8f8cff]">for the GTA</span>
             </h2>
             <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4">
               MetricAir provides the GTA's trusted indoor air quality solutions because we have a dedicated home air quality team that focuses on things like air duct cleaning, air dehumidifiers, and ionizers. We care about each customer's well-being and want their homes to be as healthy a living environment as possible.
@@ -264,7 +264,7 @@ export default function FreshAir() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map(({ Icon, title, desc, highlight }, i) => (
+            {SERVICES.map(({ img, title, desc, highlight }, i) => (
               <div
                 key={title}
                 className="service-card flex flex-col gap-4 p-7 rounded-2xl bg-white/5 border border-white/8 transition-all duration-300 hover:-translate-y-1"
@@ -279,10 +279,14 @@ export default function FreshAir() {
               >
                 {/* Icon */}
                 <div
-                  className="service-icon w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  className="service-icon w-14 h-14 rounded-xl flex items-center justify-center shrink-0"
                   style={{ background: `${A}15`, border: `1px solid ${A}25` }}
                 >
-                  <Icon size={22} style={{ color: A }} />
+                  <img
+                    src={img}
+                    alt={title}
+                    className="w-10 h-10 object-contain white-icon"
+                  />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -317,7 +321,9 @@ export default function FreshAir() {
           >
             <span className="text-xs font-bold uppercase tracking-widest block mb-3" style={{ color: A }}>The Difference</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl leading-tight mb-5">
-              Why Invest in<br /><span style={{ color: A }}>Indoor Air Quality?</span>
+              Why Invest in<br />
+              <span className="text-[#c3252e]">Indoor Air </span>
+              <span className="text-[#8f8cff]">Quality?</span>
             </h2>
             <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
               The air inside your home directly affects your health, comfort and HVAC system performance. MetricAir's indoor air quality solutions deliver measurable improvements you'll feel every day.
@@ -339,7 +345,7 @@ export default function FreshAir() {
               <img
                 src="/images/fahu.jpg"
                 alt="Fresh air handling unit"
-                className="w-full h-[200px] sm:h-[240px] object-contain object-center"
+                className="w-full h-[200px] sm:h-[240px] object-cover object-center"
               />
             </div>
             {/* Benefits checklist */}
@@ -391,7 +397,7 @@ export default function FreshAir() {
               subject="Fresh Air / IAQ Quote Request" 
               fromName="MetricAir IAQ" 
               buttonText="Get Free Quote" 
-              buttonClass="split-btn-green"
+              buttonClass="split-btn-red"
             />
           </div>
         </div>

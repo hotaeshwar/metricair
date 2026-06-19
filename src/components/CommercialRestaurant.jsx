@@ -10,7 +10,7 @@ import {
 
 const PHONE = '+1 647 924 1421';
 const PHONE_HREF = 'tel:+16479241421';
-const A = '#e94560';
+const A = '#c3252e';
 
 /* ── useInView ── */
 function useInView(threshold = 0.1) {
@@ -57,7 +57,7 @@ function LadderItem({ item, index, inView }) {
   const iconBlock = (
     <div style={iconAnim} className="flex items-center justify-center">
       <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl flex items-center justify-center shrink-0" style={{ background: `${A}15`, border: `2px solid ${A}30` }}>
-        <item.Icon size={52} style={{ color: A }} strokeWidth={1.5} />
+        <item.Icon size={52} className="text-white" strokeWidth={1.5} />
       </div>
     </div>
   );
@@ -142,11 +142,11 @@ export default function CommercialRestaurant() {
           <div className="lg:col-span-7 text-center lg:text-left flex flex-col gap-4">
             <span className="text-xs font-bold uppercase tracking-widest block" style={{ color: A }}>Commercial Solutions</span>
             <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl">
-              <span className="text-[#e94560]">Restaurants </span>
-              <span className="text-[#3b82f6]">& </span><br />
+              <span className="text-[#c3252e]">Restaurants </span>
+              <span className="text-[#8f8cff]">& </span><br />
               <span className="text-white">Commercial Kitchens</span>
             </h1>
-            <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mb-2 mx-auto lg:mx-0" />
+            <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mb-2 mx-auto lg:mx-0" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
               MetricAir provides comprehensive HVAC, water heating, and ventilation solutions specifically designed for restaurants and commercial kitchens across the GTA.
             </p>
@@ -159,9 +159,9 @@ export default function CommercialRestaurant() {
                 <div key={s.label} className="flex items-center gap-3 px-4 py-2.5 rounded-full border border-white/10 bg-white/5"
                   style={{ opacity: heroInView ? 1 : 0, transform: heroInView ? 'translateY(0)' : 'translateY(16px)', transition: `opacity 0.6s ease ${0.2 + i * 0.1}s, transform 0.6s ease ${0.2 + i * 0.1}s` }}
                 >
-                  <s.Icon size={14} style={{ color: A }} />
+                  <s.Icon size={14} className="text-white" />
                   <span className="font-black text-white text-xs">{s.val}</span>
-                  <span className="text-gray-500 text-[10px] max-w-[120px] text-left leading-snug">{s.label}</span>
+                  <span className="text-gray-300 text-[10px] max-w-[120px] text-left leading-snug">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -202,11 +202,11 @@ export default function CommercialRestaurant() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {PILLARS.map(({ Icon, title, points }, i) => (
-              <div key={title} className="flex flex-col gap-5 p-7 rounded-2xl bg-white/5 border border-white/8 hover:border-[#e94560]/35 transition-all duration-300 hover:-translate-y-1"
+              <div key={title} className="flex flex-col gap-5 p-7 rounded-2xl bg-white/5 border border-white/8 hover:border-[#c3252e]/35 transition-all duration-300 hover:-translate-y-1"
                 style={{ opacity: pillarsInView ? 1 : 0, transform: pillarsInView ? 'translateY(0)' : 'translateY(24px)', transition: `opacity 0.65s ease ${i * 0.12}s, transform 0.65s ease ${i * 0.12}s` }}
               >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${A}15`, border: `1px solid ${A}25` }}>
-                  <Icon size={22} style={{ color: A }} />
+                  <Icon size={22} className="text-white" />
                 </div>
                 <h3 className="text-white font-black text-lg">{title}</h3>
                 <ul className="flex flex-col gap-2">

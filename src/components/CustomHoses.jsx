@@ -59,11 +59,11 @@ export default function CustomHoses() {
           Precision Flexible Piping Engineering
         </span>
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Custom</span>{' '}
-          <span className="text-[#3b82f6]">Hose</span>{' '}
+          <span className="text-[#c3252e]">Custom</span>{' '}
+          <span className="text-[#8f8cff]">Hose</span>{' '}
           <span className="text-white">Solutions</span>
         </h1>
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           We design and build complete high-performance flexible hose connections for residential, commercial, and industrial HVAC applications.
         </p>
@@ -106,7 +106,7 @@ export default function CustomHoses() {
                         transitionDelay: gridInView ? `${idx * 100}ms` : '0ms'
                       }}
                     >
-                      <span className="text-[#3b82f6] font-bold mt-0.5">✓</span>
+                      <span className="text-[#8f8cff] font-bold mt-0.5">✓</span>
                       <span>{feat}</span>
                     </div>
                   ))}

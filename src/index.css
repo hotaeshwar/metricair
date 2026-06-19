@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+:root {
+  --blue-brand: #252362;
+  --red-brand: #c3252e;
+}
+
 /* Ensure images/videos are rendered without extra effects */
 img,
 video {
@@ -16,5 +21,41 @@ img {
   transform: none !important;
 }
 
+/* Global page background image and brand blue overlay rules */
+body, 
+section, 
+main,
+.bg-\[\#1a1a2e\], 
+.bg-\[\#0f0f1a\], 
+.bg-\[\#0b0c10\],
+.bg-\[\#0f0f1c\],
+.bg-\[\#0f0f1a\] {
+  background-image: linear-gradient(rgba(37, 35, 98, 0.90), rgba(37, 35, 98, 0.90)), url('/images/draw2.jpeg') !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-color: var(--blue-brand) !important;
+}
 
+/* Nav bar background matching overlay */
+nav.bg-\[\#1a1a2e\] {
+  background-image: linear-gradient(rgba(37, 35, 98, 0.96), rgba(37, 35, 98, 0.96)), url('/images/draw2.jpeg') !important;
+  background-color: var(--blue-brand) !important;
+}
 
+/* Select element and dropdown overlay panels */
+.bg-\[\#16213e\],
+select.bg-\[\#16213e\],
+.bg-\[\#0f0f1a\] select {
+  background-color: #17163f !important;
+  background-image: linear-gradient(rgba(23, 22, 63, 0.96), rgba(23, 22, 63, 0.96)), url('/images/draw2.jpeg') !important;
+}
+
+/* Custom Footer background using draw1.jpeg */
+.footer-bg {
+  background-image: linear-gradient(to bottom, rgba(15, 15, 26, 0.88), rgba(15, 15, 26, 0.94)), url('/images/draw1.jpeg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: #0f0f1a !important;
+}

@@ -126,17 +126,17 @@ const applications = [
     ],
   },
   {
-    category: "Light Industrial Solutions",
+    category: "Industrial Solutions",
     href: "/light-industrial",
     description:
-      "Purpose-built ventilation and climate systems for warehouses, manufacturing floors, auto shops, and light industrial facilities that demand reliability and compliance.",
+      "Purpose-built ventilation and climate systems for warehouses, manufacturing floors, auto shops, and industrial facilities that demand reliability and compliance.",
     items: [
       {
         title: "Industrial Ventilation",
         href: "/light-industrial",
         desc: "Exhaust fans, louvers, and make-up air systems engineered to manage fumes, dust, heat, and humidity in demanding work environments.",
         modal: {
-          heading: "Light Industrial Ventilation",
+          heading: "Industrial Ventilation",
           body: "Industrial environments present unique HVAC challenges. MetricAir designs and installs industrial exhaust systems, destratification fans, radiant heating, and HVLS fans for large open facilities.",
           features: ["Industrial exhaust systems", "HVLS destratification fans", "Radiant tube heating", "Combustible dust compliance", "Engineered permit drawings", "Air quality assessments"],
         },
@@ -162,7 +162,7 @@ const applications = [
 
 // ── Shared input style ──
 const inputClass =
-  "w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#e94560]/60 focus:bg-white/8 transition-all duration-200";
+  "w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c3252e]/60 focus:bg-white/8 transition-all duration-200";
 
 const labelClass = "block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1.5";
 
@@ -171,11 +171,11 @@ function CloseButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="group relative w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-[#e94560]/60 bg-white/5 hover:bg-[#e94560]/10 transition-all duration-300"
+      className="group relative w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-[#c3252e]/60 bg-white/5 hover:bg-[#c3252e]/10 transition-all duration-300"
       aria-label="Close"
     >
-      <span className="absolute w-4 h-px bg-gray-400 group-hover:bg-[#e94560] rotate-45 transition-colors duration-200" />
-      <span className="absolute w-4 h-px bg-gray-400 group-hover:bg-[#e94560] -rotate-45 transition-colors duration-200" />
+      <span className="absolute w-4 h-px bg-gray-400 group-hover:bg-[#c3252e] rotate-45 transition-colors duration-200" />
+      <span className="absolute w-4 h-px bg-gray-400 group-hover:bg-[#c3252e] -rotate-45 transition-colors duration-200" />
     </button>
   );
 }
@@ -202,7 +202,7 @@ function QuoteFormModal({ onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560]">
+            <div className="w-9 h-9 rounded-lg bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -250,7 +250,7 @@ function ExpertFormModal({ onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560]">
+            <div className="w-9 h-9 rounded-lg bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -297,7 +297,7 @@ function DetailModal({ item, onClose, onGetQuote }) {
       >
         <div className="flex items-start justify-between gap-4 p-6 sm:p-8 border-b border-white/10">
           <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-lg bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560] shrink-0">
+            <div className="w-11 h-11 rounded-lg bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e] shrink-0">
               {item.icon}
             </div>
             <h3 className="text-white font-bold text-lg sm:text-xl leading-snug">
@@ -312,13 +312,13 @@ function DetailModal({ item, onClose, onGetQuote }) {
             {item.modal.body}
           </p>
           <div>
-            <p className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-4">
+            <p className="text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-4">
               What's Included
             </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {item.modal.features.map((f) => (
                 <li key={f} className="flex items-center gap-2.5 text-gray-300 text-sm">
-                  <svg className="w-4 h-4 text-[#e94560] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#c3252e] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                   {f}
@@ -330,7 +330,7 @@ function DetailModal({ item, onClose, onGetQuote }) {
           <button
             onClick={() => { onClose(); onGetQuote(); }}
             className="mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white text-sm font-bold uppercase tracking-widest transition-all hover:brightness-110"
-            style={{ background: '#e94560' }}
+            style={{ background: '#c3252e' }}
           >
             Get a Free Quote
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -393,20 +393,20 @@ function SplitButton({ onClick, children }) {
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative inline-flex items-center justify-center overflow-hidden rounded-full border border-[#e94560] text-sm font-bold uppercase tracking-widest px-10 py-3.5 cursor-pointer select-none"
+      className="relative inline-flex items-center justify-center overflow-hidden rounded-full border border-[#c3252e] text-sm font-bold uppercase tracking-widest px-10 py-3.5 cursor-pointer select-none"
       style={{ minWidth: '260px' }}
     >
       <span
         className="absolute inset-y-0 left-0 w-1/2 transition-transform duration-300 ease-in-out"
-        style={{ background: '#e94560', transform: hovered ? 'translateX(-100%)' : 'translateX(0)' }}
+        style={{ background: '#c3252e', transform: hovered ? 'translateX(-100%)' : 'translateX(0)' }}
       />
       <span
         className="absolute inset-y-0 right-0 w-1/2 transition-transform duration-300 ease-in-out"
-        style={{ background: '#e94560', transform: hovered ? 'translateX(100%)' : 'translateX(0)' }}
+        style={{ background: '#c3252e', transform: hovered ? 'translateX(100%)' : 'translateX(0)' }}
       />
       <span
         className="relative z-10 transition-colors duration-300"
-        style={{ color: hovered ? '#e94560' : '#ffffff' }}
+        style={{ color: hovered ? '#c3252e' : '#ffffff' }}
       >
         {children}
       </span>
@@ -434,19 +434,19 @@ export default function RealWorldApplications() {
 
           {/* ── Section header ── */}
           <AnimatedSection className="text-center mb-14 sm:mb-16 lg:mb-20">
-            <p className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-3">
+            <p className="text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-3">
               Real World Applications
             </p>
             <h2 className="font-bold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-              <span className="text-[#e94560]">HVAC Solutions </span>
-              <span className="text-[#3b82f6]">Built for </span><br className="hidden sm:block" />
+              <span className="text-[#c3252e]">HVAC Solutions </span>
+              <span className="text-[#8f8cff]">Built for </span><br className="hidden sm:block" />
               <span className="text-white">Every Environment</span>
             </h2>
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
               Whether it's a bustling restaurant kitchen, a family home, or a light industrial facility —
               MetricAir engineers the right system for your space, your climate, and your budget.
             </p>
-            <div className="mt-6 w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto" />
+            <div className="mt-6 w-12 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto" />
           </AnimatedSection>
 
           {/* ── Application blocks ── */}
@@ -458,7 +458,7 @@ export default function RealWorldApplications() {
                     <div>
                       <Link
                         to={app.href}
-                        className="inline-block text-[#e94560] text-xs font-bold uppercase tracking-widest mb-2 hover:text-white transition-colors duration-150"
+                        className="inline-block text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-2 hover:text-white transition-colors duration-150"
                       >
                         {app.category} ↗
                       </Link>
@@ -475,11 +475,11 @@ export default function RealWorldApplications() {
                 `}>
                   {app.items.map((item, ii) => (
                     <AnimatedSection key={item.title} delay={150 + ii * 100}>
-                      <div className="group flex flex-col gap-4 p-6 sm:p-7 rounded-xl bg-white/5 border border-white/10 hover:border-[#e94560]/50 hover:bg-white/[0.08] transition-all duration-300 h-full">
-                        <div className="w-11 h-11 rounded-lg bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560] group-hover:bg-[#e94560]/20 transition-colors duration-300">
+                      <div className="group flex flex-col gap-4 p-6 sm:p-7 rounded-xl bg-white/5 border border-white/10 hover:border-[#c3252e]/50 hover:bg-white/[0.08] transition-all duration-300 h-full">
+                        <div className="w-11 h-11 rounded-lg bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e] group-hover:bg-[#c3252e]/20 transition-colors duration-300">
                           {item.icon}
                         </div>
-                        <Link to={item.href} className="text-white font-semibold text-base sm:text-lg group-hover:text-[#e94560] transition-colors duration-200">
+                        <Link to={item.href} className="text-white font-semibold text-base sm:text-lg group-hover:text-[#c3252e] transition-colors duration-200">
                           {item.title}
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed flex-1">
@@ -487,7 +487,7 @@ export default function RealWorldApplications() {
                         </p>
                         <button
                           onClick={() => setActiveDetail(item)}
-                          className="inline-flex items-center gap-1.5 text-[#e94560] text-xs font-bold uppercase tracking-widest mt-2 hover:gap-3 transition-all duration-200 w-fit"
+                          className="inline-flex items-center gap-1.5 text-[#c3252e] text-xs font-bold uppercase tracking-widest mt-2 hover:gap-3 transition-all duration-200 w-fit"
                         >
                           Learn More
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -505,7 +505,7 @@ export default function RealWorldApplications() {
           {/* ── Bottom CTA ── */}
           <AnimatedSection delay={100} className="mt-20 sm:mt-24">
             <div className="rounded-2xl bg-white/5 border border-white/10 p-8 sm:p-10 lg:p-14 text-center">
-              <p className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-3">
+              <p className="text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-3">
                 Not Sure Where to Start?
               </p>
               <h3 className="text-white font-bold text-xl sm:text-2xl lg:text-3xl mb-4">

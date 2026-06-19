@@ -82,13 +82,13 @@ export default function ContactUs() {
             transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Get In Touch</span>
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Get In Touch</span>
           <h1 className="font-black text-3xl sm:text-4xl lg:text-5xl leading-tight mb-4">
-            <span className="text-[#e94560]">Contact</span>{' '}
-            <span className="text-[#3b82f6]">Us</span>{' '}
+            <span className="text-[#c3252e]">Contact</span>{' '}
+            <span className="text-[#8f8cff]">Us</span>{' '}
             <span className="text-white">Today</span>
           </h1>
-          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto" />
+          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto" />
         </div>
 
         {/* ── Three info cards ── */}
@@ -96,14 +96,14 @@ export default function ContactUs() {
           {INFO_CARDS.map((card, i) => (
             <div
               key={card.title}
-              className="flex flex-col items-center text-center p-7 rounded-2xl bg-white/5 border border-white/10 hover:border-[#e94560]/40 hover:bg-white/8 transition-all duration-300"
+              className="flex flex-col items-center text-center p-7 rounded-2xl bg-white/5 border border-white/10 hover:border-[#c3252e]/40 hover:bg-white/8 transition-all duration-300"
               style={{
                 opacity: cardsInView ? 1 : 0,
                 transform: cardsInView ? 'translateY(0)' : 'translateY(30px)',
                 transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s`,
               }}
             >
-              <div className="text-[#e94560] mb-4">{card.svg}</div>
+              <div className="text-[#c3252e] mb-4">{card.svg}</div>
               <h3 className="text-white font-bold text-base sm:text-lg mb-3">{card.title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">{card.desc}</p>
             </div>
@@ -135,9 +135,9 @@ export default function ContactUs() {
               {/* Phone */}
               <a
                 href="tel:+16479241421"
-                className="flex items-center gap-3 text-gray-300 hover:text-[#e94560] transition-colors duration-200 group"
+                className="flex items-center gap-3 text-gray-300 hover:text-[#c3252e] transition-colors duration-200 group"
               >
-                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#e94560]/40 flex items-center justify-center shrink-0 transition-colors duration-200">
+                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#c3252e]/40 flex items-center justify-center shrink-0 transition-colors duration-200">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.07 9.81a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 2 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L6.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 22 16z"/>
                   </svg>
@@ -148,9 +148,9 @@ export default function ContactUs() {
               {/* Email */}
               <a
                 href="mailto:metricairlimited.ca@gmail.com"
-                className="flex items-center gap-3 text-gray-300 hover:text-[#e94560] transition-colors duration-200 group"
+                className="flex items-center gap-3 text-gray-300 hover:text-[#c3252e] transition-colors duration-200 group"
               >
-                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#e94560]/40 flex items-center justify-center shrink-0 transition-colors duration-200">
+                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#c3252e]/40 flex items-center justify-center shrink-0 transition-colors duration-200">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                     <polyline points="22,6 12,13 2,6"/>
@@ -164,9 +164,9 @@ export default function ContactUs() {
                 href="https://maps.google.com/?q=7115+Rexwood+Road,+Mississauga,+ON,+L4T+4L5"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 text-gray-300 hover:text-[#e94560] transition-colors duration-200 group"
+                className="flex items-start gap-3 text-gray-300 hover:text-[#c3252e] transition-colors duration-200 group"
               >
-                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#e94560]/40 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-200">
+                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 group-hover:border-[#c3252e]/40 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-200">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                     <circle cx="12" cy="10" r="3"/>
@@ -179,7 +179,7 @@ export default function ContactUs() {
 
               {/* Business hours */}
               <div>
-                <p className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-3">Business Hours</p>
+                <p className="text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-3">Business Hours</p>
                 <div className="flex flex-col gap-2 text-sm text-gray-400">
                   <div className="flex justify-between">
                     <span>Monday – Friday</span>
@@ -231,7 +231,7 @@ export default function ContactUs() {
           position: absolute;
           inset: 0;
           right: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }
@@ -240,7 +240,7 @@ export default function ContactUs() {
           position: absolute;
           inset: 0;
           left: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }

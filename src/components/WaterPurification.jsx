@@ -102,12 +102,12 @@ export default function WaterPurification() {
 
         {/* Heading styled with RED followed by BLUE and WHITE */}
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Water Purification</span>{' '}
-          <span className="text-[#3b82f6]">Softening</span>{' '}
+          <span className="text-[#c3252e]">Water Purification</span>{' '}
+          <span className="text-[#8f8cff]">Softening</span>{' '}
           <span className="text-white">Systems</span>
         </h1>
 
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
 
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           Protect your piping, extend appliance life, and enjoy cleaner, purer drinking water with our heavy-duty softening and multi-stage filtration packages.
@@ -123,7 +123,7 @@ export default function WaterPurification() {
             transform: gridInView ? 'translateY(0)' : 'translateY(20px)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-2">Our Capabilities</span>
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-2">Our Capabilities</span>
           <h2 className="font-black text-2xl sm:text-4xl text-white">Water Solutions</h2>
         </div>
 
@@ -131,7 +131,7 @@ export default function WaterPurification() {
           {SYSTEMS.map((srv, idx) => (
             <div 
               key={srv.title} 
-              className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#e94560]/40 hover:bg-white/[0.08] flex flex-col gap-4 sm:gap-6 transition-all ease-out"
+              className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#c3252e]/40 hover:bg-white/[0.08] flex flex-col gap-4 sm:gap-6 transition-all ease-out"
               style={{
                 opacity: gridInView ? 1 : 0,
                 transform: gridInView ? 'translateY(0)' : 'translateY(40px)',
@@ -139,7 +139,7 @@ export default function WaterPurification() {
                 transitionDelay: gridInView ? `${idx * 150}ms` : '0ms',
               }}
             >
-              <div className="w-12 h-12 rounded-xl bg-[#e94560]/10 border border-[#e94560]/20 flex items-center justify-center text-[#e94560]">
+              <div className="w-12 h-12 rounded-xl bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e]">
                 {srv.icon}
               </div>
               <div>
@@ -177,7 +177,7 @@ export default function WaterPurification() {
                 draggable="false"
               />
               <div className="absolute bottom-6 left-6 right-6 text-white z-10">
-              <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest mb-1 block">Pure Protection</span>
+              <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-1 block">Pure Protection</span>
               <p className="font-bold text-lg leading-snug">Ensure clean, chemical-free water for your entire family.</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function WaterPurification() {
           {/* Form Pane */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             <div className="text-center lg:text-left mb-8">
-              <span className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest block mb-2">Free GTA Water Testing</span>
+              <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-2">Free GTA Water Testing</span>
               <h2 className="font-black text-xl sm:text-3xl text-white">Book an Analysis Consultation</h2>
               <p className="text-gray-400 text-xs sm:text-sm mt-2">Speak to a conditioning specialist and choose the right filtration setup for your property.</p>
             </div>

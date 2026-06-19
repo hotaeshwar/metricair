@@ -1,5 +1,6 @@
 // src/components/Aboutus.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../LanguageContext';
 
 function useInView(threshold = 0.12) {
   const ref = useRef(null);
@@ -52,7 +53,7 @@ function StatCard({ value, label, suffix = '', started }) {
   const count = useCounter(isNumber ? numeric : value, 1800, started);
   return (
     <div className="flex flex-col items-center text-center p-4 rounded-xl bg-white/5 border border-white/10">
-      <span className="text-[#e94560] font-black text-xl sm:text-2xl">
+      <span className="text-[#c3252e] font-black text-xl sm:text-2xl">
         {isNumber ? `${count}${suffix}` : value}
       </span>
       <span className="text-gray-400 text-xs mt-1 leading-snug">{label}</span>
@@ -65,7 +66,7 @@ const VALUES = [
     title: "Engineering Quality",
     desc: "We don't believe in generic mechanical setups. Every furnace, AC duct fabrication, or commercial kitchen hood we install is engineered to match your space parameters perfectly.",
     icon: (
-      <svg className="w-6 h-6 text-[#e94560]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-6 h-6 text-[#c3252e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
       </svg>
     )
@@ -74,7 +75,7 @@ const VALUES = [
     title: "Customer Protection",
     desc: "HVAC failures shouldn't cause financial panic. Our Worry-Free Rental programs offer zero upfront costs, zero parts or maintenance fees, and lifetime priority support runs across the GTA.",
     icon: (
-      <svg className="w-6 h-6 text-[#3b82f6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-6 h-6 text-[#8f8cff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
       </svg>
     )
@@ -98,6 +99,7 @@ const CERTIFICATIONS = [
 ];
 
 export default function AboutUs() {
+  const { t } = useLanguage();
   const [textRef, textInView] = useInView();
   const [imgRef, imgInView] = useInView();
   const [statsRef, statsInView] = useInView(0.2);
@@ -121,60 +123,66 @@ export default function AboutUs() {
               transition: 'opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest">
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest">
               About MetricAir
             </span>
 
             <h2 className="font-black leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-              <span className="text-[#e94560]">HVAC Contractor</span>{' '}
-              <span className="text-[#3b82f6]">Servicing the</span>{' '}
+              <span className="text-[#c3252e]">HVAC Contractor</span>{' '}
+              <span className="text-[#8f8cff]">Servicing the</span>{' '}
               <span className="text-white">Greater Toronto Area</span>
             </h2>
 
-            <div className="w-12 h-1 rounded-full bg-[#e94560]" />
+            <div className="w-12 h-1 rounded-full bg-[#c3252e]" />
 
-            <div className="flex flex-col gap-4 text-gray-400 text-sm sm:text-base leading-relaxed">
+            <div className="flex flex-col gap-5 text-gray-400 text-sm sm:text-base leading-relaxed">
               <p>
                 <span className="text-white font-semibold">
-                  We understand the problems faced due to HVAC equipment breakdown
+                  {t("We understand the stress and disruption caused by unexpected HVAC equipment breakdowns")}
                 </span>
-                <span> — we are here to solve them. </span>
-                <span className="text-white font-medium">Air Metric</span>
-                <span> offers </span>
-                <span className="text-[#e94560] font-semibold">Heating</span>
+                <span> {t("— we are here to solve them with rapid response and premium workmanship.")} </span>
+                <span className="text-white font-medium">MetricAir</span>
+                <span> {t("offers comprehensive")} </span>
+                <span className="text-[#c3252e] font-semibold">{t("Heating")}</span>
                 <span>, </span>
-                <span className="text-[#e94560] font-semibold">Cooling</span>
+                <span className="text-[#c3252e] font-semibold">{t("Cooling")}</span>
                 <span>, and </span>
-                <span className="text-[#e94560] font-semibold">Water Heating</span>
-                <span> services throughout the Greater Toronto Area, specialising in repairs and installations.</span>
+                <span className="text-[#c3252e] font-semibold">{t("Water Heating")}</span>
+                <span> {t("services throughout the Greater Toronto Area. We are fully specializing in prompt repairs, custom installations, and energy-efficient system retrofits.")}</span>
               </p>
 
               <p>
-                <span>We have a wide range of products and services including </span>
-                <span className="text-white font-medium">Furnaces</span>
+                <span>{t("As a trusted HVAC leader, we provide a wide range of state-of-the-art products and services including")} </span>
+                <span className="text-white font-medium">{t("High-Efficiency Furnaces")}</span>
                 <span>, </span>
-                <span className="text-white font-medium">Air Conditioners</span>
+                <span className="text-white font-medium">{t("Central Air Conditioners")}</span>
                 <span>, </span>
-                <span className="text-white font-medium">Water Heaters</span>
+                <span className="text-white font-medium">{t("Tankless Water Heaters")}</span>
                 <span>, </span>
-                <span className="text-white font-medium">Ductless Heating Systems (Mini-Splits)</span>
+                <span className="text-white font-medium">{t("Ductless Heating & Cooling Systems (Mini-Splits)")}</span>
                 <span>, </span>
-                <span className="text-white font-medium">Water Purification & Softening Systems</span>
+                <span className="text-white font-medium">{t("Whole-Home Water Purification & Softening Systems")}</span>
+                <span>, </span>
+                <span className="text-white font-medium">{t("Heat Recovery Ventilators (HRVs)")}</span>
                 <span>, and </span>
-                <span className="text-white font-medium">Humidifiers</span>
-                <span>.</span>
+                <span className="text-white font-medium">{t("Humidifiers")}</span>
+                <span>. {t("Our solutions are designed to optimize indoor air quality and lower your monthly utility costs.")}</span>
               </p>
 
               <p>
-                <span>Being stuck without </span>
-                <span className="text-[#e94560] font-semibold">heat</span>
+                <span>{t("Being stuck without")} </span>
+                <span className="text-[#c3252e] font-semibold">{t("heat during freezing winters")}</span>
                 <span>, </span>
-                <span className="text-[#e94560] font-semibold">air conditioning</span>
+                <span className="text-[#c3252e] font-semibold">{t("air conditioning in summer humidity")}</span>
                 <span>, or </span>
-                <span className="text-[#e94560] font-semibold">hot water</span>
-                <span> can be tough — that's why we offer </span>
-                <span className="text-white font-semibold">maintenance plans</span>
-                <span> for your Furnace, AC, and Water Heater so you're never left in the cold.</span>
+                <span className="text-[#c3252e] font-semibold">{t("hot water")}</span>
+                <span> {t("is more than inconvenient — it can be unsafe. That's why MetricAir offers comprehensive")} </span>
+                <span className="text-white font-semibold">{t("worry-free maintenance plans")}</span>
+                <span> {t("for your HVAC assets. With our local dispatch centre and 24/7 emergency support, you will never be left in the cold.")}</span>
+              </p>
+
+              <p>
+                <span>{t("Our team consists of highly skilled, fully licensed technicians who bring years of industry expertise to every home and business across GTA neighbourhoods. From custom ductwork fabrication in our local facility to coordinating structural building permits with municipal engineering departments, we handle every detail of your project. We back all of our installations with robust labour warranties, ensuring long-term peace of mind and complete system reliability.")}</span>
               </p>
             </div>
 
@@ -216,8 +224,8 @@ export default function AboutUs() {
               />
 
               {/* Red accent corners */}
-              <div className="absolute -top-3 -left-3 w-16 h-16 rounded-tl-2xl border-t-4 border-l-4 border-[#e94560] z-10" />
-              <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-br-2xl border-b-4 border-r-4 border-[#e94560] z-10" />
+              <div className="absolute -top-3 -left-3 w-16 h-16 rounded-tl-2xl border-t-4 border-l-4 border-[#c3252e] z-10" />
+              <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-br-2xl border-b-4 border-r-4 border-[#c3252e] z-10" />
 
               <div className="relative rounded-2xl overflow-hidden">
                 <img
@@ -243,16 +251,16 @@ export default function AboutUs() {
         {/* ── CORE VALUES SECTION ── */}
         <div ref={valuesRef} className="flex flex-col gap-12 border-t border-white/10 pt-16">
           <div className="text-center">
-            <span className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest block mb-3">Our Principles</span>
+            <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-3">Our Principles</span>
             <h3 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">The MetricAir Values</h3>
-            <div className="w-12 h-1 rounded-full bg-[#3b82f6] mx-auto mt-4" />
+            <div className="w-12 h-1 rounded-full bg-[#8f8cff] mx-auto mt-4" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {VALUES.map((val, idx) => (
               <div
                 key={val.title}
-                className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#e94560]/40 hover:bg-white/[0.08] flex flex-col gap-4 transition-all duration-500 ease-out"
+                className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#c3252e]/40 hover:bg-white/[0.08] flex flex-col gap-4 transition-all duration-500 ease-out"
                 style={{
                   opacity: valuesInView ? 1 : 0,
                   transform: valuesInView ? 'translateY(0)' : 'translateY(30px)',
@@ -262,8 +270,8 @@ export default function AboutUs() {
                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
                   {val.icon}
                 </div>
-                <h4 className="text-white font-bold text-lg">{val.title}</h4>
-                <p className="text-gray-400 text-sm leading-relaxed">{val.desc}</p>
+                <h4 className="text-white font-bold text-lg">{t(val.title)}</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">{t(val.desc)}</p>
               </div>
             ))}
           </div>
@@ -272,8 +280,8 @@ export default function AboutUs() {
         {/* ── SAFETY & LICENSING SECTION ── */}
         <div ref={certRef} className="flex flex-col gap-12 border-t border-white/10 pt-16 mb-6">
           <div className="text-center">
-            <span className="text-white text-xs font-bold uppercase tracking-widest block mb-3">Standards & Licenses</span>
-            <h3 className="text-[#e94560] font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">Certifications & Safety</h3>
+            <span className="text-white text-xs font-bold uppercase tracking-widest block mb-3">{t("Standards & Licences")}</span>
+            <h3 className="text-[#c3252e] font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">{t("Certifications & Safety")}</h3>
             <div className="w-12 h-1 rounded-full bg-white mx-auto mt-4" />
           </div>
 
@@ -289,10 +297,10 @@ export default function AboutUs() {
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-[#e94560] text-lg font-bold">✓</span>
-                  <h4 className="text-white font-bold text-sm leading-snug">{cert.title}</h4>
+                  <span className="text-[#c3252e] text-lg font-bold">✓</span>
+                  <h4 className="text-white font-bold text-sm leading-snug">{t(cert.title)}</h4>
                 </div>
-                <p className="text-gray-400 text-xs leading-relaxed pl-5">{cert.desc}</p>
+                <p className="text-gray-400 text-xs leading-relaxed pl-5">{t(cert.desc)}</p>
               </div>
             ))}
           </div>

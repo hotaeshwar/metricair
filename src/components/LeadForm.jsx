@@ -91,7 +91,7 @@ export default function LeadForm({
           position: absolute;
           inset: 0;
           right: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }
@@ -100,7 +100,7 @@ export default function LeadForm({
           position: absolute;
           inset: 0;
           left: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }
@@ -114,7 +114,7 @@ export default function LeadForm({
 
       {status === 'success' ? (
         <div className="flex flex-col gap-4 py-8 text-center items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-[#e94560]/15 border border-[#e94560]/40 flex items-center justify-center text-[#e94560]">
+          <div className="w-14 h-14 rounded-full bg-[#c3252e]/15 border border-[#c3252e]/40 flex items-center justify-center text-[#c3252e]">
             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>

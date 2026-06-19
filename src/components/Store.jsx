@@ -200,7 +200,7 @@ function CartDrawer({ cart, onClose, onRemove, onQtyChange, onCheckout }) {
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
               </svg>
               <p className="text-gray-500 text-sm">Your cart is empty</p>
-              <button onClick={onClose} className="text-[#e94560] text-sm hover:underline transition-colors">Continue Shopping</button>
+              <button onClick={onClose} className="text-[#c3252e] text-sm hover:underline transition-colors">Continue Shopping</button>
             </div>
           ) : (
             cart.map((item) => (
@@ -215,7 +215,7 @@ function CartDrawer({ cart, onClose, onRemove, onQtyChange, onCheckout }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-semibold text-sm leading-snug line-clamp-2">{item.name}</p>
-                  <p className="text-[#e94560] font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} CAD</p>
+                  <p className="text-[#c3252e] font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} CAD</p>
                   <div className="flex items-center gap-2 mt-2">
                     <button onClick={() => onQtyChange(item.id, item.qty - 1)}
                       className="w-7 h-7 rounded-lg border border-white/15 text-gray-400 hover:text-white hover:border-white/35 flex items-center justify-center text-sm font-bold transition-all">−</button>
@@ -245,7 +245,7 @@ function CartDrawer({ cart, onClose, onRemove, onQtyChange, onCheckout }) {
             <button
               onClick={onCheckout}
               className="w-full py-4 rounded-xl font-bold text-sm text-white transition-all duration-300 relative overflow-hidden group"
-              style={{ background: 'linear-gradient(135deg, #e94560 0%, #c73652 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #c3252e 0%, #c73652 100%)' }}
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -275,13 +275,13 @@ function PurchaseModal({ cart, onClose, total }) {
       <div className="relative w-full max-w-md bg-[#16213e] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
 
         {/* Red top accent */}
-        <div className="h-1 w-full bg-gradient-to-r from-[#e94560] to-[#c73652]"/>
+        <div className="h-1 w-full bg-gradient-to-r from-[#c3252e] to-[#c73652]"/>
 
         <div className="p-7">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h3 className="text-white font-black text-xl">Complete Your Order</h3>
-              <p className="text-gray-500 text-sm mt-1">Total: <span className="text-[#e94560] font-bold">${total.toFixed(2)} CAD</span></p>
+              <p className="text-gray-500 text-sm mt-1">Total: <span className="text-[#c3252e] font-bold">${total.toFixed(2)} CAD</span></p>
             </div>
             <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors p-1">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +305,7 @@ function PurchaseModal({ cart, onClose, total }) {
             fromName="MetricAir Store"
             buttonText="Submit Order Request"
             buttonSubmittingText="Submitting…"
-            buttonClass="w-full py-3 px-0 justify-center rounded-xl bg-[#e94560] text-white font-bold"
+            buttonClass="w-full py-3 px-0 justify-center rounded-xl bg-[#c3252e] text-white font-bold"
             customMessage={orderDetails}
             onSuccess={() => {
               setTimeout(() => {
@@ -335,7 +335,7 @@ function ProductCard({ product, onAddToCart, inView, delay }) {
 
   return (
     <div
-      className="group flex flex-col rounded-2xl bg-white/5 border border-white/8 overflow-hidden hover:border-[#e94560]/40 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(233,69,96,0.12)] transition-all duration-300"
+      className="group flex flex-col rounded-2xl bg-white/5 border border-white/8 overflow-hidden hover:border-[#c3252e]/40 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(233,69,96,0.12)] transition-all duration-300"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(28px)',
@@ -349,7 +349,7 @@ function ProductCard({ product, onAddToCart, inView, delay }) {
           : <ProductPlaceholder />
         }
         {product.badge && (
-          <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#e94560] text-white text-xs font-bold uppercase tracking-wider shadow-lg">
+          <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#c3252e] text-white text-xs font-bold uppercase tracking-wider shadow-lg">
             {product.badge}
           </span>
         )}
@@ -362,7 +362,7 @@ function ProductCard({ product, onAddToCart, inView, delay }) {
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-5 gap-3">
-        <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest">{product.category}</span>
+        <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest">{product.category}</span>
         <h3 className="text-white font-bold text-sm leading-snug">{product.name}</h3>
         <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">{product.description}</p>
 
@@ -379,7 +379,7 @@ function ProductCard({ product, onAddToCart, inView, delay }) {
                 ? 'bg-green-500/15 border-green-500/40 text-green-400'
                 : product.stock === 0
                   ? 'bg-white/5 border-white/10 text-gray-600 cursor-not-allowed'
-                  : 'bg-[#e94560]/10 border-[#e94560]/40 text-[#e94560] hover:bg-[#e94560] hover:text-white hover:border-[#e94560]'
+                  : 'bg-[#c3252e]/10 border-[#c3252e]/40 text-[#c3252e] hover:bg-[#c3252e] hover:text-white hover:border-[#c3252e]'
             }`}
           >
             {added ? (
@@ -495,7 +495,7 @@ export default function Store() {
     return (
       <div className="min-h-screen bg-[#1a1a2e] text-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
           <p className="text-gray-400 text-sm">Loading Premium Store...</p>
         </div>
       </div>
@@ -557,13 +557,13 @@ export default function Store() {
               transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">MetricAir Store</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-4">MetricAir Store</span>
             <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-              <span className="text-[#e94560]">HVAC Products </span>
-              <span className="text-[#3b82f6]">& </span><br />
+              <span className="text-[#c3252e]">HVAC Products </span>
+              <span className="text-[#8f8cff]">& </span><br />
               <span className="text-white">Accessories</span>
             </h1>
-            <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+            <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
               Premium HVAC products, filters, thermostats and accessories — delivered across the GTA. Add items to your cart and we'll confirm your order within 24 hours.
             </p>
@@ -588,7 +588,7 @@ export default function Store() {
                 placeholder="Search products…"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-white/5 border border-white/15 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 outline-none focus:border-[#e94560] transition-colors duration-200"
+                className="w-full bg-white/5 border border-white/15 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 outline-none focus:border-[#c3252e] transition-colors duration-200"
               />
             </div>
 
@@ -597,7 +597,7 @@ export default function Store() {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="w-full sm:w-auto bg-white/5 border border-white/15 rounded-lg px-4 py-2.5 text-gray-300 text-sm outline-none focus:border-[#e94560] transition-colors duration-200 cursor-pointer pr-8"
+                className="w-full sm:w-auto bg-white/5 border border-white/15 rounded-lg px-4 py-2.5 text-gray-300 text-sm outline-none focus:border-[#c3252e] transition-colors duration-200 cursor-pointer pr-8"
                 style={{ appearance: 'none' }}
               >
                 <option value="default"    className="bg-[#16213e]">Sort: Default</option>
@@ -614,7 +614,7 @@ export default function Store() {
             {cartCount > 0 && (
               <button
                 onClick={() => setCartOpen(true)}
-                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#e94560] hover:bg-[#c73652] text-white text-sm font-bold transition-all duration-300 hover:scale-[1.02] shrink-0"
+                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#c3252e] hover:bg-[#c73652] text-white text-sm font-bold transition-all duration-300 hover:scale-[1.02] shrink-0"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -639,7 +639,7 @@ export default function Store() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
                   activeCategory === cat
-                    ? 'bg-[#e94560] border-[#e94560] text-white shadow-[0_0_12px_rgba(233,69,96,0.4)]'
+                    ? 'bg-[#c3252e] border-[#c3252e] text-white shadow-[0_0_12px_rgba(233,69,96,0.4)]'
                     : 'bg-transparent border-white/15 text-gray-400 hover:border-white/35 hover:text-white'
                 }`}
               >
@@ -664,7 +664,7 @@ export default function Store() {
                 </p>
                 <button
                   onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
-                  className="px-5 py-2.5 rounded-lg border border-white/20 text-gray-300 text-sm hover:border-[#e94560] hover:text-white transition-all duration-200"
+                  className="px-5 py-2.5 rounded-lg border border-white/20 text-gray-300 text-sm hover:border-[#c3252e] hover:text-white transition-all duration-200"
                 >Clear Filters</button>
               </div>
             ) : (
@@ -691,10 +691,10 @@ export default function Store() {
             }}
           >
             {[
-              { icon: <Lock size={20} className="text-[#e94560]" />, label: 'Secure Orders',   sub: 'Your data is safe'    },
-              { icon: <Truck size={20} className="text-[#e94560]" />, label: 'GTA Delivery',     sub: 'Fast & reliable'      },
-              { icon: <BadgeCheck size={20} className="text-[#e94560]" />, label: 'Genuine Products', sub: 'Verified brands'      },
-              { icon: <MessageSquare size={20} className="text-[#e94560]" />, label: '24hr Response',    sub: 'We confirm all orders'},
+              { icon: <Lock size={20} className="text-[#c3252e]" />, label: 'Secure Orders',   sub: 'Your data is safe'    },
+              { icon: <Truck size={20} className="text-[#c3252e]" />, label: 'GTA Delivery',     sub: 'Fast & reliable'      },
+              { icon: <BadgeCheck size={20} className="text-[#c3252e]" />, label: 'Genuine Products', sub: 'Verified brands'      },
+              { icon: <MessageSquare size={20} className="text-[#c3252e]" />, label: '24hr Response',    sub: 'We confirm all orders'},
             ].map(b => (
               <div key={b.label} className="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 hover:border-white/15 transition-colors duration-200">
                 <span className="shrink-0">{b.icon}</span>
@@ -712,7 +712,7 @@ export default function Store() {
         {cartCount > 0 && (
           <button
             onClick={() => setCartOpen(true)}
-            className="fixed bottom-6 right-6 z-40 sm:hidden flex items-center gap-2 bg-[#e94560] hover:bg-[#c73652] text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
+            className="fixed bottom-6 right-6 z-40 sm:hidden flex items-center gap-2 bg-[#c3252e] hover:bg-[#c73652] text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm transition-all duration-300 hover:scale-105 active:scale-95"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -748,7 +748,7 @@ export default function Store() {
     return (
       <div className="min-h-screen bg-[#1a1a2e] text-white flex items-center justify-center p-6 text-center">
         <div>
-          <h2 className="text-xl font-bold text-[#e94560] mb-2">Something went wrong</h2>
+          <h2 className="text-xl font-bold text-[#c3252e] mb-2">Something went wrong</h2>
           <p className="text-gray-400 text-sm">Failed to render store page. Please reload.</p>
         </div>
       </div>

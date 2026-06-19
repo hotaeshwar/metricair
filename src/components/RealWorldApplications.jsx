@@ -66,7 +66,7 @@ export default function FreeConsultation() {
           position: absolute;
           inset: 0;
           right: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }
@@ -75,7 +75,7 @@ export default function FreeConsultation() {
           position: absolute;
           inset: 0;
           left: 50%;
-          background: #e94560;
+          background: #c3252e;
           transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
           z-index: 0;
         }
@@ -98,8 +98,8 @@ export default function FreeConsultation() {
               className={`text-white fade-left ${leftInView ? 'visible' : ''}`}
             >
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-5 leading-snug">
-                <span className="text-[#e94560]">Book a </span>
-                <span className="text-[#3b82f6]">Free </span>
+                <span className="text-[#c3252e]">Book a </span>
+                <span className="text-[#8f8cff]">Free </span>
                 <span className="text-white">Consultation</span>
               </h2>
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed">

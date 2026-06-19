@@ -1,6 +1,8 @@
 // src/components/Careers.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import LeadForm from './LeadForm';
+import { db } from "../firebase";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import {
   DollarSign,
   GraduationCap,
@@ -53,15 +55,7 @@ const VALUES = [
   { label: 'Keep Learning',  desc: 'HVAC evolves — so do we.' },
 ];
 
-const ROLES = [
-  { title: 'HVAC Technician',        type: 'Full-time', location: 'GTA'         },
-  { title: 'Refrigeration Mechanic', type: 'Full-time', location: 'GTA'         },
-  { title: 'Sheet Metal Fabricator', type: 'Contract',  location: 'Mississauga' },
-  { title: 'Apprentice Technician',  type: 'Full-time', location: 'GTA'         },
-];
 
-const EXPERIENCE_OPTIONS = ['Less than 1 year', '1–3 years', '3–5 years', '5–10 years', '10+ years'];
-const ROLE_OPTIONS       = [...ROLES.map(r => r.title), 'Other / Open Application'];
 
 /* ══════════════════════════════════════════
    Main Component
@@ -73,13 +67,31 @@ export default function Careers() {
   const [valRef,   valInView]   = useInView(0.08);
   const [formRef,  formInView]  = useInView(0.05);
 
+  const [vacancies, setVacancies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, "vacancies"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const v = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setVacancies(v);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error subscribing to vacancies:", error);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  const displayRoles = vacancies;
+
   return (
     <section className="w-full bg-[#1a1a2e] text-white pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-28 px-4 sm:px-8 lg:px-16 overflow-hidden">
 
       <style>{`
         .split-btn { position:relative; overflow:hidden; }
-        .split-btn::before { content:''; position:absolute; inset:0; right:50%; background:#e94560; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
-        .split-btn::after  { content:''; position:absolute; inset:0; left:50%;  background:#e94560; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
+        .split-btn::before { content:''; position:absolute; inset:0; right:50%; background:#c3252e; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
+        .split-btn::after  { content:''; position:absolute; inset:0; left:50%;  background:#c3252e; transition:transform 0.38s cubic-bezier(0.77,0,0.175,1); z-index:0; }
         .split-btn:hover::before { transform:translateX(-100%); }
         .split-btn:hover::after  { transform:translateX(100%); }
         .split-btn > span { position:relative; z-index:1; }
@@ -97,13 +109,13 @@ export default function Careers() {
             transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">Join Our Team</span>
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-4">Join Our Team</span>
           <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-            <span className="text-[#e94560]">Build a </span>
-            <span className="text-[#3b82f6]">Career in</span><br />
+            <span className="text-[#c3252e]">Build a </span>
+            <span className="text-[#8f8cff]">Career in</span><br />
             <span className="text-white">MEP</span>
           </h1>
-          <div className="w-24 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+          <div className="w-24 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             MetricAir is growing across the Greater Toronto Area and we're looking for passionate, skilled individuals to join our crew. Whether you're a seasoned technician or just starting out — there's a place for you here.
           </p>
@@ -124,7 +136,7 @@ export default function Careers() {
                   transition: `opacity 0.6s ease ${0.3 + i * 0.1}s, transform 0.6s ease ${0.3 + i * 0.1}s`,
                 }}
               >
-                <span className="text-[#e94560] font-black text-2xl">{s.val}</span>
+                <span className="text-[#c3252e] font-black text-2xl">{s.val}</span>
                 <span className="text-gray-500 text-xs mt-1 uppercase tracking-wider">{s.label}</span>
               </div>
             ))}
@@ -141,7 +153,7 @@ export default function Careers() {
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Why MetricAir</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Why MetricAir</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">What We Offer</h2>
           </div>
 
@@ -149,14 +161,14 @@ export default function Careers() {
             {PERKS.map(({ title, desc, Icon }, i) => (
               <div
                 key={title}
-                className="flex gap-4 p-6 rounded-2xl bg-white/5 border border-white/8 hover:border-[#e94560]/35 hover:bg-white/8 transition-all duration-300"
+                className="flex gap-4 p-6 rounded-2xl bg-white/5 border border-white/8 hover:border-[#c3252e]/35 hover:bg-white/8 transition-all duration-300"
                 style={{
                   opacity: perksInView ? 1 : 0,
                   transform: perksInView ? 'translateY(0)' : 'translateY(24px)',
                   transition: `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.08}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.08}s`,
                 }}
               >
-                <div className="text-[#e94560] shrink-0 mt-0.5">
+                <div className="text-[#c3252e] shrink-0 mt-0.5">
                   <Icon size={26} strokeWidth={1.8} />
                 </div>
                 <div>
@@ -180,36 +192,48 @@ export default function Careers() {
               transition: 'opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Currently Hiring</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Currently Hiring</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl mb-6">Open Positions</h2>
 
             <div className="flex flex-col gap-3">
-              {ROLES.map(({ title, type, location }, i) => (
-                <div
-                  key={title}
-                  className="flex items-center justify-between p-5 rounded-xl bg-white/5 border border-white/8 hover:border-[#e94560]/40 hover:bg-white/8 transition-all duration-300 group"
-                  style={{
-                    opacity: rolesInView ? 1 : 0,
-                    transform: rolesInView ? 'translateX(0)' : 'translateX(-20px)',
-                    transition: `opacity 0.6s ease ${0.1 + i * 0.1}s, transform 0.6s ease ${0.1 + i * 0.1}s`,
-                  }}
-                >
-                  <div>
-                    <p className="text-white font-semibold text-sm group-hover:text-[#e94560] transition-colors duration-200">{title}</p>
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <MapPin size={11} className="text-gray-500" />
-                      <p className="text-gray-500 text-xs">{location}</p>
-                    </div>
-                  </div>
-                  <span className="text-xs px-3 py-1 rounded-full border border-white/15 text-gray-400 shrink-0">{type}</span>
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-8 gap-2">
+                  <div className="w-6 h-6 border-2 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-gray-500 text-xs">Checking open roles...</p>
                 </div>
-              ))}
+              ) : displayRoles.length === 0 ? (
+                <div className="p-6 rounded-xl bg-white/3 border border-white/5 text-center">
+                  <p className="text-gray-400 text-sm font-semibold">No Open Positions</p>
+                  <p className="text-gray-500 text-xs mt-1">We don't have active vacancies right now, but we'd love to hear from you!</p>
+                </div>
+              ) : (
+                displayRoles.map(({ title, type, location }, i) => (
+                  <div
+                    key={title + "_" + i}
+                    className="flex items-center justify-between p-5 rounded-xl bg-white/5 border border-white/8 hover:border-[#c3252e]/40 hover:bg-white/8 transition-all duration-300 group"
+                    style={{
+                      opacity: rolesInView ? 1 : 0,
+                      transform: rolesInView ? 'translateX(0)' : 'translateX(-20px)',
+                      transition: `opacity 0.6s ease ${0.1 + i * 0.1}s, transform 0.6s ease ${0.1 + i * 0.1}s`,
+                    }}
+                  >
+                    <div>
+                      <p className="text-white font-semibold text-sm group-hover:text-[#c3252e] transition-colors duration-200">{title}</p>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <MapPin size={11} className="text-gray-500" />
+                        <p className="text-gray-500 text-xs">{location}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs px-3 py-1 rounded-full border border-white/15 text-gray-400 shrink-0">{type}</span>
+                  </div>
+                ))
+              )}
 
               {/* Open application banner */}
               <div className="mt-2 p-5 rounded-xl border border-dashed border-white/15 text-center">
                 <p className="text-gray-500 text-sm">Don't see your role?</p>
                 <p className="text-gray-400 text-sm mt-1">
-                  Send an <span className="text-[#e94560] font-medium">open application</span> — we're always looking for great people.
+                  Send an <span className="text-[#c3252e] font-medium">open application</span> — we're always looking for great people.
                 </p>
               </div>
             </div>
@@ -224,7 +248,7 @@ export default function Careers() {
               transition: 'opacity 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s, transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">How We Operate</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">How We Operate</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl mb-6">Our Values</h2>
 
             <div className="flex flex-col gap-5">
@@ -238,8 +262,8 @@ export default function Careers() {
                     transition: `opacity 0.6s ease ${0.2 + i * 0.1}s, transform 0.6s ease ${0.2 + i * 0.1}s`,
                   }}
                 >
-                  <div className="w-8 h-8 rounded-full bg-[#e94560]/15 border border-[#e94560]/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[#e94560] font-black text-xs">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="w-8 h-8 rounded-full bg-[#c3252e]/15 border border-[#c3252e]/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-[#c3252e] font-black text-xs">{String(i + 1).padStart(2, '0')}</span>
                   </div>
                   <div>
                     <p className="text-white font-bold text-sm">{label}</p>
@@ -251,11 +275,11 @@ export default function Careers() {
 
             {/* Quote */}
             <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-              <div className="absolute top-3 right-4 text-[#e94560]/20 font-black text-6xl leading-none select-none pointer-events-none" style={{ fontFamily: 'Georgia, serif' }}>"</div>
+              <div className="absolute top-3 right-4 text-[#c3252e]/20 font-black text-6xl leading-none select-none pointer-events-none" style={{ fontFamily: 'Georgia, serif' }}>"</div>
               <p className="text-gray-300 text-sm leading-relaxed italic relative z-10">
                 We treat every technician like a professional — because that's exactly what they are. When our people grow, our company grows.
               </p>
-              <p className="text-[#e94560] text-xs font-bold mt-3 uppercase tracking-wider">— MetricAir Leadership</p>
+              <p className="text-[#c3252e] text-xs font-bold mt-3 uppercase tracking-wider">— MetricAir Leadership</p>
             </div>
           </div>
         </div>
@@ -270,9 +294,9 @@ export default function Careers() {
           }}
         >
           <div className="text-center mb-10">
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Ready to Apply?</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Ready to Apply?</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">Submit Your Application</h2>
-            <div className="w-12 h-1 rounded-full bg-[#e94560] mx-auto mt-4" />
+            <div className="w-12 h-1 rounded-full bg-[#c3252e] mx-auto mt-4" />
           </div>
 
           <div className="max-w-3xl mx-auto rounded-2xl bg-white/4 border border-white/10 p-6 sm:p-10">

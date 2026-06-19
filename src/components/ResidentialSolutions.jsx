@@ -76,11 +76,11 @@ export default function ResidentialSolutions() {
           Home Climate Engineering
         </span>
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Residential</span>{' '}
-          <span className="text-[#3b82f6]">HVAC</span>{' '}
+          <span className="text-[#c3252e]">Residential</span>{' '}
+          <span className="text-[#8f8cff]">HVAC</span>{' '}
           <span className="text-white">Solutions</span>
         </h1>
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           From compact townhouse heating upgrades to sprawling custom house central ventilation setups, we build home comfort systems designed to lower energy costs and maximize clean air circulation.
         </p>
@@ -95,7 +95,7 @@ export default function ResidentialSolutions() {
             transform: gridInView ? 'translateY(0)' : 'translateY(20px)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-2">Our Offerings</span>
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-2">Our Offerings</span>
           <h2 className="font-black text-2xl sm:text-4xl text-white">Residential Services</h2>
         </div>
 
@@ -103,7 +103,7 @@ export default function ResidentialSolutions() {
           {SUB_SERVICES.map((srv, idx) => (
             <div 
               key={srv.title} 
-              className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#e94560]/40 hover:bg-white/[0.08] flex flex-col gap-4 transition-all duration-300 group overflow-hidden"
+              className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#c3252e]/40 hover:bg-white/[0.08] flex flex-col gap-4 transition-all duration-300 group overflow-hidden"
               style={{
                 opacity: gridInView ? 1 : 0,
                 transform: gridInView ? 'translateY(0)' : 'translateY(40px)',
@@ -126,14 +126,14 @@ export default function ResidentialSolutions() {
                   <div className="flex flex-col gap-1.5 mb-6">
                     {srv.features.map((feat) => (
                       <span key={feat} className="text-[10px] sm:text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                        <span className="text-[#e94560]">✓</span> {feat}
+                        <span className="text-[#c3252e]">✓</span> {feat}
                       </span>
                     ))}
                   </div>
                 </div>
                 <Link 
                   to={srv.href} 
-                  className="w-full block py-2.5 rounded-lg bg-[#e94560] hover:bg-[#c73652] transition-colors text-center text-xs font-bold uppercase tracking-wider text-white"
+                  className="w-full block py-2.5 rounded-lg bg-[#c3252e] hover:bg-[#c73652] transition-colors text-center text-xs font-bold uppercase tracking-wider text-white"
                 >
                   View Details
                 </Link>
@@ -154,7 +154,7 @@ export default function ResidentialSolutions() {
       >
         <div className="rounded-3xl bg-white/5 border border-white/10 p-6 sm:p-10 lg:p-12">
           <div className="text-center mb-8 sm:mb-10">
-            <span className="text-[#3b82f6] text-xs font-bold uppercase tracking-widest block mb-2">Free GTA Estimation</span>
+            <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-2">Free GTA Estimation</span>
             <h2 className="font-black text-xl sm:text-3xl text-white">Request an In-Home Consultation</h2>
             <p className="text-gray-400 text-xs sm:text-sm mt-2">Our specialists will evaluate your floorplan and provide a customized efficiency upgrade blueprint.</p>
           </div>

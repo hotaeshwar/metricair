@@ -132,15 +132,15 @@ export default function BrandCarousel() {
 
         {/* ── Header ── */}
         <div className="text-center mb-10 sm:mb-12">
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">
             Trusted Partners
           </span>
           <h2 className="font-black text-2xl sm:text-3xl lg:text-4xl leading-tight">
-            <span className="text-[#e94560]">Brands </span>
-            <span className="text-[#3b82f6]">We Work </span>
-            <span className="text-gray-900">With</span>
+            <span className="text-[#c3252e]">Brands </span>
+            <span className="text-[#8f8cff]">We Work </span>
+            <span className="text-white">With</span>
           </h2>
-          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-gray-300 mx-auto mt-4" />
+          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-gray-300 mx-auto mt-4" />
         </div>
 
         {/* ── Carousel ── */}
@@ -202,7 +202,7 @@ export default function BrandCarousel() {
                     bg-white
                     border border-gray-100
                     shadow-sm
-                    hover:shadow-md hover:border-[#e94560]/30
+                    hover:shadow-md hover:border-[#c3252e]/30
                     transition-all duration-300
                     select-none
                   ">

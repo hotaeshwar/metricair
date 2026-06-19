@@ -139,10 +139,10 @@ function CustomDropdown({ value, onChange, options, placeholder }) {
   return (
     <div ref={ref} className="relative w-full">
       <button type="button" onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between bg-transparent border-b-2 border-white/20 px-0 py-3 text-sm text-left outline-none focus:border-[#e94560] transition-colors duration-200 cursor-pointer hover:border-white/40"
+        className="w-full flex items-center justify-between bg-transparent border-b-2 border-white/20 px-0 py-3 text-sm text-left outline-none focus:border-[#c3252e] transition-colors duration-200 cursor-pointer hover:border-white/40"
       >
         <span className={value && value !== '– Select –' ? 'text-white' : 'text-gray-500'}>{value || placeholder}</span>
-        <svg className={`w-4 h-4 text-[#e94560] transition-transform duration-200 ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-4 h-4 text-[#c3252e] transition-transform duration-200 ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
         </svg>
       </button>
@@ -151,7 +151,7 @@ function CustomDropdown({ value, onChange, options, placeholder }) {
           {options.map((option) => (
             <li key={option} onClick={() => { onChange(option); setOpen(false); }}
               className={`px-4 py-3 text-sm cursor-pointer transition-colors duration-150 ${
-                value === option ? 'bg-[#e94560] text-white font-semibold' : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                value === option ? 'bg-[#c3252e] text-white font-semibold' : 'text-gray-300 hover:bg-white/10 hover:text-white'
               }`}
             >{option}</li>
           ))}
@@ -162,7 +162,7 @@ function CustomDropdown({ value, onChange, options, placeholder }) {
 }
 
 /* ── LadderSection: image once on one side, all steps stacked on the other ── */
-function LadderSection({ steps, image, imageAlt, imageLeft, inView, accentColor = '#e94560' }) {
+function LadderSection({ steps, image, imageAlt, imageLeft, inView, accentColor = '#c3252e' }) {
   const stepsBlock = (
     <div className="flex flex-col gap-0">
       {steps.map((step, i) => (
@@ -190,7 +190,7 @@ function LadderSection({ steps, image, imageAlt, imageLeft, inView, accentColor 
           {/* Content */}
           <div className={`pb-8 ${i < steps.length - 1 ? '' : ''}`}>
             <h3 className="text-white font-black text-base sm:text-lg mb-2 flex items-center gap-2">
-              {step.Icon && <step.Icon size={18} className="text-[#e94560] shrink-0" style={{ color: accentColor }} />}
+              {step.Icon && <step.Icon size={18} className="text-[#c3252e] shrink-0" style={{ color: accentColor }} />}
               {step.title}
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
@@ -244,8 +244,8 @@ export default function ResidentialHeating() {
 
       <style>{`
         .split-btn{position:relative;overflow:hidden;}
-        .split-btn::before{content:'';position:absolute;inset:0;right:50%;background:#e94560;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
-        .split-btn::after{content:'';position:absolute;inset:0;left:50%;background:#e94560;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn::before{content:'';position:absolute;inset:0;right:50%;background:#c3252e;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
+        .split-btn::after{content:'';position:absolute;inset:0;left:50%;background:#c3252e;transition:transform 0.38s cubic-bezier(0.77,0,0.175,1);z-index:0;}
         .split-btn:hover::before{transform:translateX(-100%);}
         .split-btn:hover::after{transform:translateX(100%);}
         .split-btn>span{position:relative;z-index:1;}
@@ -264,13 +264,13 @@ export default function ResidentialHeating() {
             transition: 'opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)',
           }}
         >
-          <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-4">Residential Solutions</span>
+          <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-4">Residential Solutions</span>
           <h1 className="font-black leading-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-            <span className="text-[#e94560]">Heat Pump </span>
-            <span className="text-[#3b82f6]">Heating & </span><br />
+            <span className="text-[#c3252e]">Heat Pump </span>
+            <span className="text-[#8f8cff]">Heating & </span><br />
             <span className="text-white">Cooling</span>
           </h1>
-          <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+          <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Year-round home comfort with a single system. Heat pumps provide both heating and cooling, offering exceptional energy efficiency across all seasons in the GTA.
           </p>
@@ -286,8 +286,8 @@ export default function ResidentialHeating() {
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <span className="inline-flex items-center gap-2 text-[#e94560] text-xs font-bold uppercase tracking-widest mb-3">
-              <span className="w-6 h-px bg-[#e94560]" />Heating Operation<span className="w-6 h-px bg-[#e94560]" />
+            <span className="inline-flex items-center gap-2 text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-3">
+              <span className="w-6 h-px bg-[#c3252e]" />Heating Operation<span className="w-6 h-px bg-[#c3252e]" />
             </span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">How Your Heat Pump Heats</h2>
           </div>
@@ -298,14 +298,14 @@ export default function ResidentialHeating() {
             imageAlt="Heat pump heating operation"
             imageLeft={false}
             inView={heatInView}
-            accentColor="#e94560"
+            accentColor="#c3252e"
           />
 
           <div
-            className="mt-6 mx-auto max-w-lg text-center p-4 rounded-xl bg-[#e94560]/10 border border-[#e94560]/25"
+            className="mt-6 mx-auto max-w-lg text-center p-4 rounded-xl bg-[#c3252e]/10 border border-[#c3252e]/25"
             style={{ opacity: heatInView ? 1 : 0, transition: 'opacity 0.7s ease 0.5s' }}
           >
-            <p className="text-[#e94560] text-xs font-bold uppercase tracking-wider mb-1">Required</p>
+            <p className="text-[#c3252e] text-xs font-bold uppercase tracking-wider mb-1">Required</p>
             <p className="text-gray-300 text-sm">Wall mounted heat pump thermostat required</p>
           </div>
         </div>
@@ -355,9 +355,9 @@ export default function ResidentialHeating() {
           }}
         >
           <div>
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Upgrade Today</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Upgrade Today</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl leading-tight mb-5">
-              Upgrade Your Ductless AC to a<br /><span className="text-[#e94560]">Ductless Heat Pump</span>
+              Upgrade Your Ductless AC to a<br /><span className="text-[#c3252e]">Ductless Heat Pump</span>
             </h2>
             <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
               A ductless heat pump provides heating <em>and</em> cooling for homes that don't have ducts. It consists of an outdoor unit and an indoor unit — the outdoor unit brings hot or cold air from outside, while the indoor unit manages temperature and airflow.
@@ -366,9 +366,9 @@ export default function ResidentialHeating() {
               Compared to a ductless AC that only provides cooling, a ductless heat pump offers <span className="text-white font-semibold">year-round comfort</span> in a single efficient system.
             </p>
           </div>
-          <div className="rounded-2xl bg-white/5 border border-[#e94560]/20 p-8 flex flex-col gap-5 justify-center">
-            <div className="w-14 h-14 rounded-full bg-[#e94560]/15 border border-[#e94560]/30 flex items-center justify-center">
-              <svg className="w-7 h-7 text-[#e94560]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+          <div className="rounded-2xl bg-white/5 border border-[#c3252e]/20 p-8 flex flex-col gap-5 justify-center">
+            <div className="w-14 h-14 rounded-full bg-[#c3252e]/15 border border-[#c3252e]/30 flex items-center justify-center">
+              <svg className="w-7 h-7 text-[#c3252e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
               </svg>
             </div>
@@ -379,7 +379,7 @@ export default function ResidentialHeating() {
                 { label: 'Year-Round',   desc: 'Heating in winter, cooling in summer — one system' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#e94560] mt-2 shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#c3252e] mt-2 shrink-0" />
                   <div>
                     <span className="text-white font-bold text-sm">{item.label}: </span>
                     <span className="text-gray-400 text-sm">{item.desc}</span>
@@ -400,7 +400,7 @@ export default function ResidentialHeating() {
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Transparent Pricing</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Transparent Pricing</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">How Much Does an Air Source Heat Pump Cost?</h2>
             <p className="text-gray-400 text-sm mt-3 max-w-xl mx-auto">The cost varies depending on options and application. Choose the plan that works for you.</p>
           </div>
@@ -417,7 +417,7 @@ export default function ResidentialHeating() {
             <div className="flex items-center justify-center mb-8">
               <div className="relative flex bg-white/5 border border-white/10 rounded-full p-1 gap-1">
                 <span
-                  className="absolute top-1 bottom-1 rounded-full bg-[#e94560] transition-all duration-300 ease-in-out"
+                  className="absolute top-1 bottom-1 rounded-full bg-[#c3252e] transition-all duration-300 ease-in-out"
                   style={{ width: 'calc(50% - 4px)', left: pricingTab === 'purchase' ? '4px' : 'calc(50%)' }}
                 />
                 <button onClick={() => setPricingTab('purchase')}
@@ -432,14 +432,14 @@ export default function ResidentialHeating() {
             </div>
 
             {/* Price card */}
-            <div className="relative rounded-2xl overflow-hidden border border-[#e94560]/30 bg-white/5">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e94560] to-[#ff8fa3]" />
+            <div className="relative rounded-2xl overflow-hidden border border-[#c3252e]/30 bg-white/5">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c3252e] to-[#ff8fa3]" />
               <div className="p-8 sm:p-10 text-center">
                 <p className="text-gray-400 text-sm uppercase tracking-widest font-semibold mb-3">
                   {pricingTab === 'purchase' ? 'Starting From' : 'Monthly Starting From'}
                 </p>
                 <div className="flex items-end justify-center gap-2 mb-2">
-                  <span className="text-[#e94560] font-black text-5xl sm:text-6xl">
+                  <span className="text-[#c3252e] font-black text-5xl sm:text-6xl">
                     {pricingTab === 'purchase' ? '$6,995' : '$104.50'}
                   </span>
                   {pricingTab === 'rent' && <span className="text-gray-400 text-lg mb-2">/month</span>}
@@ -466,7 +466,7 @@ export default function ResidentialHeating() {
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">What Sets It Apart</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">What Sets It Apart</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">Unique to Heat Pumps</h2>
           </div>
 
@@ -474,14 +474,14 @@ export default function ResidentialHeating() {
             {UNIQUE_FEATURES.map((f, i) => (
               <div
                 key={f.title}
-                className="flex flex-col gap-4 p-7 rounded-2xl bg-white/5 border border-white/8 hover:border-[#e94560]/35 hover:bg-white/8 transition-all duration-300"
+                className="flex flex-col gap-4 p-7 rounded-2xl bg-white/5 border border-white/8 hover:border-[#c3252e]/35 hover:bg-white/8 transition-all duration-300"
                 style={{
                   opacity: featuresInView ? 1 : 0,
                   transform: featuresInView ? 'translateY(0)' : 'translateY(24px)',
                   transition: `opacity 0.65s ease ${i * 0.12}s, transform 0.65s ease ${i * 0.12}s`,
                 }}
               >
-                <div className="text-[#e94560]">{f.icon}</div>
+                <div className="text-[#c3252e]">{f.icon}</div>
                 <h3 className="text-white font-bold text-base">{f.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
               </div>
@@ -499,9 +499,9 @@ export default function ResidentialHeating() {
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <span className="text-[#e94560] text-xs font-bold uppercase tracking-widest block mb-3">Ready to Start?</span>
+            <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-3">Ready to Start?</span>
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl">Get Your Free Quote</h2>
-            <div className="w-12 h-1 rounded-full bg-[#e94560] mx-auto mt-4" />
+            <div className="w-12 h-1 rounded-full bg-[#c3252e] mx-auto mt-4" />
           </div>
 
           <div

@@ -43,7 +43,8 @@ import {
   Users, 
   Package, 
   X,
-  RefreshCw
+  RefreshCw,
+  Briefcase
 } from "lucide-react";
 
 /* ── DEFAULT SEED PRODUCTS ── */
@@ -145,6 +146,18 @@ export default function AdminPanel() {
   const [visits, setVisits] = useState([]);
   const [loadingVisits, setLoadingVisits] = useState(false);
 
+  // Vacancies CRUD States
+  const [vacancies, setVacancies] = useState([]);
+  const [loadingVacancies, setLoadingVacancies] = useState(false);
+  const [editingVacancyId, setEditingVacancyId] = useState(null);
+  const [vacFormTitle, setVacFormTitle] = useState("");
+  const [vacFormType, setVacFormType] = useState("Full-time");
+  const [vacFormLocation, setVacFormLocation] = useState("");
+  const [vacFormDescription, setVacFormDescription] = useState("");
+  const [vacFormError, setVacFormError] = useState("");
+  const [vacFormSuccess, setVacFormSuccess] = useState("");
+  const [vacFormSubmitting, setVacFormSubmitting] = useState(false);
+
   // Real-time clock effect
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -197,6 +210,22 @@ export default function AdminPanel() {
     }, (error) => {
       console.error("Visits subscription error:", error);
       setLoadingVisits(false);
+    });
+    return unsubscribe;
+  }, [user]);
+
+  // Sync Vacancies (Realtime)
+  useEffect(() => {
+    if (!user) return;
+    setLoadingVacancies(true);
+    const q = query(collection(db, "vacancies"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const v = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      setVacancies(v);
+      setLoadingVacancies(false);
+    }, (error) => {
+      console.error("Vacancies subscription error:", error);
+      setLoadingVacancies(false);
     });
     return unsubscribe;
   }, [user]);
@@ -421,6 +450,108 @@ export default function AdminPanel() {
     }
   };
 
+  // Submit Vacancy Form (Create or Update)
+  const handleVacancySubmit = async (e) => {
+    e.preventDefault();
+    setVacFormError("");
+    setVacFormSuccess("");
+
+    if (!vacFormTitle || !vacFormType || !vacFormLocation) {
+      setVacFormError("Please fill out all required fields.");
+      return;
+    }
+
+    setVacFormSubmitting(true);
+    try {
+      const payload = {
+        title: vacFormTitle,
+        type: vacFormType,
+        location: vacFormLocation,
+        description: vacFormDescription || "",
+      };
+
+      if (editingVacancyId) {
+        await setDoc(doc(db, "vacancies", editingVacancyId), {
+          ...payload,
+          updatedAt: new Date()
+        }, { merge: true });
+        setVacFormSuccess("Vacancy updated successfully!");
+        clearVacancyForm();
+      } else {
+        await addDoc(collection(db, "vacancies"), {
+          ...payload,
+          createdAt: new Date()
+        });
+        setVacFormSuccess("Vacancy created successfully!");
+        clearVacancyForm();
+      }
+    } catch (err) {
+      console.error(err);
+      setVacFormError(err.message || "Failed to save vacancy.");
+    } finally {
+      setVacFormSubmitting(false);
+    }
+  };
+
+  // Edit action for vacancy
+  const startEditVacancy = (vac) => {
+    setEditingVacancyId(vac.id);
+    setVacFormTitle(vac.title);
+    setVacFormType(vac.type || "Full-time");
+    setVacFormLocation(vac.location || "");
+    setVacFormDescription(vac.description || "");
+    setVacFormError("");
+    setVacFormSuccess("");
+  };
+
+  // Cancel vacancy edit
+  const clearVacancyForm = () => {
+    setEditingVacancyId(null);
+    setVacFormTitle("");
+    setVacFormType("Full-time");
+    setVacFormLocation("");
+    setVacFormDescription("");
+  };
+
+  // Delete vacancy
+  const handleDeleteVacancy = async (id) => {
+    if (window.confirm("Are you sure you want to delete this vacancy?")) {
+      try {
+        await deleteDoc(doc(db, "vacancies", id));
+        setVacFormSuccess("Vacancy deleted successfully.");
+      } catch (err) {
+        alert("Failed to delete vacancy: " + err.message);
+      }
+    }
+  };
+
+  // Seed default vacancies helper
+  const handleSeedVacancies = async () => {
+    const DEFAULT_SEED_VACANCIES = [
+      { title: 'HVAC Technician',        type: 'Full-time', location: 'GTA',         description: 'Experienced HVAC Technician wanted for residential and commercial service calls.' },
+      { title: 'Refrigeration Mechanic', type: 'Full-time', location: 'GTA',         description: 'Licensed refrigeration mechanic for cooling systems install and maintenance.' },
+      { title: 'Sheet Metal Fabricator', type: 'Contract',  location: 'Mississauga', description: 'Sheet metal fabricator for custom ductwork designs.' },
+      { title: 'Apprentice Technician',  type: 'Full-time', location: 'GTA',         description: 'Motivated apprentice looking to learn under senior HVAC mechanics.' },
+    ];
+
+    if (window.confirm("Do you want to seed initial job vacancies?")) {
+      try {
+        setLoadingVacancies(true);
+        for (const item of DEFAULT_SEED_VACANCIES) {
+          await addDoc(collection(db, "vacancies"), {
+            ...item,
+            createdAt: new Date()
+          });
+        }
+        alert("Vacancies successfully seeded!");
+      } catch (err) {
+        alert("Error seeding vacancies: " + err.message);
+      } finally {
+        setLoadingVacancies(false);
+      }
+    }
+  };
+
   // Filter products list
   const filteredProducts = products.filter(p => {
     const matchesSearch = 
@@ -435,7 +566,7 @@ export default function AdminPanel() {
     return (
       <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center text-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
           <p className="text-gray-400 text-sm">Verifying Session...</p>
         </div>
       </div>
@@ -447,8 +578,8 @@ export default function AdminPanel() {
     return (
       <div className="min-h-screen bg-[#0f0f1a] text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
         {/* Glow ambient backgrounds */}
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#e94560]/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#3b82f6]/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#c3252e]/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#8f8cff]/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="w-full max-w-md bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 relative shadow-2xl">
           {styleTag}
@@ -460,8 +591,8 @@ export default function AdminPanel() {
               className="mx-auto mb-2 object-contain -my-4" 
             />
             <h1 className="font-black text-2xl tracking-tight">
-              <span className="text-[#e94560]">Admin</span>{' '}
-              <span className="text-[#3b82f6]">Portal</span>{' '}
+              <span className="text-[#c3252e]">Admin</span>{' '}
+              <span className="text-[#8f8cff]">Portal</span>{' '}
               <span className="text-white">Access</span>
             </h1>
             <p className="text-gray-500 text-xs mt-1">Authenticate to manage database items</p>
@@ -477,7 +608,7 @@ export default function AdminPanel() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="admin@metricair.com" 
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e94560] focus:ring-1 focus:ring-[#e94560]/20 transition-all placeholder-gray-600"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c3252e] focus:ring-1 focus:ring-[#c3252e]/20 transition-all placeholder-gray-600"
               />
             </div>
 
@@ -491,7 +622,7 @@ export default function AdminPanel() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="••••••••" 
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-[#e94560] focus:ring-1 focus:ring-[#e94560]/20 transition-all placeholder-gray-600"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-[#c3252e] focus:ring-1 focus:ring-[#c3252e]/20 transition-all placeholder-gray-600"
                 />
                 <button
                   type="button"
@@ -521,7 +652,7 @@ export default function AdminPanel() {
           <div className="mt-6 text-center border-t border-white/10 pt-4">
             <button
               onClick={() => { setIsRegister(!isRegister); setAuthError(""); }}
-              className="text-gray-400 hover:text-[#e94560] text-xs font-semibold transition-colors underline"
+              className="text-gray-400 hover:text-[#c3252e] text-xs font-semibold transition-colors underline"
             >
               {isRegister ? "Already have an account? Sign In" : "Need to register? Create Admin Account"}
             </button>
@@ -536,8 +667,8 @@ export default function AdminPanel() {
     <div className="min-h-screen bg-[#0f0f1a] text-white flex flex-col font-sans relative overflow-hidden">
       {styleTag}
       {/* Glow backgrounds */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#e94560]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#3b82f6]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#c3252e]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#8f8cff]/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* ── HEADER ── */}
       <header className="bg-white/5 border-b border-white/10 backdrop-blur-md px-6 sm:px-10 py-4 flex items-center justify-between shrink-0 relative z-20">
@@ -555,7 +686,7 @@ export default function AdminPanel() {
         {/* Real-time Date and Running Clock */}
         <div className="hidden md:flex items-center gap-6 text-xs text-gray-400">
           <div className="flex items-center gap-1.5">
-            <Calendar size={14} className="text-[#e94560]" />
+            <Calendar size={14} className="text-[#c3252e]" />
             <span>
               {currentTime.toLocaleDateString(undefined, { 
                 weekday: 'long', 
@@ -566,7 +697,7 @@ export default function AdminPanel() {
             </span>
           </div>
           <div className="flex items-center gap-1.5 font-mono text-white text-sm bg-white/5 px-3 py-1 rounded-full border border-white/10 shadow-inner">
-            <Clock size={14} className="text-[#e94560] animate-pulse" />
+            <Clock size={14} className="text-[#c3252e] animate-pulse" />
             <span>{currentTime.toLocaleTimeString()}</span>
           </div>
         </div>
@@ -578,7 +709,7 @@ export default function AdminPanel() {
             title={user.email}
           >
             {/* Avatar Circle with initials */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#e94560] to-[#3b82f6] flex items-center justify-center font-black text-sm text-white shadow-[0_0_15px_rgba(233,69,96,0.35)] hover:scale-105 transition-transform duration-200">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#c3252e] to-[#8f8cff] flex items-center justify-center font-black text-sm text-white shadow-[0_0_15px_rgba(233,69,96,0.35)] hover:scale-105 transition-transform duration-200">
               {getInitials(user.email)}
             </div>
             <div className="hidden lg:flex flex-col text-left">
@@ -604,7 +735,7 @@ export default function AdminPanel() {
             onClick={() => setActiveSubTab("products")}
             className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
               activeSubTab === "products" 
-                ? "bg-[#e94560] text-white shadow-[0_0_12px_rgba(233,69,96,0.3)]" 
+                ? "bg-[#c3252e] text-white shadow-[0_0_12px_rgba(233,69,96,0.3)]" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
             }`}
           >
@@ -615,12 +746,23 @@ export default function AdminPanel() {
             onClick={() => setActiveSubTab("visits")}
             className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
               activeSubTab === "visits" 
-                ? "bg-[#e94560] text-white shadow-[0_0_12px_rgba(233,69,96,0.3)]" 
+                ? "bg-[#c3252e] text-white shadow-[0_0_12px_rgba(233,69,96,0.3)]" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
             }`}
           >
             <Users size={14} />
             Visitor Tracker
+          </button>
+          <button
+            onClick={() => setActiveSubTab("vacancies")}
+            className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+              activeSubTab === "vacancies" 
+                ? "bg-[#c3252e] text-white shadow-[0_0_12px_rgba(233,69,96,0.3)]" 
+                : "text-gray-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Briefcase size={14} />
+            Job Vacancies
           </button>
         </div>
 
@@ -628,7 +770,7 @@ export default function AdminPanel() {
         {activeSubTab === "products" && products.length === 0 && (
           <button 
             onClick={handleSeedProducts}
-            className="text-[#e94560] border border-[#e94560]/20 hover:bg-[#e94560] hover:text-white transition-all text-[11px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1"
+            className="text-[#c3252e] border border-[#c3252e]/20 hover:bg-[#c3252e] hover:text-white transition-all text-[11px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1"
           >
             <RefreshCw size={12} />
             Seed Default Products
@@ -668,7 +810,7 @@ export default function AdminPanel() {
                     onChange={e => setFormName(e.target.value)}
                     required
                     placeholder="Nest Learning Thermostat"
-                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                   />
                 </div>
 
@@ -679,7 +821,7 @@ export default function AdminPanel() {
                     <select
                       value={formCategory}
                       onChange={e => setFormCategory(e.target.value)}
-                      className="bg-[#16213e] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                      className="bg-[#16213e] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                     >
                       {CATEGORY_LIST.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -695,7 +837,7 @@ export default function AdminPanel() {
                       onChange={e => setFormPrice(e.target.value)}
                       required
                       placeholder="249.99"
-                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                     />
                   </div>
                 </div>
@@ -710,7 +852,7 @@ export default function AdminPanel() {
                       onChange={e => setFormStock(e.target.value)}
                       required
                       placeholder="12"
-                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -720,7 +862,7 @@ export default function AdminPanel() {
                       value={formBadge}
                       onChange={e => setFormBadge(e.target.value)}
                       placeholder="Best Seller, Value Pack"
-                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                     />
                   </div>
                 </div>
@@ -733,7 +875,7 @@ export default function AdminPanel() {
                     onChange={e => setFormDescription(e.target.value)}
                     placeholder="Short product overview..."
                     rows={2.5}
-                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors resize-none"
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors resize-none"
                   />
                 </div>
 
@@ -745,7 +887,7 @@ export default function AdminPanel() {
                     value={formImageUrl}
                     onChange={e => setFormImageUrl(e.target.value)}
                     placeholder="https://example.com/image.jpg"
-                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#e94560] transition-colors"
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                   />
                 </div>
 
@@ -765,7 +907,7 @@ export default function AdminPanel() {
                     />
                     {uploadFile ? (
                       <div className="flex items-center gap-2 max-w-full">
-                        <ImageIcon size={16} className="text-[#e94560] shrink-0" />
+                        <ImageIcon size={16} className="text-[#c3252e] shrink-0" />
                         <span className="text-white text-xs truncate max-w-[200px]">{uploadFile.name}</span>
                         <button
                           type="button"
@@ -785,7 +927,7 @@ export default function AdminPanel() {
                   {uploading && (
                     <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden mt-1">
                       <div 
-                        className="bg-gradient-to-r from-[#e94560] to-[#3b82f6] h-full"
+                        className="bg-gradient-to-r from-[#c3252e] to-[#8f8cff] h-full"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -841,14 +983,14 @@ export default function AdminPanel() {
                       placeholder="Search title..."
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
-                      className="bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-[#e94560] placeholder-gray-500 w-full sm:w-44 transition-all"
+                      className="bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-[#c3252e] placeholder-gray-500 w-full sm:w-44 transition-all"
                     />
                   </div>
 
                   <select
                     value={selectedCategory}
                     onChange={e => setSelectedCategory(e.target.value)}
-                    className="bg-[#16213e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#e94560]"
+                    className="bg-[#16213e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#c3252e]"
                   >
                     <option value="All">All Categories</option>
                     {CATEGORY_LIST.map(cat => (
@@ -861,7 +1003,7 @@ export default function AdminPanel() {
               {/* Table / Grid */}
               {loadingProducts ? (
                 <div className="flex-1 flex flex-col items-center justify-center gap-3">
-                  <div className="w-8 h-8 border-3 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-3 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
                   <p className="text-gray-500 text-xs">Loading items...</p>
                 </div>
               ) : filteredProducts.length === 0 ? (
@@ -927,7 +1069,7 @@ export default function AdminPanel() {
                           {/* Badge */}
                           <td className="py-3">
                             {prod.badge ? (
-                              <span className="px-2 py-0.5 rounded bg-[#e94560]/10 border border-[#e94560]/20 text-[#e94560] font-black text-[9px] uppercase tracking-wider">
+                              <span className="px-2 py-0.5 rounded bg-[#c3252e]/10 border border-[#c3252e]/20 text-[#c3252e] font-black text-[9px] uppercase tracking-wider">
                                 {prod.badge}
                               </span>
                             ) : (
@@ -940,7 +1082,7 @@ export default function AdminPanel() {
                             <div className="flex items-center justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                               <button 
                                 onClick={() => startEdit(prod)}
-                                className="p-2 rounded bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-[#3b82f6] transition-all hover:bg-[#3b82f6]/10"
+                                className="p-2 rounded bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-[#8f8cff] transition-all hover:bg-[#8f8cff]/10"
                                 title="Edit Product"
                               >
                                 <Edit2 size={13} />
@@ -962,7 +1104,7 @@ export default function AdminPanel() {
               )}
             </section>
           </div>
-        ) : (
+        ) : activeSubTab === "visits" ? (
           /* TAB 2: Visitor Tracking Log */
           <div className="bg-white/4 border border-white/8 rounded-2xl p-6 shadow-xl flex flex-col gap-6 flex-1 min-h-[500px]">
             <div className="border-b border-white/10 pb-4 flex items-center justify-between">
@@ -972,7 +1114,7 @@ export default function AdminPanel() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-400">Total Logged Visits:</span>
-                <span className="bg-[#e94560]/10 border border-[#e94560]/20 text-[#e94560] px-3 py-0.5 rounded-full font-mono font-bold text-xs">
+                <span className="bg-[#c3252e]/10 border border-[#c3252e]/20 text-[#c3252e] px-3 py-0.5 rounded-full font-mono font-bold text-xs">
                   {visits.length}
                 </span>
               </div>
@@ -980,7 +1122,7 @@ export default function AdminPanel() {
 
             {loadingVisits ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-3">
-                <div className="w-8 h-8 border-3 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-3 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-gray-500 text-xs">Syncing logs...</p>
               </div>
             ) : visits.length === 0 ? (
@@ -1024,7 +1166,7 @@ export default function AdminPanel() {
                         <td className="py-3 font-semibold text-gray-300">
                           {v.browser}
                         </td>
-                        <td className="py-3 text-[#e94560] font-bold">
+                        <td className="py-3 text-[#c3252e] font-bold">
                           /{v.page?.toLowerCase()}
                         </td>
                         <td className="py-3 pr-2 text-[10px] text-gray-500 truncate max-w-[200px]" title={v.userAgent}>
@@ -1037,6 +1179,193 @@ export default function AdminPanel() {
               </div>
             )}
           </div>
+        ) : (
+          /* TAB 3: Vacancies CRUD */
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+            {/* LEFT COLUMN: Vacancy Editor Form */}
+            <section className="xl:col-span-4 bg-white/4 border border-white/8 rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
+              <div className="border-b border-white/10 pb-3 flex justify-between items-center">
+                <h2 className="text-white font-black text-lg tracking-tight">
+                  {editingVacancyId ? "Edit Job Vacancy" : "Add Job Vacancy"}
+                </h2>
+                {editingVacancyId && (
+                  <button 
+                    onClick={clearVacancyForm}
+                    className="p-1 rounded bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                    title="Cancel Edit"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+
+              <form onSubmit={handleVacancySubmit} method="POST" className="flex flex-col gap-4">
+                {/* Title */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Job Title *</label>
+                  <input
+                    type="text"
+                    value={vacFormTitle}
+                    onChange={e => setVacFormTitle(e.target.value)}
+                    required
+                    placeholder="e.g. HVAC Technician"
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
+                  />
+                </div>
+
+                {/* Type & Location */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Job Type *</label>
+                    <select
+                      value={vacFormType}
+                      onChange={e => setVacFormType(e.target.value)}
+                      className="bg-[#16213e] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Apprentice">Apprentice</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Location *</label>
+                    <input
+                      type="text"
+                      value={vacFormLocation}
+                      onChange={e => setVacFormLocation(e.target.value)}
+                      required
+                      placeholder="e.g. GTA"
+                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Description</label>
+                  <textarea
+                    value={vacFormDescription}
+                    onChange={e => setVacFormDescription(e.target.value)}
+                    placeholder="Brief description of requirements/responsibilities..."
+                    rows={4}
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors resize-none"
+                  />
+                </div>
+
+                {/* Alerts */}
+                {vacFormError && (
+                  <p className="text-red-400 text-xs leading-relaxed bg-red-500/10 border border-red-500/20 p-2.5 rounded-lg">{vacFormError}</p>
+                )}
+                {vacFormSuccess && (
+                  <p className="text-green-400 text-xs leading-relaxed bg-green-500/10 border border-green-500/20 p-2.5 rounded-lg">{vacFormSuccess}</p>
+                )}
+
+                {/* Buttons */}
+                <div className="flex gap-3 pt-2">
+                  {editingVacancyId && (
+                    <button
+                      type="button"
+                      onClick={clearVacancyForm}
+                      className="flex-1 py-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition-all"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={vacFormSubmitting}
+                    className="flex-1 admin-login-btn py-2.5 rounded-lg text-white font-bold text-xs uppercase tracking-wider relative overflow-hidden transition-all disabled:opacity-50 cursor-pointer"
+                  >
+                    <span>
+                      {vacFormSubmitting ? "Saving..." : (editingVacancyId ? "Update Job" : "Add Job")}
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            {/* RIGHT COLUMN: Vacancies List Table */}
+            <section className="xl:col-span-8 bg-white/4 border border-white/8 rounded-2xl p-6 shadow-xl flex flex-col gap-6 min-h-[500px]">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <h2 className="text-white font-black text-lg tracking-tight">Active Job Openings</h2>
+                {vacancies.length === 0 && !loadingVacancies && (
+                  <button 
+                    onClick={handleSeedVacancies}
+                    className="text-[#c3252e] border border-[#c3252e]/20 hover:bg-[#c3252e] hover:text-white transition-all text-[11px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1"
+                  >
+                    <RefreshCw size={12} />
+                    Seed Standard Positions
+                  </button>
+                )}
+              </div>
+
+              {loadingVacancies ? (
+                <div className="flex-1 flex flex-col items-center justify-center gap-3">
+                  <div className="w-8 h-8 border-3 border-[#c3252e] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-gray-500 text-xs">Loading openings...</p>
+                </div>
+              ) : vacancies.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-12">
+                  <Briefcase size={36} className="text-gray-600 mb-2" />
+                  <p className="text-gray-400 font-bold text-sm">No job openings recorded</p>
+                  <p className="text-gray-500 text-xs mt-1">Start by adding a vacancy on the left panel or click Seed.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto flex-1">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="pb-3 pl-2">Job Title</th>
+                        <th className="pb-3">Type</th>
+                        <th className="pb-3">Location</th>
+                        <th className="pb-3">Description</th>
+                        <th className="pb-3 text-right pr-2">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {vacancies.map((vac) => (
+                        <tr key={vac.id} className="hover:bg-white/2 transition-colors group">
+                          <td className="py-3 pl-2 font-bold text-white max-w-[150px] truncate">
+                            {vac.title}
+                          </td>
+                          <td className="py-3">
+                            <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-400 font-medium">
+                              {vac.type}
+                            </span>
+                          </td>
+                          <td className="py-3 text-gray-300 font-semibold">
+                            {vac.location}
+                          </td>
+                          <td className="py-3 text-gray-500 max-w-[240px] truncate" title={vac.description}>
+                            {vac.description || "—"}
+                          </td>
+                          <td className="py-3 text-right pr-2">
+                            <div className="flex items-center justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                              <button 
+                                onClick={() => startEditVacancy(vac)}
+                                className="p-2 rounded bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-[#8f8cff] transition-all hover:bg-[#8f8cff]/10"
+                                title="Edit Vacancy"
+                              >
+                                <Edit2 size={13} />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteVacancy(vac.id)}
+                                className="p-2 rounded bg-white/5 border border-white/10 text-gray-400 hover:text-red-400 hover:border-red-500/40 transition-all hover:bg-red-500/10"
+                                title="Delete Vacancy"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          </div>
         )}
       </main>
     </div>
@@ -1047,14 +1376,14 @@ export default function AdminPanel() {
 const styleTag = (
   <style>{`
     .admin-login-btn {
-      background: #e94560;
+      background: #c3252e;
     }
     .admin-login-btn::before {
       content: '';
       position: absolute;
       inset: 0;
       right: 50%;
-      background: #3b82f6;
+      background: #8f8cff;
       transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
       z-index: 0;
     }
@@ -1063,7 +1392,7 @@ const styleTag = (
       position: absolute;
       inset: 0;
       left: 50%;
-      background: #3b82f6;
+      background: #8f8cff;
       transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
       z-index: 0;
     }

@@ -59,11 +59,11 @@ export default function OfficeRetailSpaces() {
           Commercial Climate Excellence
         </span>
         <h1 className="font-black leading-tight text-3xl sm:text-5xl lg:text-6xl mb-6">
-          <span className="text-[#e94560]">Office and Retail</span>{' '}
-          <span className="text-[#3b82f6]">HVAC</span>{' '}
+          <span className="text-[#c3252e]">Office and Retail</span>{' '}
+          <span className="text-[#8f8cff]">HVAC</span>{' '}
           <span className="text-white">Spaces</span>
         </h1>
-        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#e94560] via-[#3b82f6] to-white mx-auto mb-6" />
+        <div className="w-20 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
           We engineer high-efficiency commercial heating, cooling, and multi-zone ventilation systems tailored for modern office floors and active storefront retail locations.
         </p>
@@ -106,7 +106,7 @@ export default function OfficeRetailSpaces() {
                         transitionDelay: gridInView ? `${idx * 100}ms` : '0ms'
                       }}
                     >
-                      <span className="text-[#e94560] font-bold mt-0.5">✓</span>
+                      <span className="text-[#c3252e] font-bold mt-0.5">✓</span>
                       <span>{feat}</span>
                     </div>
                   ))}
