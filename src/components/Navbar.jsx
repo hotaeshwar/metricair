@@ -147,11 +147,11 @@ export default function Navbar() {
           top: "80px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "1200px",
+          width: "980px",
           maxWidth: "calc(100vw - 32px)",
         }}
       >
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-3 gap-8">
           {/* Residential */}
           <div>
             <Link
@@ -235,32 +235,6 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          {/* MEP Solutions */}
-          <div>
-            <Link
-              to="/mep-solutions"
-              className="flex items-center text-[#8f8cff] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#8f8cff]/20"
-            >
-              MEP Solutions
-            </Link>
-            <div className="space-y-4">
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Integrated Services</span>
-                <ul className="space-y-1">
-                  {PRODUCT_MENU.mep.map((item) => (
-                    <li key={item.label}>
-                      <Link
-                        to={item.href}
-                        className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -313,8 +287,6 @@ export default function Navbar() {
                 </Link>
                 {renderDropdown()}
               </div>
-
-              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
             </div>
           </div>
 
@@ -354,6 +326,7 @@ export default function Navbar() {
 
             {/* Desktop right links + WhatsApp */}
             <div className="hidden xl:flex items-center justify-start w-full gap-6 pl-36">
+              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
               <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
 
               <a
@@ -466,30 +439,6 @@ export default function Navbar() {
                   </Link>
                   <ul className="space-y-1.5 pl-2">
                     {PRODUCT_MENU.lightIndustrial.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* MEP Solutions */}
-                <div>
-                  <Link
-                    to="/mep-solutions"
-                    onClick={() => setMobileOpen(false)}
-                    className="block text-[#8f8cff] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
-                  >
-                    MEP Solutions
-                  </Link>
-                  <ul className="space-y-1.5 pl-2">
-                    {PRODUCT_MENU.mep.map((item) => (
                       <li key={item.label}>
                         <Link
                           to={item.href}
