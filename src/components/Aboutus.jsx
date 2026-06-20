@@ -129,8 +129,8 @@ export default function AboutUs() {
 
             <h2 className="font-black leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
               <span className="text-[#c3252e]">HVAC Contractor</span>{' '}
-              <span className="text-[#8f8cff]">Servicing the</span>{' '}
-              <span className="text-white">Greater Toronto Area</span>
+              <span className="text-[#8f8cff]">Servicing</span>{' '}
+              <span className="text-white">Canada</span>
             </h2>
 
             <div className="w-12 h-1 rounded-full bg-[#c3252e]" />
@@ -148,7 +148,7 @@ export default function AboutUs() {
                 <span className="text-[#c3252e] font-semibold">{t("Cooling")}</span>
                 <span>, and </span>
                 <span className="text-[#c3252e] font-semibold">{t("Water Heating")}</span>
-                <span> {t("services throughout the Greater Toronto Area. We are fully specializing in prompt repairs, custom installations, and energy-efficient system retrofits.")}</span>
+                <span> {t("services throughout Canada. We are fully specializing in prompt repairs, custom installations, and energy-efficient system retrofits.")}</span>
               </p>
 
               <p>
@@ -182,7 +182,7 @@ export default function AboutUs() {
               </p>
 
               <p>
-                <span>{t("Our team consists of highly skilled, fully licensed technicians who bring years of industry expertise to every home and business across GTA neighbourhoods. From custom ductwork fabrication in our local facility to coordinating structural building permits with municipal engineering departments, we handle every detail of your project. We back all of our installations with robust labour warranties, ensuring long-term peace of mind and complete system reliability.")}</span>
+                <span>{t("Our team consists of highly skilled, fully licensed technicians who bring years of industry expertise to every home and business across Canada. From custom ductwork fabrication in our local facility to coordinating structural building permits with municipal engineering departments, we handle every detail of your project. We back all of our installations with robust labour warranties, ensuring long-term peace of mind and complete system reliability.")}</span>
               </p>
             </div>
 
@@ -198,7 +198,7 @@ export default function AboutUs() {
             >
               <StatCard value={20}   suffix="+" label="Years Experience" started={statsInView} />
               <StatCard value={5000} suffix="+" label="Homes Serviced"   started={statsInView} />
-              <StatCard value="GTA"  suffix=""  label="Wide Coverage"    started={statsInView} />
+              <StatCard value="Canada"  suffix=""  label="Wide Coverage"    started={statsInView} />
             </div>
           </div>
 
@@ -230,7 +230,7 @@ export default function AboutUs() {
               <div className="relative rounded-2xl overflow-hidden">
                 <img
                   src="/images/gta.png"
-                  alt="MetricAir servicing the Greater Toronto Area"
+                  alt="MetricAir servicing Canada"
                   className="
                     relative z-[1] w-full rounded-2xl
                     h-[260px]

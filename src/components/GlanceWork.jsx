@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
@@ -95,17 +96,15 @@ export default function GlanceWork() {
           }}
         >
           {/* Link 1: Our Journey */}
-          <a
-            href="/documents/business_portfolio.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/about"
             className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-[#c3252e]/50 hover:bg-[#c3252e]/10 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 flex items-center gap-2 hover:shadow-[0_0_15px_rgba(195,37,46,0.15)]"
           >
             <span>Our Journey</span>
-            <svg className="w-4 h-4 text-[#c3252e] shrink-0" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .83-.67 1.5-1.5 1.5H7v2H5.5V9H8c.83 0 1.5.67 1.5 1.5v1zM15 11.5c0 1.38-1.12 2.5-2.5 2.5H11V9h1.5c1.38 0 2.5 1.12 2.5 2.5zm4-.5h-2v1.5h1.5V14H17v2h-1.5V9H19v2zm-6.5.5c0-.55-.45-1-1-1h-1v2h1c.55 0 1-.45 1-1zM7 10.5h1V12H7z" />
+            <svg className="w-4 h-4 text-[#c3252e]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
-          </a>
+          </Link>
 
           {/* Link 2: HVAC Projects */}
           <a

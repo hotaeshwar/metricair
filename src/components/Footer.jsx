@@ -110,7 +110,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <span className="text-[#c3252e] font-semibold">{t("Area:")}</span>
-                <span>{t("Greater Toronto Area")}</span>
+                <span>{t("Canada")}</span>
               </div>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-1.5">
               <span className="block w-1.5 h-1.5 rounded-full bg-[#c3252e] animate-pulse" />
-              <span className="text-gray-400 text-[11px]">{t("Serving the Greater Toronto Area")}</span>
+              <span className="text-gray-400 text-[11px]">{t("Serving Canada")}</span>
             </div>
           </div>
 
