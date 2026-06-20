@@ -84,7 +84,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-4 relative z-10">
 
         {/* ── UNIFIED GRID ROW ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-8 items-start">
           
           {/* COLUMN 1: Logo & Tagline + Contact Info */}
           <div className="lg:col-span-2 flex flex-col gap-4 text-center md:text-left">
