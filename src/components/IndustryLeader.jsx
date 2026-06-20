@@ -2,18 +2,32 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 const BRANDS = [
-  { src: '/images/brand1.png', alt: 'Brand Partner 1' },
-  { src: '/images/brand2.png', alt: 'Brand Partner 2' },
-  { src: '/images/brand3.png', alt: 'Brand Partner 3' },
-  { src: '/images/brand4.png', alt: 'Brand Partner 4' },
+  { src: '/images/Trane.png', alt: 'Trane' },
+  { src: '/images/York.png', alt: 'York' },
+  { src: '/images/Captiveaire.png', alt: 'Captiveaire' },
+  { src: '/images/Daikin.png', alt: 'Daikin' },
+  { src: '/images/Fast Kitchen Hoods.png', alt: 'Fast Kitchen Hoods' },
+  { src: '/images/Lennox.png', alt: 'Lennox' },
+  { src: '/images/Mitsubishi.png', alt: 'Mitsubishi' },
+  { src: '/images/Navien.png', alt: 'Navien' },
+  { src: '/images/Rheem.png', alt: 'Rheem' },
+  { src: '/images/Rinnai.png', alt: 'Rinnai' },
+  { src: '/images/Tosot.png', alt: 'Tosot' },
   // duplicate set for seamless infinite loop
-  { src: '/images/brand1.png', alt: 'Brand Partner 1' },
-  { src: '/images/brand2.png', alt: 'Brand Partner 2' },
-  { src: '/images/brand3.png', alt: 'Brand Partner 3' },
-  { src: '/images/brand4.png', alt: 'Brand Partner 4' },
+  { src: '/images/Trane.png', alt: 'Trane' },
+  { src: '/images/York.png', alt: 'York' },
+  { src: '/images/Captiveaire.png', alt: 'Captiveaire' },
+  { src: '/images/Daikin.png', alt: 'Daikin' },
+  { src: '/images/Fast Kitchen Hoods.png', alt: 'Fast Kitchen Hoods' },
+  { src: '/images/Lennox.png', alt: 'Lennox' },
+  { src: '/images/Mitsubishi.png', alt: 'Mitsubishi' },
+  { src: '/images/Navien.png', alt: 'Navien' },
+  { src: '/images/Rheem.png', alt: 'Rheem' },
+  { src: '/images/Rinnai.png', alt: 'Rinnai' },
+  { src: '/images/Tosot.png', alt: 'Tosot' },
 ];
 
-const REAL = 4;
+const REAL = 11;
 
 function getSlidesVisible() {
   if (typeof window === 'undefined') return 3;
