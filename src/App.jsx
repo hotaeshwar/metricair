@@ -39,6 +39,7 @@ import AdminPanel            from "./components/AdminPanel";
 import FeaturedProjects      from "./components/FeaturedProjects";
 import GlanceWork            from "./components/GlanceWork";
 import FAQ                   from "./components/FAQ";
+import CapabilitiesAndDirector from "./components/CapabilitiesAndDirector";
 import { LanguageProvider } from "./LanguageContext";
 
 /* ── Scroll to top on every route change ── */
@@ -186,7 +187,7 @@ function AppContent() {
       {showNavbar && <Navbar />}
       <Routes>
         {/* ── Main pages ── */}
-        <Route path="/"         element={<><Hero /><ServicesOverview /><RealWorldApplications /><IndustryLeader /><FeaturedProjects /><GlanceWork /><FAQ /><Footer /></>} />
+        <Route path="/"         element={<><Hero /><ServicesOverview /><RealWorldApplications /><IndustryLeader /><FeaturedProjects /><GlanceWork /><CapabilitiesAndDirector /><FAQ /><Footer /></>} />
         <Route path="/about"    element={<><AboutUs /><Footer /></>} />
         <Route path="/services" element={<><Services /><Footer /></>} />
         <Route path="/contact"  element={<><ContactUs /><Footer /></>} />

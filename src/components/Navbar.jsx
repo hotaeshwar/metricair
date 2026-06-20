@@ -272,10 +272,10 @@ export default function Navbar() {
                 ref={dropdownRef}
                 className="relative"
               >
-                <Link
-                  to="/mep-solutions"
+                <button
+                  type="button"
                   onClick={() => setActiveDropdown(activeDropdown === "product" ? null : "product")}
-                  className={`flex items-center gap-0.5 ${productNavLinkClass()}`}
+                  className={`flex items-center gap-0.5 cursor-pointer bg-transparent border-none outline-none ${productNavLinkClass()}`}
                 >
                   Product
                   <ChevronDown
@@ -284,7 +284,7 @@ export default function Navbar() {
                       activeDropdown === "product" ? "rotate-180" : ""
                     }`}
                   />
-                </Link>
+                </button>
                 {renderDropdown()}
               </div>
             </div>
@@ -361,13 +361,10 @@ export default function Navbar() {
 
           {/* Product collapsible */}
           <div>
-            <Link
-              to="/mep-solutions"
-              onClick={() => {
-                setMobileResOpen(!mobileResOpen);
-                setMobileOpen(false);
-              }}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded text-sm font-medium transition-colors ${
+            <button
+              type="button"
+              onClick={() => setMobileResOpen(!mobileResOpen)}
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded text-sm font-medium transition-colors bg-transparent border-none outline-none cursor-pointer ${
                 mobileResOpen ? "text-[#c3252e] bg-white/5" : "text-gray-300 hover:text-[#c3252e] hover:bg-white/5"
               }`}
             >
@@ -376,7 +373,7 @@ export default function Navbar() {
                 size={16}
                 className={`transition-transform duration-200 ${mobileResOpen ? "rotate-180" : ""}`}
               />
-            </Link>
+            </button>
 
             {mobileResOpen && (
               <div className="mt-2 pl-4 border-l border-white/10 space-y-4 py-1">
