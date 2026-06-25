@@ -29,28 +29,44 @@ function useInView(threshold = 0.05) {
 
 const FAQS = [
   {
-    question: "What services does MetricAir offer?",
-    answer: "MetricAir is a premier GTA mechanical contractor. We specialize in commercial kitchen ventilation and exhaust systems, makeup air units (MUA), HVAC heating and cooling systems, custom ductwork design, structural permit drawings (BCIN stamped), industrial NFPA dust compliance, and HVAC/water heater rentals."
+    question: "What does Metric Air Limited do?",
+    answer: "We provide complete Mechanical, Electrical, and Plumbing (MEP) services for high-rise buildings. In addition, we specialize in HVAC systems, in-house sheet metal fabrication, and complete supply and installation services for residential, commercial, and industrial projects. Our goal is to deliver high-quality, efficient, and reliable mechanical solutions for all types of construction projects."
   },
   {
-    question: "What does MEP stand for and why is it important?",
-    answer: "MEP stands for Mechanical, Electrical, and Plumbing. These three building systems work together to ensure that a building is safe, operational, and comfortable. Stamped MEP engineering drawings are required by Ontario municipalities to secure building permits and guarantee building code compliance."
+    question: "Do you work on commercial projects?",
+    answer: "Yes, we primarily focus on commercial and industrial projects, including high-rise buildings, office spaces, and large-scale construction developments. We also take on residential projects when required, ensuring the same level of quality and professionalism in every job."
   },
   {
-    question: "Do you service residential as well as commercial/industrial properties?",
-    answer: "Yes! We provide full residential heating, cooling, and water filtration services across the GTA, including gas furnaces, air conditioning, and equipment rentals. This complements our commercial division which focuses on restaurant exhaust and industrial ventilation."
+    question: "Where do you operate?",
+    answer: "We are based in Mississauga, Ontario (ON) and provide our services across all regions of Canada, delivering reliable and high-quality mechanical solutions for residential, commercial, and industrial projects."
   },
   {
-    question: "How does the Worry-Free Rental program work?",
-    answer: "Our rental program provides GTA homeowners with brand-new furnaces, air conditioners, and water heaters with zero upfront equipment purchase costs. It includes free lifetime repair parts, regular maintenance checks, and priority emergency service dispatch."
+    question: "How can I get a quote?",
+    answer: "You can request a quote by contacting us with your project details, drawings, or requirements. Our team will review the information carefully and provide you with a detailed and competitive estimate based on your project scope."
   },
   {
-    question: "Can MetricAir help with building permits and structural stamps?",
-    answer: "Absolutely. MetricAir's team includes BCIN-registered designers who draft mechanical plans stamped for OBC (Ontario Building Code) compliance. We guide restaurant owners and facility managers from initial drawings to final building inspection sign-offs."
+    question: "Are your workers trained?",
+    answer: "Yes, all our employees are fully trained, experienced, and certified according to industry standards. We ensure continuous training and development to maintain high-quality workmanship and safety on every project."
   },
   {
-    question: "Where is your service coverage area?",
-    answer: "We cover the Greater Toronto Area (GTA) and neighboring regions across Southern Ontario, including Toronto, Mississauga, Scarborough, Whitby, Peterborough, Windsor, London, and St. Catharines."
+    question: "Do you follow safety rules?",
+    answer: "Yes, safety is our top priority. We strictly follow all Canadian and Ontario workplace safety regulations and ensure that every worker follows proper safety procedures, including PPE usage and site safety protocols."
+  },
+  {
+    question: "What HVAC systems do you install?",
+    answer: "We install a wide range of HVAC systems, including ventilation systems, ducted systems, and commercial heating and cooling solutions designed to meet the needs of residential, commercial, and industrial buildings."
+  },
+  {
+    question: "Do you provide maintenance?",
+    answer: "Yes, we offer maintenance, repair, and inspection services to ensure that all installed systems continue to operate efficiently, safely, and reliably over time."
+  },
+  {
+    question: "How long do projects take?",
+    answer: "Project timelines vary depending on size, complexity, and requirements. Once we review the project scope, we provide a clear schedule and ensure timely completion while maintaining quality standards."
+  },
+  {
+    question: "How can I contact you?",
+    answer: "You can reach us through phone, email, or the contact form on our website. Our team is always available to answer your inquiries and assist you with project-related questions."
   }
 ];
 
@@ -103,17 +119,15 @@ export default function FAQ() {
                   </span>
                   <ChevronDown
                     size={18}
-                    className={`text-gray-400 group-hover:text-white transition-transform duration-300 shrink-0 ml-4 ${
-                      isOpen ? 'rotate-180 text-[#c3252e]' : ''
-                    }`}
+                    className={`text-gray-400 group-hover:text-white transition-transform duration-300 shrink-0 ml-4 ${isOpen ? 'rotate-180 text-[#c3252e]' : ''
+                      }`}
                   />
                 </button>
 
                 {/* Accordion Answer Content */}
                 <div
-                  className={`overflow-hidden transition-all duration-350 ease-in-out ${
-                    isOpen ? 'max-h-96 opacity-100 border-t border-white/5 bg-white/2' : 'max-h-0 opacity-0'
-                  }`}
+                  className={`overflow-hidden transition-all duration-350 ease-in-out ${isOpen ? 'max-h-96 opacity-100 border-t border-white/5 bg-white/2' : 'max-h-0 opacity-0'
+                    }`}
                 >
                   <p className="p-5 sm:p-6 text-gray-300 text-xs sm:text-sm leading-relaxed">
                     {faq.answer}

@@ -148,7 +148,7 @@ export default function CommercialRestaurant() {
             </h1>
             <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mb-2 mx-auto lg:mx-0" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              MetricAir provides comprehensive HVAC, water heating, and ventilation solutions specifically designed for restaurants and commercial kitchens across the GTA.
+              MetricAir provides comprehensive HVAC, water heating, and ventilation solutions specifically designed for restaurants and commercial kitchens all over Canada.
             </p>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-4">
               {[
@@ -172,14 +172,13 @@ export default function CommercialRestaurant() {
             </div>
           </div>
 
-          {/* Right image block */}
-          <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 aspect-[4/3] group"
+          <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-white/10 bg-[#0f0f1a]/50 aspect-[4/3] group"
             style={{ opacity: heroInView ? 1 : 0, transform: heroInView ? 'translateY(0)' : 'translateY(16px)', transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s' }}
           >
-            <img
+            <img 
               src="/images/resturant.jpg"
-              alt="Commercial Kitchen Ventilation and Exhaust Hood Setup"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
+              alt="Restaurant Kitchen Ventilation"
+              className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
               draggable="false"
             />
           </div>

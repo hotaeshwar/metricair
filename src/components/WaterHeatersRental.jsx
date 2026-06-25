@@ -31,7 +31,7 @@ const HIGHLIGHTS = [
   "Zero Upfront Equipment & Installation Cost",
   "Free Lifetime Repairs and Annual Maintenances",
   "High-Efficiency Tankless and Standard Tank Options",
-  "24/7 Priority Emergency Support in GTA",
+  "24/7 Priority Emergency Support All Over Canada",
   "Affordable Fixed Monthly Rental Pricing Plans",
   "Free Upgrades for Old and Outdated Units"
 ];
@@ -82,11 +82,11 @@ export default function WaterHeatersRental() {
             }}
           >
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src="/images/waterheater.jpg"
-                  alt="High-Efficiency Water Heater and Tankless System Rental GTA"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 select-none"
+              <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#0f0f1a]/50">
+                <img 
+                  src="/images/water_heater_rental_ai.png"
+                  alt="Worry-Free Hot Water System Rentals"
+                  className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
                   draggable="false"
                 />
               </div>

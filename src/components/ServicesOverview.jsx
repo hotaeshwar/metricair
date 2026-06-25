@@ -71,7 +71,7 @@ export default function ServicesOverview({ hideHeader = false }) {
               </h2>
               <div className="w-16 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mt-5" />
               <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mt-4">
-                Providing professional heating, cooling, ventilation, and custom permit designs for residential, commercial, and industrial clients across the Greater Toronto Area.
+                Providing professional heating, cooling, ventilation, and custom permit designs for residential, commercial, and industrial clients all over Canada.
               </p>
             </header>
           )}
@@ -90,7 +90,7 @@ export default function ServicesOverview({ hideHeader = false }) {
               <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#c3252e]/40 transition-all duration-300">
                 <img
                   src="/images/residential.jpg"
-                  alt="Energy-efficient Residential Heating and Cooling Services in GTA"
+                  alt="Energy-efficient Residential Heating and Cooling Services in Canada"
                   className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                   draggable="false"
                 />
@@ -149,7 +149,7 @@ export default function ServicesOverview({ hideHeader = false }) {
               <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-[#8f8cff]/40 transition-all duration-300">
                 <img
                   src="/images/office.jpg"
-                  alt="Commercial Restaurant Kitchen Exhaust and HVAC Installation GTA"
+                  alt="Commercial Restaurant Kitchen Exhaust and HVAC Installation Canada"
                   className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                   draggable="false"
                 />
@@ -164,7 +164,7 @@ export default function ServicesOverview({ hideHeader = false }) {
                   Commercial Solutions & Ventilation
                 </h3>
                 <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
-                  MetricAir offers specialized commercial HVAC configurations, design-build packages, and high-performance makeup air setups. We are the trusted GTA contractor for restaurant kitchen exhaust hoods, rooftop units (RTU), office spaces, and custom construction packages, securing precise engineering approvals and building permit code compliance.
+                  MetricAir offers specialized commercial HVAC configurations, design-build packages, and high-performance makeup air setups. We are the trusted contractor all over Canada for restaurant kitchen exhaust hoods, rooftop units (RTU), office spaces, and custom construction packages, securing precise engineering approvals and building permit code compliance.
                 </p>
                 <ul className="grid grid-cols-2 gap-x-4 gap-y-2 mb-8 text-xs sm:text-sm font-medium text-gray-400">
                   <li className="flex items-center gap-2">
@@ -207,8 +207,8 @@ export default function ServicesOverview({ hideHeader = false }) {
               {/* Image Column */}
               <div className="w-full lg:w-1/2 relative group rounded-2xl overflow-hidden shadow-2xl border border-white/10 hover:border-white/40 transition-all duration-300">
                 <img
-                  src="/images/industrial.png"
-                  alt="Light Industrial Warehouse Destratification and Exhaust Ventilation GTA"
+                  src="/images/combo.png"
+                  alt="Light Industrial Warehouse Destratification and Exhaust Ventilation Canada"
                   className="w-full h-[250px] sm:h-[350px] lg:h-[400px] object-contain transition-transform duration-700 group-hover:scale-105 select-none"
                   draggable="false"
                 />

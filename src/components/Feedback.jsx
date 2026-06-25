@@ -176,7 +176,7 @@ export default function Feedback() {
           </h1>
           <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            We take every piece of feedback seriously. Tell us about your experience with MetricAir — your input directly shapes how we serve the GTA community.
+            We take every piece of feedback seriously. Tell us about your experience with MetricAir — your input directly shapes how we serve the community all over Canada.
           </p>
         </div>
 

@@ -528,10 +528,10 @@ export default function AdminPanel() {
   // Seed default vacancies helper
   const handleSeedVacancies = async () => {
     const DEFAULT_SEED_VACANCIES = [
-      { title: 'HVAC Technician',        type: 'Full-time', location: 'GTA',         description: 'Experienced HVAC Technician wanted for residential and commercial service calls.' },
-      { title: 'Refrigeration Mechanic', type: 'Full-time', location: 'GTA',         description: 'Licensed refrigeration mechanic for cooling systems install and maintenance.' },
+      { title: 'HVAC Technician',        type: 'Full-time', location: 'All Over Canada', description: 'Experienced HVAC Technician wanted for residential and commercial service calls.' },
+      { title: 'Refrigeration Mechanic', type: 'Full-time', location: 'All Over Canada', description: 'Licensed refrigeration mechanic for cooling systems install and maintenance.' },
       { title: 'Sheet Metal Fabricator', type: 'Contract',  location: 'Mississauga', description: 'Sheet metal fabricator for custom ductwork designs.' },
-      { title: 'Apprentice Technician',  type: 'Full-time', location: 'GTA',         description: 'Motivated apprentice looking to learn under senior HVAC mechanics.' },
+      { title: 'Apprentice Technician',  type: 'Full-time', location: 'All Over Canada', description: 'Motivated apprentice looking to learn under senior HVAC mechanics.' },
     ];
 
     if (window.confirm("Do you want to seed initial job vacancies?")) {
@@ -1235,7 +1235,7 @@ export default function AdminPanel() {
                       value={vacFormLocation}
                       onChange={e => setVacFormLocation(e.target.value)}
                       required
-                      placeholder="e.g. GTA"
+                      placeholder="e.g. All Over Canada"
                       className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#c3252e] transition-colors"
                     />
                   </div>

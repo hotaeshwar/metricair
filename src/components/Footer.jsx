@@ -3,43 +3,152 @@ import { useLanguage } from "../LanguageContext";
 
 const FOOTER_COLUMNS = [
   {
-    heading: "RESIDENTIAL SOLUTIONS",
-    links: [
-      { label: "Heating", href: "/residential-solutions/heating" },
-      { label: "Cooling", href: "/residential-solutions/cooling" },
-      { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
-      { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
-      { label: "Furnaces & A/C Rental", href: "/rentals/furnaces-ac" },
+    heading: "RESIDENTIAL",
+    sections: [
+      {
+        title: "HVAC",
+        links: [
+          { label: "Heating Systems", href: "/services/residential-heating" },
+          { label: "Cooling Systems (AC)", href: "/services/residential-cooling" },
+          { label: "Fresh Air / Ventilation", href: "/services/residential-fresh-air" },
+          { label: "Radiant Tube Heating", href: "/services/residential-radiant" },
+        ],
+      },
+      {
+        title: "Electrical",
+        links: [
+          { label: "Lighting Installation", href: "/services/residential-lighting" },
+          { label: "Panel Upgrades", href: "/services/residential-panel" },
+          { label: "EV Charger Setup", href: "/services/residential-ev-charger" },
+          { label: "Home Wiring / Setup", href: "/services/residential-wiring" },
+        ],
+      },
+      {
+        title: "Plumbing",
+        links: [
+          { label: "Water Supply Lines", href: "/services/residential-water-supply" },
+          { label: "Drainage Systems", href: "/services/residential-drainage" },
+          { label: "Fixture Installation", href: "/services/residential-fixtures" },
+          { label: "Water Heaters", href: "/rentals/water-heaters" },
+          { label: "Water Purification", href: "/water-purification" },
+        ],
+      },
     ],
   },
   {
-    heading: "COMMERCIAL & INDUSTRIAL",
-    links: [
-      { label: "Restaurants / Kitchens", href: "/commercial-solutions/restaurants" },
-      { label: "Office & Retail Spaces", href: "/commercial-solutions/office-retail" },
-      { label: "Industrial Solutions", href: "/light-industrial" },
-      { label: "Industrial Ventilation", href: "/light-industrial" },
+    heading: "COMMERCIAL",
+    sections: [
+      {
+        title: "HVAC",
+        links: [
+          { label: "Rooftop Units (RTUs)", href: "/services/commercial-rtu" },
+          { label: "Ductwork Systems", href: "/services/commercial-ducts" },
+          { label: "Make-up Air Units", href: "/services/commercial-makeup-air" },
+          { label: "Exhaust Systems", href: "/services/commercial-exhaust" },
+          { label: "Heat Pumps", href: "/services/commercial-heat-pumps" },
+          { label: "Commercial Kitchen Vent", href: "/services/commercial-kitchen-vent" },
+          { label: "Kitchen HVAC Wiring", href: "/services/commercial-wiring" },
+          { label: "Office & Retail", href: "/commercial-solutions/office-retail" },
+          { label: "Radiant Tube Heating", href: "/services/commercial-radiant" },
+        ],
+      },
+      {
+        title: "Electrical",
+        links: [
+          { label: "New Construction Elec", href: "/services/commercial-new-construction" },
+          { label: "Panel Relocation", href: "/services/commercial-panel-relocation" },
+          { label: "Power Upgrades", href: "/services/commercial-power-upgrades" },
+          { label: "LED Lighting Upgrades", href: "/services/commercial-led-lighting" },
+          { label: "Equipment Power Supply", href: "/services/commercial-equipment-power" },
+          { label: "General Power Services", href: "/services/commercial-general-power" },
+        ],
+      },
+      {
+        title: "Plumbing",
+        links: [
+          { label: "Full Plumbing Package", href: "/services/commercial-plumbing-package" },
+          { label: "Service & Maintenance", href: "/services/commercial-plumbing-service" },
+          { label: "Retrofit Plumbing", href: "/services/commercial-plumbing-retrofit" },
+          { label: "Water Heater Reloc", href: "/services/commercial-plumbing-heater" },
+          { label: "Boilers & Hydronic", href: "/services/commercial-plumbing-boilers" },
+          { label: "Commercial Piping", href: "/services/commercial-plumbing-piping" },
+        ],
+      },
     ],
   },
   {
-    heading: "OTHER SERVICES",
-    links: [
-      { label: "Drawings & Permits", href: "/other-services/drawings-permits" },
-      { label: "Custom Hoses", href: "/other-services/custom-hoses" },
-      { label: "Construction Packages", href: "/other-services/construction-package" },
-      { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
-      { label: "Water Purification", href: "/water-purification" },
+    heading: "INDUSTRIAL",
+    sections: [
+      {
+        title: "HVAC",
+        links: [
+          { label: "Industrial Ventilation", href: "/services/industrial-ventilation" },
+          { label: "Dust & Fume Extraction", href: "/services/industrial-dust" },
+          { label: "Make-up Air Systems", href: "/services/industrial-makeup-air" },
+          { label: "Custom Ductwork Fab", href: "/services/industrial-ducts" },
+          { label: "Equipment Cooling", href: "/services/industrial-cooling" },
+          { label: "Gas Piping (HVAC)", href: "/services/industrial-gas-piping" },
+          { label: "Radiant Tube Heating", href: "/services/industrial-radiant" },
+        ],
+      },
+      {
+        title: "Electrical",
+        links: [
+          { label: "Power Distribution", href: "/services/industrial-power-dist" },
+          { label: "Equipment Wiring", href: "/services/industrial-wiring" },
+          { label: "Automation & Control", href: "/services/industrial-automation" },
+          { label: "Backup Power Systems", href: "/services/industrial-backup-power" },
+        ],
+      },
+      {
+        title: "Plumbing",
+        links: [
+          { label: "Water & Drainage", href: "/services/industrial-plumbing-water" },
+          { label: "Compressed Air Systems", href: "/services/industrial-plumbing-air" },
+          { label: "Boilers & Hydronic", href: "/services/industrial-plumbing-boilers" },
+          { label: "Industrial Pump Systems", href: "/services/industrial-plumbing-pumps" },
+        ],
+      },
+    ],
+  },
+  {
+    heading: "RENTALS & SERVICES",
+    sections: [
+      {
+        title: "Equipment Rentals",
+        links: [
+          { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
+          { label: "Furnaces & A/C Rental", href: "/rentals/furnaces-ac" },
+        ],
+      },
+      {
+        title: "Other Services",
+        links: [
+          { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
+          { label: "Construction Package", href: "/other-services/construction-package" },
+          { label: "Permit Drawings", href: "/light-industrial/permit-drawings" },
+          { label: "Water Purification", href: "/water-purification" },
+          { label: "Custom Hoses", href: "/other-services/custom-hoses" },
+          { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
+        ],
+      },
     ],
   },
   {
     heading: "QUICK LINKS",
-    links: [
-      { label: "Home", href: "/" },
-      { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers" },
-      { label: "Feedback", href: "/feedback" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Store", href: "/store" },
+    sections: [
+      {
+        title: "Navigation",
+        links: [
+          { label: "Home", href: "/" },
+          { label: "Product / Services", href: "/services" },
+          { label: "About Us", href: "/about" },
+          { label: "Careers", href: "/careers" },
+          { label: "Feedback", href: "/feedback" },
+          { label: "Contact Us", href: "/contact" },
+          { label: "Store", href: "/store" },
+        ],
+      },
     ],
   },
 ];
@@ -84,10 +193,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-4 relative z-10">
 
         {/* ── UNIFIED GRID ROW ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-8 items-start">
           
           {/* COLUMN 1: Logo & Tagline + Contact Info */}
-          <div className="lg:col-span-2 flex flex-col gap-4 text-center md:text-left">
+          <div className="lg:col-span-3 flex flex-col gap-4 text-center md:text-left">
             <a href="/" className="block">
               <img
                 src="/images/metric.png"
@@ -115,39 +224,50 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COLUMNS 2-5: Links Columns */}
-          {FOOTER_COLUMNS.map((column, index) => {
-            const accentColors = [
-              "bg-[#c3252e]", // Red
-              "bg-[#8f8cff]", // Blue
-              "bg-white",     // White
-              "bg-[#c3252e]", // Red
-            ];
-            const accentBg = accentColors[index] || "bg-white";
+          {/* COLUMNS 2-6: Links Columns */}
+          <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-start">
+            {FOOTER_COLUMNS.map((column, index) => {
+              const accentColors = [
+                "bg-[#c3252e]", // Red
+                "bg-[#8f8cff]", // Blue
+                "bg-white",     // White
+                "bg-[#25d366]", // Green
+                "bg-[#c3252e]", // Red
+              ];
+              const accentBg = accentColors[index] || "bg-white";
 
-            return (
-              <div key={column.heading} className="flex flex-col items-center text-center md:items-start md:text-left gap-3">
-                <div className="relative pb-2 w-full">
-                  <h4 className="text-white text-xs font-black tracking-widest uppercase">
-                    {t(column.heading)}
-                  </h4>
-                  <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-8 h-[2px] ${accentBg}`} />
-                </div>
-                <ul className="flex flex-col gap-2.5 items-center text-center md:items-start md:text-left w-full">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        className="block text-gray-300 text-xs font-medium hover:text-[#c3252e] hover:translate-x-1 transition-all duration-200 leading-snug"
-                      >
-                        {t(link.label)}
-                      </a>
-                    </li>
+              return (
+                <div key={column.heading} className="flex flex-col items-center text-center md:items-start md:text-left gap-3 w-full">
+                  <div className="relative pb-2 w-full">
+                    <h4 className="text-white text-xs font-black tracking-widest uppercase">
+                      {t(column.heading)}
+                    </h4>
+                    <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-8 h-[2px] ${accentBg}`} />
+                  </div>
+                  
+                  {column.sections.map((sec) => (
+                    <div key={sec.title} className="w-full flex flex-col items-center text-center md:items-start md:text-left gap-1.5 mt-2">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
+                        {t(sec.title)}
+                      </span>
+                      <ul className="flex flex-col gap-2 items-center text-center md:items-start md:text-left w-full">
+                        {sec.links.map((link) => (
+                          <li key={link.label}>
+                            <a
+                              href={link.href}
+                              className="block text-gray-300 text-[11px] font-medium hover:text-[#c3252e] hover:translate-x-1 transition-all duration-200 leading-snug"
+                            >
+                              {t(link.label)}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
-              </div>
-            );
-          })}
+                </div>
+              );
+            })}
+          </div>
 
         </div>
 

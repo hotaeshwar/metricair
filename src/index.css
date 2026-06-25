@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --blue-brand: #252362;
+  --blue-brand: #2a286e;
   --red-brand: #c3252e;
 }
 
@@ -30,7 +30,7 @@ main,
 .bg-\[\#0b0c10\],
 .bg-\[\#0f0f1c\],
 .bg-\[\#0f0f1a\] {
-  background-image: linear-gradient(rgba(37, 35, 98, 0.90), rgba(37, 35, 98, 0.90)), url('/images/draw2.jpeg') !important;
+  background-image: linear-gradient(rgba(42, 40, 110, 0.78), rgba(42, 40, 110, 0.78)), url('/images/draw2.jpeg') !important;
   background-attachment: fixed !important;
   background-size: cover !important;
   background-position: center !important;
@@ -39,7 +39,7 @@ main,
 
 /* Nav bar background matching overlay */
 nav.bg-\[\#1a1a2e\] {
-  background-image: linear-gradient(rgba(37, 35, 98, 0.96), rgba(37, 35, 98, 0.96)), url('/images/draw2.jpeg') !important;
+  background-image: linear-gradient(rgba(15, 15, 26, 0.95), rgba(15, 15, 26, 0.95)), url('/images/draw2.jpeg') !important;
   background-color: var(--blue-brand) !important;
 }
 
@@ -47,8 +47,10 @@ nav.bg-\[\#1a1a2e\] {
 .bg-\[\#16213e\],
 select.bg-\[\#16213e\],
 .bg-\[\#0f0f1a\] select {
-  background-color: #17163f !important;
-  background-image: linear-gradient(rgba(23, 22, 63, 0.96), rgba(23, 22, 63, 0.96)), url('/images/draw2.jpeg') !important;
+  background-color: rgba(30, 28, 80, 0.88) !important;
+  background-image: linear-gradient(rgba(30, 28, 80, 0.88), rgba(30, 28, 80, 0.88)), url('/images/draw2.jpeg') !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
 /* Custom Footer background using draw1.jpeg */
@@ -58,4 +60,13 @@ select.bg-\[\#16213e\],
   background-position: center !important;
   background-attachment: scroll !important;
   background-color: #0f0f1a !important;
+}
+
+/* Glassmorphism blending for the product dropdown submenu */
+.product-submenu {
+  background-color: rgba(15, 15, 26, 0.85) !important;
+  background-image: linear-gradient(rgba(15, 15, 26, 0.85), rgba(15, 15, 26, 0.85)), url('/images/draw2.jpeg') !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }

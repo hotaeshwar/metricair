@@ -246,7 +246,7 @@ export default function ResidentialCooling() {
           </h1>
           <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Stay cool all summer with MetricAir's professional air conditioning services. From installation to repair and annual maintenance — we've got the GTA covered.
+            Stay cool all summer with MetricAir's professional air conditioning services. From installation to repair and annual maintenance — we've got all of Canada covered.
           </p>
         </div>
 
@@ -353,7 +353,7 @@ export default function ResidentialCooling() {
                 transition: 'opacity 0.75s ease, transform 0.75s ease',
               }}
             >
-              <img src="/images/coolingres.jpg" alt="Ductless air conditioning unit" className="w-full h-full object-contain p-4" />
+              <img src="/images/coolingpump.png" alt="Ductless air conditioning unit" className="w-full h-full object-contain p-4" />
             </div>
 
             {/* RIGHT: points */}

@@ -565,7 +565,7 @@ export default function Store() {
             </h1>
             <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-              Premium HVAC products, filters, thermostats and accessories — delivered across the GTA. Add items to your cart and we'll confirm your order within 24 hours.
+              Premium HVAC products, filters, thermostats and accessories — delivered all over Canada. Add items to your cart and we'll confirm your order within 24 hours.
             </p>
           </div>
 
@@ -692,7 +692,7 @@ export default function Store() {
           >
             {[
               { icon: <Lock size={20} className="text-[#c3252e]" />, label: 'Secure Orders',   sub: 'Your data is safe'    },
-              { icon: <Truck size={20} className="text-[#c3252e]" />, label: 'GTA Delivery',     sub: 'Fast & reliable'      },
+              { icon: <Truck size={20} className="text-[#c3252e]" />, label: 'Canada Delivery',     sub: 'Fast & reliable'      },
               { icon: <BadgeCheck size={20} className="text-[#c3252e]" />, label: 'Genuine Products', sub: 'Verified brands'      },
               { icon: <MessageSquare size={20} className="text-[#c3252e]" />, label: '24hr Response',    sub: 'We confirm all orders'},
             ].map(b => (

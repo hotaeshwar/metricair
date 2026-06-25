@@ -42,9 +42,9 @@ export default function CompleteConstructionPackage() {
 
   return (
     <div className="w-full bg-[#1a1a2e] text-white pt-24 pb-16 sm:pt-32 lg:pt-36 overflow-hidden">
-      
+
       {/* ── HERO ── */}
-      <section 
+      <section
         ref={heroRef}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center transition-all duration-1000 ease-out"
         style={{
@@ -72,9 +72,9 @@ export default function CompleteConstructionPackage() {
       {/* ── CONTENT GRID ── */}
       <section ref={gridRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          
+
           {/* Details column */}
-          <div 
+          <div
             className="lg:col-span-6 flex flex-col gap-6 transition-all duration-800 ease-out"
             style={{
               opacity: gridInView ? 1 : 0,
@@ -82,11 +82,11 @@ export default function CompleteConstructionPackage() {
             }}
           >
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group">
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#0f0f1a]/50">
                 <img 
-                  src="/images/commercial.jpg" 
-                  alt="Turnkey Restaurant Kitchen Exhaust and Mechanical Construction" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 select-none"
+                  src="/images/complete_construction_package_ai.png"
+                  alt="Turnkey Restaurant Kitchen Construction"
+                  className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
                   draggable="false"
                 />
               </div>
@@ -97,8 +97,8 @@ export default function CompleteConstructionPackage() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {HIGHLIGHTS.map((feat, idx) => (
-                    <div 
-                      key={feat} 
+                    <div
+                      key={feat}
                       className="flex items-start gap-2.5 text-xs text-gray-300 leading-snug transition-all duration-500 ease-out"
                       style={{
                         opacity: gridInView ? 1 : 0,
@@ -116,7 +116,7 @@ export default function CompleteConstructionPackage() {
           </div>
 
           {/* Form column */}
-          <div 
+          <div
             className="lg:col-span-6 bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 transition-all duration-800 ease-out"
             style={{
               opacity: gridInView ? 1 : 0,
@@ -125,11 +125,11 @@ export default function CompleteConstructionPackage() {
             }}
           >
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wider border-b border-white/10 pb-3">Apply for a Construction Package</h3>
-            
-            <LeadForm 
-              subject="Restaurant Construction Package Inquiry" 
-              fromName="MetricAir Restaurant Construction" 
-              buttonText="Request Construction Consultation" 
+
+            <LeadForm
+              subject="Restaurant Construction Package Inquiry"
+              fromName="MetricAir Restaurant Construction"
+              buttonText="Request Construction Consultation"
             />
           </div>
 

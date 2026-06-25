@@ -45,7 +45,7 @@ const PERKS = [
   { title: 'Flexible Scheduling', desc: 'We respect your time. Shifts designed around you — not the other way around.',                  Icon: Clock        },
   { title: 'Full Equipment',      desc: 'All tools, vehicles, and protective equipment provided — you focus on the work.',               Icon: Wrench       },
   { title: 'Great Team Culture',  desc: 'A crew that has your back. Respectful, experienced colleagues who take pride in their work.',   Icon: Users        },
-  { title: 'GTA Coverage',        desc: 'Work close to home across the Greater Toronto Area — no long-haul travel required.',            Icon: MapPin       },
+  { title: 'Canada-wide Coverage', desc: 'Work across Canada with our local dispatch and regional offices.',            Icon: MapPin       },
 ];
 
 const VALUES = [
@@ -117,14 +117,14 @@ export default function Careers() {
           </h1>
           <div className="w-24 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            MetricAir is growing across the Greater Toronto Area and we're looking for passionate, skilled individuals to join our crew. Whether you're a seasoned technician or just starting out — there's a place for you here.
+            MetricAir is growing all over Canada and we're looking for passionate, skilled individuals to join our crew. Whether you're a seasoned technician or just starting out — there's a place for you here.
           </p>
 
           {/* Stat pills */}
           <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
             {[
               { val: '20+',  label: 'Years in Business' },
-              { val: 'GTA',  label: 'Wide Coverage'     },
+              { val: 'Canada',  label: 'Wide Coverage'     },
               { val: '100%', label: 'Licensed & Insured' },
             ].map((s, i) => (
               <div

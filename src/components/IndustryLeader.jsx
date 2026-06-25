@@ -13,6 +13,9 @@ const BRANDS = [
   { src: '/images/Rheem.png', alt: 'Rheem' },
   { src: '/images/Rinnai.png', alt: 'Rinnai' },
   { src: '/images/Tosot.png', alt: 'Tosot' },
+  { src: '/images/Aquamatic logo.png', alt: 'Aquamatic' },
+  { src: '/images/Sunair logo.jpg', alt: 'Sunair' },
+  { src: '/images/Ventilation direct.png', alt: 'Ventilation Direct' },
   // duplicate set for seamless infinite loop
   { src: '/images/Trane.png', alt: 'Trane' },
   { src: '/images/York.png', alt: 'York' },
@@ -25,9 +28,12 @@ const BRANDS = [
   { src: '/images/Rheem.png', alt: 'Rheem' },
   { src: '/images/Rinnai.png', alt: 'Rinnai' },
   { src: '/images/Tosot.png', alt: 'Tosot' },
+  { src: '/images/Aquamatic logo.png', alt: 'Aquamatic' },
+  { src: '/images/Sunair logo.jpg', alt: 'Sunair' },
+  { src: '/images/Ventilation direct.png', alt: 'Ventilation Direct' },
 ];
 
-const REAL = 11;
+const REAL = 14;
 
 function getSlidesVisible() {
   if (typeof window === 'undefined') return 3;

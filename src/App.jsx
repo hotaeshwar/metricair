@@ -18,7 +18,14 @@ import ResidentialHeating    from "./components/Residentialheating";
 import ResidentialCooling    from "./components/ResidentialCooling";
 import FreshAir              from "./components/Freshair";
 import CommercialRestaurant  from "./components/CommercialRestaurant";
+import ResidentialElectrical from "./components/ResidentialElectrical";
+import ResidentialPlumbing   from "./components/ResidentialPlumbing";
+import CommercialElectrical  from "./components/CommercialElectrical";
+import CommercialPlumbing   from "./components/CommercialPlumbing";
+import IndustrialElectrical  from "./components/IndustrialElectrical";
+import IndustrialPlumbing   from "./components/IndustrialPlumbing";
 import LightIndustrial       from "./components/LightIndustrial";
+import ServiceDetails        from "./components/ServiceDetails";
 import MepSolutions          from "./components/MepSolutions";
 import DrawingsPermits       from "./components/DrawingsPermits";
 import CustomHoses           from "./components/CustomHoses";
@@ -44,10 +51,22 @@ import { LanguageProvider } from "./LanguageContext";
 
 /* ── Scroll to top on every route change ── */
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname]);
+    if (hash) {
+      // Add a slight timeout to ensure page content is fully rendered before scrolling
+      const timer = setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [pathname, hash]);
   return null;
 }
 
@@ -205,11 +224,15 @@ function AppContent() {
         <Route path="/residential-solutions/heating"   element={<><ResidentialHeating /><Footer /></>} />
         <Route path="/residential-solutions/cooling"   element={<><ResidentialCooling /><Footer /></>} />
         <Route path="/residential-solutions/fresh-air" element={<><FreshAir /><Footer /></>} />
+        <Route path="/residential-solutions/electrical" element={<><ResidentialElectrical /><Footer /></>} />
+        <Route path="/residential-solutions/plumbing"   element={<><ResidentialPlumbing /><Footer /></>} />
 
         {/* ── Commercial Solutions ── */}
         <Route path="/commercial-solutions"            element={<><CommercialSolutions /><Footer /></>} />
         <Route path="/commercial-solutions/restaurants" element={<><CommercialRestaurant /><Footer /></>} />
         <Route path="/commercial-solutions/office-retail" element={<><OfficeRetailSpaces /><Footer /></>} />
+        <Route path="/commercial-solutions/electrical" element={<><CommercialElectrical /><Footer /></>} />
+        <Route path="/commercial-solutions/plumbing"   element={<><CommercialPlumbing /><Footer /></>} />
         <Route path="/light-industrial"                 element={<><LightIndustrial /><Footer /></>} />
         <Route path="/mep-solutions"                    element={<><MepSolutions /><Footer /></>} />
         <Route path="/light-industrial/exhaust-systems" element={<><IndustrialExhaust /><Footer /></>} />
@@ -218,6 +241,11 @@ function AppContent() {
         <Route path="/light-industrial/dust-compliance"  element={<><DustCompliance /><Footer /></>} />
         <Route path="/light-industrial/permit-drawings"  element={<><EngineeredDrawings /><Footer /></>} />
         <Route path="/light-industrial/air-quality"      element={<><AirQualityAssessments /><Footer /></>} />
+        <Route path="/light-industrial/electrical"      element={<><IndustrialElectrical /><Footer /></>} />
+        <Route path="/light-industrial/plumbing"       element={<><IndustrialPlumbing /><Footer /></>} />
+
+        {/* ── Dynamic Service Details Route ── */}
+        <Route path="/services/:serviceId"              element={<><ServiceDetails /><Footer /></>} />
 
         {/* ── Other Services ── */}
         <Route path="/other-services/drawings-permits"  element={<><DrawingsPermits /><Footer /></>} />

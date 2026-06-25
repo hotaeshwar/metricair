@@ -82,11 +82,11 @@ export default function DrawingsPermits() {
             }}
           >
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group">
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#0f0f1a]/50">
                 <img 
-                  src="/images/drawing.jpg" 
-                  alt="Stamped HVAC Permit Drawings and Mechanical Plans" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 select-none"
+                  src="/images/drawings_permits_ai.png"
+                  alt="Stamped HVAC Permit Drawings"
+                  className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
                   draggable="false"
                 />
               </div>

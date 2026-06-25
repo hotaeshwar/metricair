@@ -64,7 +64,7 @@ export default function Services() {
           <span className="text-white">Industrial</span>
         </div>
         <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
-          We provide custom climate comfort solutions, commercial exhaust systems, and engineered permit drawings across the Greater Toronto Area. Explore our residential, commercial, and industrial expertise below.
+          We provide custom climate comfort solutions, commercial exhaust systems, and engineered permit drawings all over Canada. Explore our residential, commercial, and industrial expertise below.
         </p>
       </section>
 
@@ -84,7 +84,7 @@ export default function Services() {
           <div className="text-center mb-8 sm:mb-10">
             <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-2">Estimation Request</span>
             <h2 className="font-black text-xl sm:text-3xl text-white">Need HVAC Design or Engineering?</h2>
-            <p className="text-gray-400 text-xs sm:text-sm mt-2">Connect with our licensed P.Eng designers and field installers. We provide stamp approvals and installations across the GTA.</p>
+            <p className="text-gray-400 text-xs sm:text-sm mt-2">Connect with our licensed P.Eng designers and field installers. We provide stamp approvals and installations all over Canada.</p>
           </div>
 
           <LeadForm 

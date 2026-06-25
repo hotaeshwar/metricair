@@ -272,7 +272,7 @@ export default function ResidentialHeating() {
           </h1>
           <div className="w-14 h-1 rounded-full bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white mx-auto mb-6" />
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Year-round home comfort with a single system. Heat pumps provide both heating and cooling, offering exceptional energy efficiency across all seasons in the GTA.
+            Year-round home comfort with a single system. Heat pumps provide both heating and cooling, offering exceptional energy efficiency across all seasons all over Canada.
           </p>
         </div>
 
@@ -294,7 +294,7 @@ export default function ResidentialHeating() {
 
           <LadderSection
             steps={HEAT_STEPS}
-            image="/images/heatpump.png"
+            image="/images/res_heatpump_winter.png"
             imageAlt="Heat pump heating operation"
             imageLeft={false}
             inView={heatInView}
@@ -328,7 +328,7 @@ export default function ResidentialHeating() {
 
           <LadderSection
             steps={COOL_STEPS}
-            image="/images/coolingpump.png"
+            image="/images/res_heatpump_summer.png"
             imageAlt="Heat pump cooling operation"
             imageLeft={true}
             inView={coolInView}

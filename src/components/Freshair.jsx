@@ -65,7 +65,7 @@ const SERVICES = [
     highlight: 'Continuous fresh air circulation',
   },
   {
-    img: '/images/uv.png',
+    img: '/images/res_uv_ai.png',
     title: 'UV Germicidal Lights',
     desc: 'We use UV germicidal lights to target bacteria, viruses, and mold spores. MetricAir eliminates air contaminants to create a healthier indoor environment for every household member.',
     highlight: 'Kills bacteria, viruses & mold spores',
@@ -86,7 +86,7 @@ const BENEFITS = [
   'Control humidity for year-round comfort',
   'Protect your HVAC system and extend its lifespan',
   'Improve sleep quality and overall well-being',
-  'Certified GTA technicians — all makes and models serviced',
+  'Certified technicians all over Canada — all makes and models serviced',
 ];
 
 /* ════════════════════════════════════════
@@ -141,7 +141,7 @@ export default function FreshAir() {
             </h1>
             <div className="w-14 h-1 rounded-full mb-6 bg-gradient-to-r from-[#c3252e] via-[#8f8cff] to-white" />
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
-              MetricAir is the GTA's trusted indoor air quality expert. We have a dedicated home air quality team focused on air duct cleaning, dehumidifiers, ionizers and more — because we care about your family's well-being.
+              MetricAir is Canada's trusted indoor air quality expert. We have a dedicated home air quality team focused on air duct cleaning, dehumidifiers, ionizers and more — because we care about your family's well-being.
             </p>
             <p className="text-gray-400 text-base leading-relaxed mb-8">
               Whether you need an air duct cleaning or a new air filtration system, MetricAir will guide you through every step of improving your indoor air quality.
@@ -223,10 +223,10 @@ export default function FreshAir() {
             <h2 className="text-white font-black text-2xl sm:text-3xl lg:text-4xl leading-tight mb-5">
               Comprehensive Indoor Air Quality<br />
               <span className="text-[#c3252e]">Services </span>
-              <span className="text-[#8f8cff]">for the GTA</span>
+              <span className="text-[#8f8cff]">for all of Canada</span>
             </h2>
             <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4">
-              MetricAir provides the GTA's trusted indoor air quality solutions because we have a dedicated home air quality team that focuses on things like air duct cleaning, air dehumidifiers, and ionizers. We care about each customer's well-being and want their homes to be as healthy a living environment as possible.
+              MetricAir provides Canada's trusted indoor air quality solutions because we have a dedicated home air quality team that focuses on things like air duct cleaning, air dehumidifiers, and ionizers. We care about each customer's well-being and want their homes to be as healthy a living environment as possible.
             </p>
             <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
               Whether you need an air duct cleaning or a new air filtration system, MetricAir will help you through every step of improving your indoor air quality. Contact us or go online to schedule an appointment today.

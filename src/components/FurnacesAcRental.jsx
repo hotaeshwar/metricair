@@ -31,7 +31,7 @@ const HIGHLIGHTS = [
   "Zero Diagnostic or Repair Fees for Life",
   "Free Professional Removal of Old Systems",
   "High-Efficiency Energy Star Rated Furnaces & A/C",
-  "24/7 Priority Support and Repairs Across GTA",
+  "24/7 Priority Support and Repairs All Over Canada",
   "Annual Free Maintenance and Tune-ups Included",
   "Affordable Monthly Rates with Zero Capital Outlay"
 ];
@@ -82,23 +82,13 @@ export default function FurnacesAcRental() {
             }}
           >
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group">
-              <div className="grid grid-cols-2 gap-2 p-2 bg-[#16213e]/40">
-                <div className="relative h-44 sm:h-56 rounded-xl overflow-hidden">
-                  <img
-                    src="/images/furnance.jpg"
-                    alt="High-Efficiency Gas Furnace Rental GTA"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 select-none"
-                    draggable="false"
-                  />
-                </div>
-                <div className="relative h-44 sm:h-56 rounded-xl overflow-hidden">
-                  <img
-                    src="/images/rentals.jpg"
-                    alt="High-Efficiency Air Conditioner System Rental GTA"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 select-none"
-                    draggable="false"
-                  />
-                </div>
+              <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#0f0f1a]/50">
+                <img 
+                  src="/images/furnace_ac_rental_ai.png"
+                  alt="Furnace and AC Rental Systems"
+                  className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
+                  draggable="false"
+                />
               </div>
               <div className="p-6 sm:p-8">
                 <h2 className="text-white font-black text-xl sm:text-2xl mb-4">Complete Comfort Protection</h2>

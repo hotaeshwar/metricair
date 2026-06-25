@@ -74,6 +74,8 @@ const SERVICES = [
 export default function LightIndustrial() {
   const [heroRef, heroInView] = useInView(0.02);
   const [gridRef, gridInView] = useInView(0.05);
+  const [elecRef, elecInView] = useInView(0.05);
+  const [plumbRef, plumbInView] = useInView(0.05);
   const [formRef, formInView] = useInView(0.05);
 
   return (
@@ -92,7 +94,7 @@ export default function LightIndustrial() {
           style={{ opacity: heroInView ? 1 : 0, transform: heroInView ? 'translateY(0)' : 'translateY(16px)', transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s' }}
         >
           <img
-            src="/images/industrial.png"
+            src="/images/combo.png"
             alt="Light Industrial HVAC Ventilation and Climate System Installation"
             className="w-full h-auto object-contain block"
             draggable="false"
@@ -100,8 +102,8 @@ export default function LightIndustrial() {
         </div>
       </section>
 
-      {/* ── SERVICES GRID ── */}
-      <section ref={gridRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 sm:mb-28">
+      {/* ── HVAC SOLUTIONS SECTION ── */}
+      <section id="hvac" ref={gridRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 sm:mb-32">
         <div
           className="text-center mb-12 sm:mb-16 transition-all duration-700 ease-out"
           style={{
@@ -110,7 +112,7 @@ export default function LightIndustrial() {
           }}
         >
           <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-2">Our Capabilities</span>
-          <h2 className="font-black text-2xl sm:text-4xl text-white">Engineered Systems</h2>
+          <h2 className="font-black text-2xl sm:text-4xl text-white">Industrial HVAC Systems</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
@@ -144,6 +146,142 @@ export default function LightIndustrial() {
         </div>
       </section>
 
+      {/* ── ELECTRICAL SERVICES SECTION ── */}
+      <section id="electrical" ref={elecRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 sm:mb-32">
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center transition-all duration-1000 ease-out"
+          style={{
+            opacity: elecInView ? 1 : 0,
+            transform: elecInView ? 'translateY(0)' : 'translateY(30px)',
+          }}
+        >
+          {/* Details column */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            <div>
+              <span className="text-[#c3252e] text-xs font-bold uppercase tracking-widest block mb-2">High Voltage & Control Loops</span>
+              <h2 className="font-black text-2xl sm:text-4xl text-white">Industrial Electrical Services</h2>
+            </div>
+            
+            <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+              We design and coordinate full industrial electrical systems, layout power distribution grids, configure automated process control panels, and hook up backup generators. All installations are certified by licensed professionals and comply with local safety rules.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#c3252e] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Power Distribution Systems</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Heavy industrial service panels, switchgears, sub-stations, and transformers.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#c3252e] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Industrial Equipment Wiring</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Power connections for heavy blowers, dust collectors, pumps, and processors.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#c3252e] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Automation & Control Systems</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Variable frequency drive (VFD) panels, PLC controllers, and sensor loops.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#c3252e] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Backup Power Systems</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Heavy generator hookups, automatic transfer switches (ATS), and UPS arrays.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Graphics column */}
+          <div className="lg:col-span-5 bg-white/5 border border-white/10 rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center gap-6 relative group overflow-hidden">
+            <div className="w-16 h-16 rounded-2xl bg-[#c3252e]/10 border border-[#c3252e]/20 flex items-center justify-center text-[#c3252e]">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-white font-bold text-xl text-center">TSSA & ESA Compliant Layouts</h3>
+            <p className="text-gray-400 text-xs sm:text-sm text-center leading-relaxed">
+              Our engineering layouts handle complex three-phase power loads and automated controls while maintaining full compliance.
+            </p>
+            <div className="w-full h-1 rounded bg-[#c3252e]/20 mt-2" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── PLUMBING SERVICES SECTION ── */}
+      <section id="plumbing" ref={plumbRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 sm:mb-32">
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center transition-all duration-1000 ease-out"
+          style={{
+            opacity: plumbInView ? 1 : 0,
+            transform: plumbInView ? 'translateY(0)' : 'translateY(30px)',
+          }}
+        >
+          {/* Graphics column (appears first on desktop) */}
+          <div className="lg:col-span-5 order-last lg:order-first bg-white/5 border border-white/10 rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center gap-6 relative group overflow-hidden">
+            <div className="w-16 h-16 rounded-2xl bg-[#8f8cff]/10 border border-[#8f8cff]/20 flex items-center justify-center text-[#8f8cff]">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <h3 className="text-white font-bold text-xl text-center">Process Fluid & Air Piping</h3>
+            <p className="text-gray-400 text-xs sm:text-sm text-center leading-relaxed">
+              We design and layout heavy water loops, compressed air lines, high-pressure steam distribution, and hydronic loop systems for industrial scale.
+            </p>
+            <div className="w-full h-1 rounded bg-[#8f8cff]/20 mt-2" />
+          </div>
+
+          {/* Details column */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            <div>
+              <span className="text-[#8f8cff] text-xs font-bold uppercase tracking-widest block mb-2">Water, Air & Steam Piping</span>
+              <h2 className="font-black text-2xl sm:text-4xl text-white">Industrial Plumbing & Piping</h2>
+            </div>
+            
+            <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+              Our industrial plumbers and pipefitters plan, fabricate, and install heavy-duty piping systems. We lay boiler loops, compressed air grids, industrial pump stations, and drainage networks built for continuous high-load operations.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#8f8cff] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Water & Drainage Piping</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Heavy industrial water supply manifolds, process cooling loops, and drainage piping.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#8f8cff] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Compressed Air Systems</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Copper or aluminum compressed air grids, air dryers, manifolds, and receiver hookups.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#8f8cff] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Boilers & Hydronic Loops</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">High-pressure steam boilers, heat exchangers, and primary/secondary heating loops.</p>
+                </div>
+              </div>
+              <div className="flex gap-3 text-sm text-gray-300">
+                <span className="text-[#8f8cff] text-lg font-bold">✓</span>
+                <div>
+                  <h4 className="text-white font-bold text-sm">Industrial Pump Systems</h4>
+                  <p className="text-gray-400 text-xs mt-0.5">Chilled water pumps, booster pumps, sewage ejectors, and pressure vessels.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── CONTACT & CONSULTATION FORM ── */}
       <section
         ref={formRef}
@@ -161,7 +299,7 @@ export default function LightIndustrial() {
           </div>
 
           <LeadForm
-            subject="Industrial Inquiry"
+            subject="Industrial Inquiry (HVAC/Elec/Plumb)"
             fromName="MetricAir Industrial"
             buttonText="Request Consultation"
           />

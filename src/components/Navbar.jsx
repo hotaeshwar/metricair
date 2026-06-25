@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, Home, Building2, Factory, Wrench, Flame, Zap, Droplet, ChevronRight, DollarSign } from "lucide-react";
 
 /* ── Real WhatsApp SVG icon ── */
 const WhatsAppIcon = ({ size = 20 }) => (
@@ -17,35 +17,94 @@ const WhatsAppIcon = ({ size = 20 }) => (
 );
 
 const PRODUCT_MENU = {
-  residential: [
-    { label: "Heating", href: "/residential-solutions/heating" },
-    { label: "Cooling", href: "/residential-solutions/cooling" },
-    { label: "Fresh Air", href: "/residential-solutions/fresh-air" },
-    { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
-    { label: "Furnaces & A/C Rental", href: "/rentals/furnaces-ac" },
-    { label: "Water Purification", href: "/water-purification" },
-    { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
-    { label: "Custom Hoses", href: "/other-services/custom-hoses" },
-    { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
-  ],
-  commercial: [
-    { label: "Restaurants / Kitchens", href: "/commercial-solutions/restaurants" },
-    { label: "Office & Retail Spaces", href: "/commercial-solutions/office-retail" },
-    { label: "Complete Construction Package", href: "/other-services/construction-package" },
-  ],
-  lightIndustrial: [
-    { label: "Industrial Exhaust Systems", href: "/light-industrial/exhaust-systems" },
-    { label: "HVLS Destratification Fans", href: "/light-industrial/hvls-fans" },
-    { label: "Radiant Tube Heating", href: "/light-industrial/radiant-heating" },
-    { label: "Combustible Dust Compliance", href: "/light-industrial/dust-compliance" },
-    { label: "Engineered Permit Drawings", href: "/light-industrial/permit-drawings" },
-    { label: "Air Quality Assessments", href: "/light-industrial/air-quality" },
-  ],
-  mep: [
-    { label: "Mechanical (HVAC)", href: "/mep-solutions" },
-    { label: "Electrical Layouts", href: "/mep-solutions" },
-    { label: "Plumbing & Piping", href: "/mep-solutions" },
-  ],
+  residential: {
+    hvac: [
+      { label: "Heating Systems", href: "/services/residential-heating" },
+      { label: "Cooling Systems (AC)", href: "/services/residential-cooling" },
+      { label: "Fresh Air / Ventilation", href: "/services/residential-fresh-air" },
+      { label: "Radiant Tube Heating", href: "/services/residential-radiant" },
+    ],
+    electrical: [
+      { label: "Lighting Installation", href: "/services/residential-lighting" },
+      { label: "Panel Upgrades", href: "/services/residential-panel" },
+      { label: "EV Charger Installation", href: "/services/residential-ev-charger" },
+      { label: "Home Wiring / Setup", href: "/services/residential-wiring" },
+    ],
+    plumbing: [
+      { label: "Water Supply Lines", href: "/services/residential-water-supply" },
+      { label: "Drainage Systems", href: "/services/residential-drainage" },
+      { label: "Fixture Installation", href: "/services/residential-fixtures" },
+      { label: "Water Heaters", href: "/rentals/water-heaters" },
+      { label: "Water Purification", href: "/water-purification" },
+    ]
+  },
+  commercial: {
+    hvac: [
+      { label: "Rooftop Units (RTUs)", href: "/services/commercial-rtu" },
+      { label: "Ductwork Systems", href: "/services/commercial-ducts" },
+      { label: "Make-up Air Units", href: "/services/commercial-makeup-air" },
+      { label: "Exhaust Systems", href: "/services/commercial-exhaust" },
+      { label: "Heat Pumps", href: "/services/commercial-heat-pumps" },
+      { label: "Commercial Kitchen Vent", href: "/services/commercial-kitchen-vent" },
+      { label: "Kitchen HVAC Wiring", href: "/services/commercial-wiring" },
+      { label: "Office Spaces", href: "/services/commercial-office" },
+      { label: "Retail Spaces", href: "/services/commercial-retail" },
+      { label: "Radiant Tube Heating", href: "/services/commercial-radiant" },
+    ],
+    electrical: [
+      { label: "New Construction Electrical", href: "/services/commercial-new-construction" },
+      { label: "Panel Relocation", href: "/services/commercial-panel-relocation" },
+      { label: "Power Upgrades", href: "/services/commercial-power-upgrades" },
+      { label: "LED Lighting Upgrades", href: "/services/commercial-led-lighting" },
+      { label: "Equipment Power Supply", href: "/services/commercial-equipment-power" },
+      { label: "General Power Services", href: "/services/commercial-general-power" },
+    ],
+    plumbing: [
+      { label: "Full Building Plumbing Package", href: "/services/commercial-plumbing-package" },
+      { label: "Service & Maintenance", href: "/services/commercial-plumbing-service" },
+      { label: "Retrofit Plumbing Systems", href: "/services/commercial-plumbing-retrofit" },
+      { label: "Water Heater Relocation", href: "/services/commercial-plumbing-heater" },
+      { label: "Boilers & Hydronic Heating", href: "/services/commercial-plumbing-boilers" },
+      { label: "Commercial Piping Systems", href: "/services/commercial-plumbing-piping" },
+    ]
+  },
+  industrial: {
+    hvac: [
+      { label: "Industrial Ventilation", href: "/services/industrial-ventilation" },
+      { label: "Dust & Fume Extraction", href: "/services/industrial-dust" },
+      { label: "Make-up Air Systems", href: "/services/industrial-makeup-air" },
+      { label: "Custom Ductwork Fabrication", href: "/services/industrial-ducts" },
+      { label: "Equipment Cooling Systems", href: "/services/industrial-cooling" },
+      { label: "Gas Piping (HVAC-related)", href: "/services/industrial-gas-piping" },
+      { label: "Radiant Tube Heating", href: "/services/industrial-radiant" },
+    ],
+    electrical: [
+      { label: "Power Distribution Systems", href: "/services/industrial-power-dist" },
+      { label: "Industrial Equipment Wiring", href: "/services/industrial-wiring" },
+      { label: "Automation & Control", href: "/services/industrial-automation" },
+      { label: "Backup Power Systems", href: "/services/industrial-backup-power" },
+    ],
+    plumbing: [
+      { label: "Industrial Water & Drainage", href: "/services/industrial-plumbing-water" },
+      { label: "Compressed Air Systems", href: "/services/industrial-plumbing-air" },
+      { label: "Boiler Systems & Hydronic", href: "/services/industrial-plumbing-boilers" },
+      { label: "Industrial Pump Systems", href: "/services/industrial-plumbing-pumps" },
+    ]
+  },
+  rentalsAndServices: {
+    rentals: [
+      { label: "Water Heaters Rental", href: "/rentals/water-heaters" },
+      { label: "Furnaces and A/C Rental", href: "/rentals/furnaces-ac" },
+    ],
+    services: [
+      { label: "Custom Ductwork", href: "/other-services/custom-ductwork" },
+      { label: "Complete Construction Package", href: "/other-services/construction-package" },
+      { label: "Engineered Permit Drawings", href: "/light-industrial/permit-drawings" },
+      { label: "Water Purification", href: "/water-purification" },
+      { label: "Custom Hoses", href: "/other-services/custom-hoses" },
+      { label: "Drawings and Permits", href: "/other-services/drawings-permits" },
+    ]
+  }
 };
 
 const WHATSAPP_NUMBER = "16479241421";
@@ -59,6 +118,14 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileResOpen, setMobileResOpen] = useState(false);
+  
+  // Mobile accordion states
+  const [mobileResSecOpen, setMobileResSecOpen] = useState(null);
+  const [mobileComSecOpen, setMobileComSecOpen] = useState(null);
+  const [mobileIndSecOpen, setMobileIndSecOpen] = useState(null);
+  const [mobileRentSecOpen, setMobileRentSecOpen] = useState(null);
+
+  const [activeTab, setActiveTab] = useState("residential");
 
   const timeoutRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -140,99 +207,446 @@ export default function Navbar() {
 
   const renderDropdown = () => {
     if (activeDropdown !== "product") return null;
+
+    const tabs = [
+      {
+        id: "residential",
+        label: "Residential",
+        desc: "Home HVAC, electrical, & plumbing",
+        icon: Home,
+        color: "text-[#c3252e]",
+        bgActive: "bg-[#c3252e]/10 border-[#c3252e]/30"
+      },
+      {
+        id: "commercial",
+        label: "Commercial",
+        desc: "Offices, retail, & restaurants",
+        icon: Building2,
+        color: "text-[#8f8cff]",
+        bgActive: "bg-[#8f8cff]/10 border-[#8f8cff]/30"
+      },
+      {
+        id: "industrial",
+        label: "Industrial",
+        desc: "Ventilation, exhaust, & power",
+        icon: Factory,
+        color: "text-white",
+        bgActive: "bg-white/10 border-white/20"
+      },
+      {
+        id: "rentalsAndServices",
+        label: "Rentals & Services",
+        desc: "Equipment rentals & custom work",
+        icon: Wrench,
+        color: "text-[#25d366]",
+        bgActive: "bg-[#25d366]/10 border-[#25d366]/30"
+      }
+    ];
+
+    const currentTab = tabs.find(t => t.id === activeTab) || tabs[0];
+
     return (
       <div
-        className="fixed bg-[#16213e] border border-white/10 rounded-2xl shadow-2xl p-8 z-50"
+        className="fixed product-submenu rounded-2xl shadow-2xl p-6 z-50 flex flex-row gap-6"
         style={{
-          top: "80px",
+          top: "85px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "980px",
+          width: "1150px",
           maxWidth: "calc(100vw - 32px)",
+          minHeight: "480px",
         }}
       >
-        <div className="grid grid-cols-3 gap-8">
-          {/* Residential */}
-          <div>
-            <Link
-              to="/residential-solutions"
-              className="flex items-center text-[#c3252e] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#c3252e]/20"
-            >
-              Residential Solutions
-            </Link>
-            <div className="space-y-4">
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">HVAC Systems</span>
-                <ul className="space-y-1">
-                  <li><Link to="/residential-solutions/heating" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Heating</Link></li>
-                  <li><Link to="/residential-solutions/cooling" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Cooling</Link></li>
-                  <li><Link to="/residential-solutions/fresh-air" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Fresh Air</Link></li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Equipment Rentals</span>
-                <ul className="space-y-1">
-                  <li><Link to="/rentals/water-heaters" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Water Heaters Rental</Link></li>
-                  <li><Link to="/rentals/furnaces-ac" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Furnaces and A/C Rental</Link></li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Other Services</span>
-                <ul className="space-y-1">
-                  <li><Link to="/water-purification" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Water Purification</Link></li>
-                  <li><Link to="/other-services/drawings-permits" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Drawings and Permits</Link></li>
-                  <li><Link to="/other-services/custom-hoses" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Custom Hoses</Link></li>
-                  <li><Link to="/other-services/custom-ductwork" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Custom Ductwork</Link></li>
-                </ul>
-              </div>
-            </div>
+        {/* Left Sidebar - Tabs */}
+        <div className="w-1/4 border-r border-white/10 pr-6 flex flex-col gap-2.5 justify-start pt-2">
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-3 mb-2 block">
+            Select Category
+          </span>
+          {tabs.map((tab) => {
+            const IconComponent = tab.icon;
+            const isTabActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onMouseEnter={() => setActiveTab(tab.id)}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-start gap-4 p-3 rounded-xl border text-left transition-all duration-205 cursor-pointer ${
+                  isTabActive
+                    ? `${tab.bgActive} shadow-lg shadow-[#000]/10`
+                    : "border-transparent bg-transparent hover:bg-white/5"
+                }`}
+              >
+                <div className={`p-2 rounded-lg ${isTabActive ? tab.color + " bg-white/5" : "text-gray-400 bg-white/5"}`}>
+                  <IconComponent size={20} />
+                </div>
+                <div className="flex-1">
+                  <div className={`text-sm font-bold transition-colors ${isTabActive ? "text-white" : "text-gray-300"}`}>
+                    {tab.label}
+                  </div>
+                  <div className="text-[11px] text-gray-400 mt-0.5 line-clamp-1 leading-none">
+                    {tab.desc}
+                  </div>
+                </div>
+                {isTabActive && (
+                  <ChevronRight size={14} className={`mt-3.5 ${tab.color}`} />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Panel - Content Grid */}
+        <div className="flex-1 pl-4 flex flex-col justify-between pt-2">
+          {/* Header */}
+          <div className="mb-4">
+            <h4 className="text-white text-base font-black flex items-center gap-2">
+              <span className={`inline-block w-2.5 h-2.5 rounded-full ${currentTab.color === 'text-white' ? 'bg-white' : currentTab.color.replace('text-', 'bg-')}`} />
+              {currentTab.label} Solutions
+            </h4>
+            <p className="text-xs text-gray-400 mt-1">
+              Browse our comprehensive range of {currentTab.label.toLowerCase()} services and systems.
+            </p>
           </div>
 
-          {/* Commercial */}
-          <div>
-            <Link
-              to="/commercial-solutions"
-              className="flex items-center text-[#8f8cff] text-sm font-black uppercase tracking-wider mb-4 hover:text-white transition-colors duration-150 pb-2 border-b border-[#8f8cff]/20"
-            >
-              Commercial Solutions
-            </Link>
-            <div className="space-y-4">
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Kitchens & Retail</span>
-                <ul className="space-y-1">
-                  <li><Link to="/commercial-solutions/restaurants" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Restaurants / Commercial Kitchens</Link></li>
-                  <li><Link to="/commercial-solutions/office-retail" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Office and Retail Spaces</Link></li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Construction Packages</span>
-                <ul className="space-y-1">
-                  <li><Link to="/other-services/construction-package" className="block text-gray-300 text-sm hover:text-[#8f8cff] hover:pl-1 transition-all duration-150">Complete Construction Package</Link></li>
-                </ul>
-              </div>
-            </div>
+          {/* Columns */}
+          <div className="flex-1 grid grid-cols-3 gap-6 overflow-y-auto max-h-[300px] pr-2">
+            {activeTab === "residential" && (
+              <>
+                {/* Residential Column 1: HVAC */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Flame size={14} className="text-[#c3252e]" />
+                    <span className="text-gray-300 text-xs font-black uppercase tracking-wider">HVAC</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.residential.hvac.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#c3252e] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#c3252e] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Residential Column 2: Electrical */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Zap size={14} className="text-[#c3252e]" />
+                    <Link
+                      to="/residential-solutions/electrical"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-[#c3252e] transition-colors"
+                    >
+                      Electrical
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.residential.electrical.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#c3252e] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#c3252e] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Residential Column 3: Plumbing */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Droplet size={14} className="text-[#c3252e]" />
+                    <Link
+                      to="/residential-solutions/plumbing"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-[#c3252e] transition-colors"
+                    >
+                      Plumbing & Water
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.residential.plumbing.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#c3252e] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#c3252e] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            {activeTab === "commercial" && (
+              <>
+                {/* Commercial Column 1: HVAC */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Flame size={14} className="text-[#8f8cff]" />
+                    <span className="text-gray-300 text-xs font-black uppercase tracking-wider">HVAC</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.commercial.hvac.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#8f8cff] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#8f8cff] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Commercial Column 2: Electrical */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Zap size={14} className="text-[#8f8cff]" />
+                    <Link
+                      to="/commercial-solutions/electrical"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-[#8f8cff] transition-colors"
+                    >
+                      Electrical
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.commercial.electrical.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#8f8cff] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#8f8cff] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Commercial Column 3: Plumbing */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Droplet size={14} className="text-[#8f8cff]" />
+                    <Link
+                      to="/commercial-solutions/plumbing"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-[#8f8cff] transition-colors"
+                    >
+                      Plumbing
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.commercial.plumbing.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#8f8cff] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#8f8cff] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            {activeTab === "industrial" && (
+              <>
+                {/* Industrial Column 1: HVAC */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Flame size={14} className="text-white" />
+                    <span className="text-gray-300 text-xs font-black uppercase tracking-wider">HVAC</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.industrial.hvac.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-white hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-white transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Industrial Column 2: Electrical */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Zap size={14} className="text-white" />
+                    <Link
+                      to="/light-industrial/electrical"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-white transition-colors"
+                    >
+                      Electrical
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.industrial.electrical.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-white hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-white transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Industrial Column 3: Plumbing */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Droplet size={14} className="text-white" />
+                    <Link
+                      to="/light-industrial/plumbing"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-white transition-colors"
+                    >
+                      Plumbing
+                    </Link>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.industrial.plumbing.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-white hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-white transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            {activeTab === "rentalsAndServices" && (
+              <>
+                {/* Rentals Column 1: Equipment Rentals */}
+                <div className="col-span-1">
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <DollarSign size={14} className="text-[#25d366]" />
+                    <span className="text-gray-300 text-xs font-black uppercase tracking-wider">Equipment Rentals</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {PRODUCT_MENU.rentalsAndServices.rentals.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#25d366] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#25d366] transition-opacity duration-155" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Highlights Card */}
+                  <div className="mt-4 p-4 rounded-xl border border-[#25d366]/20 bg-[#25d366]/5 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-1 bg-[#25d366] text-[#1a1a2e] text-[9px] font-bold uppercase rounded-bl">
+                      Promo
+                    </div>
+                    <h5 className="text-[11px] font-black uppercase tracking-wider text-[#25d366] mb-1">
+                      Worry-Free Program
+                    </h5>
+                    <p className="text-[10px] text-gray-300 leading-normal">
+                      Zero upfront equipment or installation costs on rentals.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Rentals Column 2: Other Services */}
+                <div className="col-span-2">
+                  <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <Wrench size={14} className="text-[#25d366]" />
+                    <Link
+                      to="/services"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-gray-300 text-xs font-black uppercase tracking-wider hover:text-[#25d366] transition-colors"
+                    >
+                      Specialty Services
+                    </Link>
+                  </div>
+                  <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+                    {PRODUCT_MENU.rentalsAndServices.services.map(item => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-center justify-between text-gray-300 text-[13px] font-semibold hover:text-[#25d366] hover:pl-1 transition-all duration-150"
+                        >
+                          {item.label}
+                          <ChevronRight size={10} className="opacity-0 group-hover:opacity-100 text-[#25d366] transition-opacity duration-155 shrink-0" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Light Industrial */}
-          <div>
-            <Link
-              to="/light-industrial"
-              className="flex items-center text-white text-sm font-black uppercase tracking-wider mb-4 hover:text-[#c3252e] transition-colors duration-150 pb-2 border-b border-white/10"
-            >
-              Industrial
-            </Link>
-            <div className="space-y-4">
-              <div>
-                <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block mb-1.5">Engineered Systems</span>
-                <ul className="space-y-1">
-                  <li><Link to="/light-industrial/exhaust-systems" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Industrial Exhaust Systems</Link></li>
-                  <li><Link to="/light-industrial/hvls-fans" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">HVLS Destratification Fans</Link></li>
-                  <li><Link to="/light-industrial/radiant-heating" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Radiant Tube Heating</Link></li>
-                  <li><Link to="/light-industrial/dust-compliance" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Combustible Dust Compliance</Link></li>
-                  <li><Link to="/light-industrial/permit-drawings" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Engineered Permit Drawings</Link></li>
-                  <li><Link to="/light-industrial/air-quality" className="block text-gray-300 text-sm hover:text-[#c3252e] hover:pl-1 transition-all duration-150">Air Quality Assessments</Link></li>
-                </ul>
-              </div>
+          {/* Footer Call to Action */}
+          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+            <span className="text-[11px] text-gray-400">
+              Need custom MEP plans or engineered permit drawings?
+            </span>
+            <div className="flex gap-3">
+              <Link
+                to="/mep-solutions"
+                onClick={() => setActiveDropdown(null)}
+                className="px-3 py-1.5 rounded-lg border border-white/10 text-white hover:bg-white/5 text-[11px] font-bold transition-all"
+              >
+                MEP Solutions
+              </Link>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg bg-[#25d366] hover:bg-[#25d366]/90 text-[#1a1a2e] text-[11px] font-black flex items-center gap-1.5 shadow-md shadow-[#25d366]/10 transition-all"
+              >
+                <WhatsAppIcon size={12} />
+                WhatsApp Consultation
+              </a>
             </div>
           </div>
         </div>
@@ -348,7 +762,7 @@ export default function Navbar() {
 
       {/* ── Mobile Drawer ── */}
       {mobileOpen && (
-        <div className="xl:hidden bg-[#16213e] border-t border-white/10 px-4 pt-3 pb-5 space-y-1">
+        <div className="xl:hidden product-submenu border-t px-4 pt-3 pb-5 space-y-1 max-h-[calc(100vh-80px)] overflow-y-auto">
           <Link
             to="/"
             onClick={() => setMobileOpen(false)}
@@ -377,76 +791,156 @@ export default function Navbar() {
 
             {mobileResOpen && (
               <div className="mt-2 pl-4 border-l border-white/10 space-y-4 py-1">
-                {/* Residential */}
+                {/* 1. Residential */}
                 <div>
-                  <Link
-                    to="/residential-solutions"
-                    onClick={() => setMobileOpen(false)}
-                    className="block text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                  <button
+                    type="button"
+                    onClick={() => setMobileResSecOpen(mobileResSecOpen === "res" ? null : "res")}
+                    className="w-full flex items-center justify-between text-[#c3252e] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors bg-transparent border-none outline-none cursor-pointer"
                   >
-                    Residential Solutions
-                  </Link>
-                  <ul className="space-y-1.5 pl-2">
-                    {PRODUCT_MENU.residential.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                    Residential
+                    <ChevronDown size={12} className={`transition-transform ${mobileResSecOpen === 'res' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileResSecOpen === "res" && (
+                    <div className="pl-2 space-y-2 mt-1">
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">HVAC</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.residential.hvac.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Electrical</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.residential.electrical.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Plumbing</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.residential.plumbing.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Commercial */}
+                {/* 2. Commercial */}
                 <div>
-                  <Link
-                    to="/commercial-solutions"
-                    onClick={() => setMobileOpen(false)}
-                    className="block text-[#8f8cff] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors"
+                  <button
+                    type="button"
+                    onClick={() => setMobileComSecOpen(mobileComSecOpen === "com" ? null : "com")}
+                    className="w-full flex items-center justify-between text-[#8f8cff] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors bg-transparent border-none outline-none cursor-pointer"
                   >
-                    Commercial Solutions
-                  </Link>
-                  <ul className="space-y-1.5 pl-2">
-                    {PRODUCT_MENU.commercial.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                    Commercial
+                    <ChevronDown size={12} className={`transition-transform ${mobileComSecOpen === 'com' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileComSecOpen === "com" && (
+                    <div className="pl-2 space-y-2 mt-1">
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">HVAC</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.commercial.hvac.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Electrical</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.commercial.electrical.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Plumbing</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.commercial.plumbing.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Light Industrial */}
+                {/* 3. Industrial */}
                 <div>
-                  <Link
-                    to="/light-industrial"
-                    onClick={() => setMobileOpen(false)}
-                    className="block text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#c3252e] transition-colors"
+                  <button
+                    type="button"
+                    onClick={() => setMobileIndSecOpen(mobileIndSecOpen === "ind" ? null : "ind")}
+                    className="w-full flex items-center justify-between text-white text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-[#c3252e] transition-colors bg-transparent border-none outline-none cursor-pointer"
                   >
                     Industrial
-                  </Link>
-                  <ul className="space-y-1.5 pl-2">
-                    {PRODUCT_MENU.lightIndustrial.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-gray-400 text-sm hover:text-white transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                    <ChevronDown size={12} className={`transition-transform ${mobileIndSecOpen === 'ind' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileIndSecOpen === "ind" && (
+                    <div className="pl-2 space-y-2 mt-1">
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">HVAC</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.industrial.hvac.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Electrical</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.industrial.electrical.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Plumbing</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.industrial.plumbing.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. Rentals & Services */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileRentSecOpen(mobileRentSecOpen === "rent" ? null : "rent")}
+                    className="w-full flex items-center justify-between text-[#25d366] text-xs font-bold uppercase tracking-widest mb-1.5 hover:text-white transition-colors bg-transparent border-none outline-none cursor-pointer"
+                  >
+                    Rentals & Services
+                    <ChevronDown size={12} className={`transition-transform ${mobileRentSecOpen === 'rent' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileRentSecOpen === "rent" && (
+                    <div className="pl-2 space-y-2 mt-1">
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Equipment Rentals</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.rentalsAndServices.rentals.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-[10px] font-semibold uppercase block mb-1">Other Services</span>
+                        <ul className="space-y-1 pl-1">
+                          {PRODUCT_MENU.rentalsAndServices.services.map(item => (
+                            <li key={item.label}><Link to={item.href} onClick={() => setMobileOpen(false)} className="block text-gray-300 text-xs hover:text-white">{item.label}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -461,7 +955,6 @@ export default function Navbar() {
           >
             Store
           </Link>
-
 
           <Link
             to="/about"

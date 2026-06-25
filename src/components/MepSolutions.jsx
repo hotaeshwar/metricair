@@ -121,14 +121,14 @@ export default function MepSolutions() {
             </p>
           </div>
 
-          {/* Right image block */}
-          <div className="lg:col-span-6 w-full relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 group"
+          {/* Right image block replaced with premium SVG and dynamic AI background */}
+          <div className="lg:col-span-6 w-full relative rounded-3xl overflow-hidden border border-white/10 bg-[#0f0f1a]/50 group aspect-[16/9]"
             style={{ opacity: heroInView ? 1 : 0, transform: heroInView ? 'translateY(0)' : 'translateY(16px)', transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s' }}
           >
-            <img
-              src="/images/mep.jpg"
+            <img 
+              src="/images/mep_solutions_ai.png"
               alt="Complete MEP Solutions Infographic"
-              className="w-full h-auto object-contain block"
+              className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
               draggable="false"
             />
           </div>
