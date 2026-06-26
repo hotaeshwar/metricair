@@ -30,7 +30,7 @@ export default function GlanceWork() {
   const [sectionRef, sectionInView] = useInView(0.05);
 
   const images = [
-    { src: '/images/mechanical7.jpeg', alt: 'Mechanical Room Assembly' },
+    { src: '/images/Glance.jpeg', alt: 'Featured Mechanical Installation' },
     { src: '/images/mechanical8.jpeg', alt: 'Industrial Boiler and Piping' },
     { src: '/images/mechanicalwork2.jpeg', alt: 'HVAC Duct and Gas Line Work' }
   ];
