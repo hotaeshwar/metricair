@@ -1,0 +1,311 @@
+@import "tailwindcss";
+
+:root {
+  --blue-brand: #2a286e;
+  --red-brand: #c3252e;
+}
+
+/* Ensure images/videos are rendered without extra effects */
+img,
+video {
+  filter: none !important;
+}
+
+* {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Avoid hover zoom/scaling/transitions on any images in the project */
+img,
+img:hover,
+.group:hover img,
+.group-hover\:scale-105,
+.group-hover\:scale-\[1\.02\] {
+  scale: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  transition-property: none !important;
+}
+
+/* Global page background image and brand blue overlay rules */
+body {
+  background-image: linear-gradient(rgba(25, 23, 75, 0.83), rgba(25, 23, 75, 0.83)), url('/images/artwork.png') !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-color: var(--blue-brand) !important;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Make content and form cards opaque and premium */
+.rounded-3xl.bg-white\/5 {
+  background-color: rgba(20, 20, 42, 0.97) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Force all home page sections and layout boxes to be transparent, revealing the body background */
+section,
+main,
+.bg-\[\#1a1a2e\], 
+.bg-\[\#0f0f1a\], 
+.bg-\[\#0b0c10\],
+.bg-\[\#0f0f1c\],
+.bg-\[\#131326\],
+.bg-\[\#0d1233\] {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Nav bar background matching overlay */
+nav.bg-\[\#1a1a2e\] {
+  background-image: linear-gradient(rgba(15, 15, 26, 0.95), rgba(15, 15, 26, 0.95)), url('/images/artwork.png') !important;
+  background-color: var(--blue-brand) !important;
+}
+
+/* Select element and dropdown overlay panels */
+.bg-\[\#16213e\],
+select.bg-\[\#16213e\],
+.bg-\[\#0f0f1a\] select {
+  background-color: rgba(30, 28, 80, 0.88) !important;
+  background-image: linear-gradient(rgba(30, 28, 80, 0.88), rgba(30, 28, 80, 0.88)), url('/images/artwork.png') !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* Custom Footer background with dark translucent overlay */
+.footer-bg {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Glassmorphism blending for the product dropdown submenu */
+.product-submenu {
+  background-color: rgba(15, 15, 26, 0.85) !important;
+  background-image: linear-gradient(rgba(15, 15, 26, 0.85), rgba(15, 15, 26, 0.85)), url('/images/artwork.png') !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Global red split-apart button */
+.split-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  z-index: 10;
+  transition: all 0.38s ease;
+}
+.split-btn:hover {
+  border-color: #c3252e !important;
+}
+.split-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  right: 50%;
+  background: #c3252e;
+  transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: -1;
+}
+.split-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  background: #c3252e;
+  transition: transform 0.38s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: -1;
+}
+.split-btn:hover::before {
+  transform: translateX(-100%);
+}
+.split-btn:hover::after {
+  transform: translateX(100%);
+}
+.split-btn > * {
+  position: relative;
+  z-index: 20;
+}
+
+/* ── Global Color Sequence System ── */
+
+/* 1. Red main headers and taglines globally (including nested elements and span color classes, excluding buttons) */
+h1, h2, h3, h4, h5, h6,
+h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
+h1 span, h2 span, h3 span, h4 span, h5 span, h6 span,
+h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong,
+h1 .text-white, h2 .text-white, h3 .text-white, h4 .text-white, h5 .text-white, h6 .text-white,
+h1 .text-\[\#8f8cff\], h2 .text-\[\#8f8cff\], h3 .text-\[\#8f8cff\], h4 .text-\[\#8f8cff\], h5 .text-\[\#8f8cff\], h6 .text-\[\#8f8cff\],
+h1 .text-gray-300, h2 .text-gray-300, h3 .text-gray-300, h4 .text-gray-300,
+h1 .text-gray-400, h2 .text-gray-400, h3 .text-gray-400, h4 .text-gray-400,
+.tracking-widest.uppercase:not(a):not(button):not(.split-btn):not(.split-btn *),
+.tracking-wider.uppercase:not(a):not(button):not(.split-btn):not(.split-btn *),
+.tracking-widest.uppercase *:not(a):not(button):not(.split-btn):not(.split-btn *),
+.tracking-wider.uppercase *:not(a):not(button):not(.split-btn):not(.split-btn *) {
+  color: #c3252e !important;
+}
+
+/* Force split-btn text to remain white */
+.split-btn,
+.split-btn * {
+  color: #ffffff !important;
+}
+
+/* 2. White subheadings / descriptive paragraphs globally */
+p {
+  color: #ffffff !important;
+}
+
+/* 3. Light red bullet points and checkmarks globally (both icon and sibling text) */
+
+/* Flex checklist rows: if first child is a checkmark span, color the span and its next sibling text light red */
+.flex.items-start > span:first-child,
+.flex.items-center > span:first-child,
+.flex.gap-2 > span:first-child,
+.flex.gap-3 > span:first-child,
+.flex.gap-4 > span:first-child,
+.flex.items-start > span:first-child + *,
+.flex.items-center > span:first-child + *,
+.flex.gap-2 > span:first-child + *,
+.flex.gap-3 > span:first-child + *,
+.flex.gap-4 > span:first-child + *,
+.flex.items-start > span:first-child + * *,
+.flex.items-center > span:first-child + * *,
+.flex.gap-2 > span:first-child + * *,
+.flex.gap-3 > span:first-child + * *,
+.flex.gap-4 > span:first-child + * * {
+  color: #ff5c65 !important;
+}
+
+/* Force all footer links and text inside lists to be white, with red hover color */
+/* Force all footer links white with maximum ID specificity */
+#metric-footer-container a,
+#metric-footer-container a *,
+#metric-footer-container .footer-link,
+#metric-footer-container .footer-link * {
+  color: #ffffff !important;
+}
+
+#metric-footer-container a:hover,
+#metric-footer-container a *:hover,
+#metric-footer-container .footer-link:hover,
+#metric-footer-container .footer-link *:hover {
+  color: #c3252e !important;
+}
+
+/* Force WhatsApp and MEP buttons in product dropdown to white text/icon using ID selectors */
+#metric-whatsapp-submenu-btn,
+#metric-whatsapp-submenu-btn *,
+#metric-mep-submenu-btn,
+#metric-mep-submenu-btn * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Force admin login & logout buttons text/icon to white */
+#metric-admin-login-btn,
+#metric-admin-login-btn *,
+#metric-admin-logout-btn,
+#metric-admin-logout-btn * {
+  color: #ffffff !important;
+}
+
+/* Force Store badge text to white */
+#metric-store-badge,
+#metric-store-section .metric-store-badge-txt {
+  color: #ffffff !important;
+}
+
+/* Force all component main headings to light red (#FC4F55) */
+#metric-services-heading,
+#metric-services-res-heading,
+#metric-services-comm-heading,
+#metric-services-ind-heading,
+#metric-quotes-heading,
+#metric-brands-heading,
+#metric-brands-heading span,
+#metric-glance-heading,
+#metric-capabilities-heading,
+#metric-director-heading,
+#metric-faq-heading,
+#metric-store-heading,
+#metric-store-heading span,
+#metric-about-heading,
+#metric-about-heading span,
+#metric-services-page-heading,
+#metric-services-page-heading span,
+#metric-contact-heading,
+#metric-contact-heading span,
+#metric-careers-heading,
+#metric-careers-heading span,
+#metric-feedback-heading,
+#metric-feedback-heading span,
+#metric-servicedetails-heading,
+#metric-servicedetails-heading span,
+#metric-mep-solutions-heading,
+#metric-mep-solutions-heading span,
+#metric-residential-solutions-heading,
+#metric-residential-solutions-heading span,
+#metric-commercial-solutions-heading,
+#metric-commercial-solutions-heading span,
+#metric-commercial-hvac-heading,
+#metric-commercial-elec-heading,
+#metric-commercial-plumb-heading,
+#metric-industrial-hvac-heading,
+#metric-industrial-elec-heading,
+#metric-industrial-plumb-heading,
+#metric-freshair-heading,
+#metric-freshair-heading span,
+#metric-resheating-heading,
+#metric-resheating-heading span,
+#metric-rescooling-heading,
+#metric-rescooling-heading span,
+#metric-furnaces-rental-heading,
+#metric-furnaces-rental-heading span,
+#metric-water-heaters-rental-heading,
+#metric-water-heaters-rental-heading span,
+#metric-water-purification-heading,
+#metric-water-purification-heading span,
+#metric-other-services-heading,
+#metric-other-services-heading span,
+#metric-datadriven-heading,
+#metric-datadriven-heading span,
+#metric-res-electrical-heading,
+#metric-res-electrical-heading span,
+#metric-res-plumbing-heading,
+#metric-res-plumbing-heading span,
+.pt-28 h1,
+.pt-28 h1 span,
+.pt-32 h1,
+.pt-32 h1 span,
+.pt-36 h1,
+.pt-36 h1 span {
+  color: #FC4F55 !important;
+}
+
+#metric-projects-heading,
+#metric-projects-heading span {
+  color: #FC4F55 !important;
+}
+
+#metric-featured-projects-section [id^="metric-project-details-"] span,
+#metric-featured-projects-section [id^="metric-project-details-"] svg {
+  color: #ffffff !important;
+}
