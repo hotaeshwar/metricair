@@ -188,7 +188,7 @@ export default function Footer() {
         <div className="grid grid-cols-12 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:gap-6 lg:gap-8 mb-8 items-start w-full">
 
           {/* COLUMN 1: Logo & Tagline + Contact Info */}
-          <div className="col-span-12 md:col-span-12 lg:col-span-2 flex flex-col gap-4 text-left items-start">
+          <div className="col-span-12 md:col-span-12 lg:col-span-3 flex flex-col gap-4 text-left items-start">
             <a href="/" className="block">
               <img
                 src="/images/metricnew.png"
@@ -203,11 +203,11 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-[11px] text-gray-400 mt-1 border-t border-white/5 pt-3 max-w-sm w-full text-left items-start">
               <div className="flex items-center justify-start gap-2">
                 <span className="text-[#c3252e] font-semibold">{t("Call:")}</span>
-                <a href="tel:+16479241421" className="hover:text-[#c3252e] transition-colors">+1 (647) 924-1421</a>
+                <a href="tel:+16479241421" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">+1 (647) 924-1421</a>
               </div>
               <div className="flex items-center justify-start gap-2">
                 <span className="text-[#c3252e] font-semibold">{t("Email:")}</span>
-                <a href="mailto:metricairlimited.ca@gmail.com" className="hover:text-[#c3252e] transition-colors break-all">metricairlimited.ca@gmail.com</a>
+                <a href="mailto:metricairlimited.ca@gmail.com" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">metricairlimited.ca@gmail.com</a>
               </div>
               <div className="flex items-center justify-start gap-2">
                 <span className="text-[#c3252e] font-semibold">{t("Area:")}</span>
@@ -217,7 +217,7 @@ export default function Footer() {
           </div>
 
           {/* COLUMNS 2-6: Links Columns Wrapper */}
-          <div className="col-span-12 lg:col-span-10 grid grid-cols-10 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 w-full">
+          <div className="col-span-12 lg:col-span-9 grid grid-cols-10 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 w-full">
             {FOOTER_COLUMNS.map((column, index) => {
               const accentColors = [
                 "bg-[#c3252e]", // Red
