@@ -6,7 +6,7 @@ const FOOTER_COLUMNS = [
     heading: "RESIDENTIAL",
     sections: [
       {
-        title: "HVAC",
+        title: "TRADE",
         links: [
           { label: "Heating Systems", href: "/services/residential-heating" },
           { label: "Cooling Systems (AC)", href: "/services/residential-cooling" },
@@ -39,7 +39,7 @@ const FOOTER_COLUMNS = [
     heading: "COMMERCIAL",
     sections: [
       {
-        title: "HVAC",
+        title: "TRADE",
         links: [
           { label: "Rooftop Units (RTUs)", href: "/services/commercial-rtu" },
           { label: "Ductwork Systems", href: "/services/commercial-ducts" },
@@ -80,7 +80,7 @@ const FOOTER_COLUMNS = [
     heading: "INDUSTRIAL",
     sections: [
       {
-        title: "HVAC",
+        title: "TRADE",
         links: [
           { label: "Industrial Ventilation", href: "/services/industrial-ventilation" },
           { label: "Dust & Fume Extraction", href: "/services/industrial-dust" },
@@ -180,37 +180,24 @@ export default function Footer() {
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   return (
-    <footer id="metric-footer-container" className="w-full footer-bg text-white relative overflow-hidden">
-
-      {/* Ambient glow */}
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] opacity-10 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at center, #c3252e 0%, transparent 70%)" }}
-      />
+    <footer id="metric-footer-container" className="w-full footer-bg bg-transparent text-white relative overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-4 relative z-10">
 
         {/* ── UNIFIED GRID ROW ── */}
-        <div className="grid grid-cols-12 gap-2 sm:gap-4 md:gap-6 lg:gap-8 mb-8 items-start w-full">
-          
+        <div className="grid grid-cols-12 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:gap-6 lg:gap-8 mb-8 items-start w-full">
+
           {/* COLUMN 1: Logo & Tagline + Contact Info */}
-          <div className="col-span-2 flex flex-col gap-4 text-left items-start">
+          <div className="col-span-12 md:col-span-12 lg:col-span-2 flex flex-col gap-4 text-left items-start">
             <a href="/" className="block">
               <img
                 src="/images/metricnew.png"
                 alt="MetricAir Logo"
-                style={{
-                  height: "425px",
-                  width: "auto",
-                  maxWidth: "510px",
-                  marginTop: "-180px",
-                  marginBottom: "-110px",
-                }}
-                className="object-contain -ml-[145px]"
+                className="footer-logo-img object-contain"
               />
             </a>
             <p className="text-gray-300 text-xs leading-relaxed tracking-wide font-medium max-w-sm text-left">
-              {t("Delivering premium HVAC solutions for homes, businesses, and industrial spaces across Canada.")}
+              {t("Delivering premium Trade solutions for homes, businesses, and industrial spaces across Canada.")}
             </p>
 
             <div className="flex flex-col gap-2 text-[11px] text-gray-400 mt-1 border-t border-white/5 pt-3 max-w-sm w-full text-left items-start">
@@ -229,51 +216,53 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COLUMNS 2-6: Links Columns */}
-          {FOOTER_COLUMNS.map((column, index) => {
-            const accentColors = [
-              "bg-[#c3252e]", // Red
-              "bg-[#8f8cff]", // Blue
-              "bg-white",     // White
-              "bg-[#25d366]", // Green
-              "bg-[#c3252e]", // Red
-            ];
-            const accentBg = accentColors[index] || "bg-white";
+          {/* COLUMNS 2-6: Links Columns Wrapper */}
+          <div className="col-span-12 lg:col-span-10 grid grid-cols-10 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 w-full">
+            {FOOTER_COLUMNS.map((column, index) => {
+              const accentColors = [
+                "bg-[#c3252e]", // Red
+                "bg-[#8f8cff]", // Blue
+                "bg-white",     // White
+                "bg-[#25d366]", // Green
+                "bg-[#c3252e]", // Red
+              ];
+              const accentBg = accentColors[index] || "bg-white";
 
-            return (
-              <div
-                key={column.heading}
-                className="col-span-2 flex flex-col items-start text-left gap-2 sm:gap-3 w-full"
-              >
-                <div className="relative pb-1.5 sm:pb-2 w-full">
-                  <h4 className="text-white text-[9px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider uppercase leading-none">
-                    {t(column.heading)}
-                  </h4>
-                  <div className={`absolute bottom-0 left-0 w-6 sm:w-8 h-[1.5px] sm:h-[2px] ${accentBg}`} />
-                </div>
-                
-                {column.sections.map((sec) => (
-                  <div key={sec.title} className="w-full flex flex-col items-start text-left gap-1 sm:gap-1.5 mt-1 sm:mt-2">
-                    <span className="text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wider block mb-0.5 sm:mb-1">
-                      {t(sec.title)}
-                    </span>
-                    <ul className="flex flex-col gap-1.5 sm:gap-2 items-start text-left w-full">
-                      {sec.links.map((link) => (
-                        <li key={link.label} className="w-full">
-                          <a
-                            href={link.href}
-                            className="footer-link block text-gray-300 text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-semibold hover:text-[#c3252e] hover:translate-x-0.5 transition-all duration-200 leading-tight break-words"
-                          >
-                            {t(link.label)}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+              return (
+                <div
+                  key={column.heading}
+                  className="col-span-5 sm:col-span-2 flex flex-col items-start text-left gap-2 sm:gap-3 w-full"
+                >
+                  <div className="relative pb-1.5 sm:pb-2 w-full">
+                    <h4 className="text-white text-xs sm:text-xs md:text-sm lg:text-base font-black tracking-wider uppercase leading-none">
+                      {t(column.heading)}
+                    </h4>
+                    <div className={`absolute bottom-0 left-0 w-6 sm:w-8 h-[1.5px] sm:h-[2px] ${accentBg}`} />
                   </div>
-                ))}
-              </div>
-            );
-          })}
+                  
+                  {column.sections.map((sec) => (
+                    <div key={sec.title} className="w-full flex flex-col items-start text-left gap-1 sm:gap-1.5 mt-1 sm:mt-2">
+                      <span className="text-[10px] sm:text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wider block mb-0.5 sm:mb-1">
+                        {t(sec.title)}
+                      </span>
+                      <ul className="flex flex-col gap-1.5 sm:gap-2 items-start text-left w-full">
+                        {sec.links.map((link) => (
+                          <li key={link.label} className="w-full">
+                            <a
+                              href={link.href}
+                              className="footer-link block text-gray-300 text-[10px] sm:text-[10px] md:text-xs lg:text-sm font-semibold hover:text-[#c3252e] hover:translate-x-0.5 transition-all duration-200 leading-tight break-words"
+                            >
+                              {t(link.label)}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
 
         </div>
 
@@ -281,7 +270,7 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-1 pt-5">
           {/* Socials row */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
-            
+
             {/* Language Selector Dropdown */}
             <div className="relative">
               <button
@@ -300,7 +289,7 @@ export default function Footer() {
                 <>
                   {/* Backdrop */}
                   <div className="fixed inset-0 z-40" onClick={() => setLangDropdownOpen(false)} />
-                  
+
                   <div className="absolute bottom-full left-0 mb-2 w-36 rounded-xl bg-[#131326] border border-white/10 shadow-2xl p-1 z-50 flex flex-col gap-0.5 animate-[fadeSlideIn_0.2s_ease]">
                     <button
                       onClick={() => { setLanguage('en-CA'); setLangDropdownOpen(false); }}
@@ -365,11 +354,37 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* CSS animation */}
+      {/* CSS animation & Responsive Logo */}
       <style>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(6px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        .footer-logo-img {
+          height: 180px;
+          width: auto;
+          max-width: 220px;
+          margin-top: -85px;
+          margin-bottom: -51px;
+          margin-left: -62px;
+        }
+        @media (min-width: 768px) {
+          .footer-logo-img {
+            height: 280px;
+            max-width: 340px;
+            margin-top: -130px;
+            margin-bottom: -80px;
+            margin-left: -96px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .footer-logo-img {
+            height: 425px;
+            max-width: 510px;
+            margin-top: -198px;
+            margin-bottom: -122px;
+            margin-left: -145px;
+          }
         }
       `}</style>
     </footer>

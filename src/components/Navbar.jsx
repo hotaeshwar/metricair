@@ -188,7 +188,7 @@ export default function Navbar() {
     location.pathname.startsWith("/other-services");
 
   const navLinkClass = (path) =>
-    `px-2 xl:px-3 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
+    `px-4 xl:px-6 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
       isActive(path)
         ? "bg-white/5"
         : scrolled
@@ -197,7 +197,7 @@ export default function Navbar() {
     }`;
 
   const productNavLinkClass = () =>
-    `px-2 xl:px-3 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
+    `px-4 xl:px-6 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
       isProductActive()
         ? "bg-white/5"
         : scrolled
