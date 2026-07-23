@@ -978,7 +978,7 @@ export default function Navbar() {
           height: 360px;
           width: auto;
           position: absolute;
-          top: -158px;
+          top: -139px;
           left: -98px;
           max-width: none;
         }
@@ -989,7 +989,7 @@ export default function Navbar() {
           }
           .navbar-logo-img {
             height: 360px;
-            top: -158px;
+            top: -139px;
             left: -98px;
           }
         }
