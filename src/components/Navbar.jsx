@@ -970,27 +970,27 @@ export default function Navbar() {
       {/* CSS responsive style for Navbar Logo */}
       <style>{`
         .navbar-logo-wrapper {
-          height: 60px;
-          width: 250px;
+          height: 70px;
+          width: 260px;
           position: relative;
         }
         .navbar-logo-img {
           height: 360px;
           width: auto;
           position: absolute;
-          top: -130px;
+          top: -158px;
           left: -98px;
           max-width: none;
         }
         @media (min-width: 768px) {
           .navbar-logo-wrapper {
-            height: 80px;
-            width: 330px;
+            height: 75px;
+            width: 280px;
           }
           .navbar-logo-img {
-            height: 480px;
-            top: -173px;
-            left: -130px;
+            height: 360px;
+            top: -158px;
+            left: -98px;
           }
         }
         @media (min-width: 1024px) {
