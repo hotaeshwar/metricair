@@ -182,42 +182,48 @@ export default function Footer() {
   return (
     <footer id="metric-footer-container" className="w-full footer-bg bg-transparent text-white relative overflow-hidden">
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-4 relative z-10">
+      <div className="w-full px-4 sm:px-6 pt-12 pb-4 relative z-10">
 
         {/* ── UNIFIED GRID ROW ── */}
         <div className="grid grid-cols-12 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:gap-6 lg:gap-8 mb-8 items-start w-full">
 
           {/* COLUMN 1: Logo & Tagline + Contact Info */}
-          <div className="col-span-12 md:col-span-12 lg:col-span-3 flex flex-col gap-4 text-left items-start">
-            <a href="/" className="block">
-              <img
-                src="/images/metricnew.png"
-                alt="MetricAir Logo"
-                className="footer-logo-img object-contain"
-              />
-            </a>
-            <p className="text-gray-300 text-xs leading-relaxed tracking-wide font-medium max-w-sm text-left">
-              {t("Delivering premium Trade solutions for homes, businesses, and industrial spaces across Canada.")}
-            </p>
+          <div className="col-span-12 md:col-span-3 flex flex-col gap-2 text-left items-start">
+            <div className="footer-logo-wrapper overflow-hidden">
+              <a href="/" className="block">
+                <img
+                  src="/images/metricnew.png"
+                  alt="MetricAir Logo"
+                  className="footer-logo-img object-contain"
+                />
+              </a>
+            </div>
+            
+            {/* Shifted text container to align exactly with the logo visual border */}
+            <div className="pl-3 sm:pl-4 lg:pl-5 flex flex-col gap-2 w-full items-start">
+              <p className="text-gray-300 text-xs leading-relaxed tracking-wide font-medium max-w-sm text-left">
+                {t("Delivering premium Trade solutions for homes, businesses, and industrial spaces across Canada.")}
+              </p>
 
-            <div className="flex flex-col gap-2 text-[11px] text-gray-400 mt-1 border-t border-white/5 pt-3 max-w-sm w-full text-left items-start">
-              <div className="flex items-center justify-start gap-2">
-                <span className="text-[#c3252e] font-semibold">{t("Call:")}</span>
-                <a href="tel:+16479241421" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">+1 (647) 924-1421</a>
-              </div>
-              <div className="flex items-center justify-start gap-2">
-                <span className="text-[#c3252e] font-semibold">{t("Email:")}</span>
-                <a href="mailto:metricairlimited.ca@gmail.com" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">metricairlimited.ca@gmail.com</a>
-              </div>
-              <div className="flex items-center justify-start gap-2">
-                <span className="text-[#c3252e] font-semibold">{t("Area:")}</span>
-                <span>{t("Canada")}</span>
+              <div className="flex flex-col gap-1.5 text-[11px] text-gray-400 mt-0.5 border-t border-white/5 pt-2 max-w-sm w-full text-left items-start">
+                <div className="flex items-center justify-start gap-2">
+                  <span className="text-[#c3252e] font-semibold">{t("Call:")}</span>
+                  <a href="tel:+16479241421" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">+1 (647) 924-1421</a>
+                </div>
+                <div className="flex items-center justify-start gap-2">
+                  <span className="text-[#c3252e] font-semibold">{t("Email:")}</span>
+                  <a href="mailto:metricairlimited.ca@gmail.com" className="hover:text-[#c3252e] transition-colors whitespace-nowrap">metricairlimited.ca@gmail.com</a>
+                </div>
+                <div className="flex items-center justify-start gap-2">
+                  <span className="text-[#c3252e] font-semibold">{t("Area:")}</span>
+                  <span>{t("Canada")}</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* COLUMNS 2-6: Links Columns Wrapper */}
-          <div className="col-span-12 lg:col-span-9 grid grid-cols-10 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 w-full">
+          <div className="col-span-12 md:col-span-9 grid grid-cols-10 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 w-full">
             {FOOTER_COLUMNS.map((column, index) => {
               const accentColors = [
                 "bg-[#c3252e]", // Red
@@ -360,30 +366,42 @@ export default function Footer() {
           from { opacity: 0; transform: translateY(6px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        .footer-logo-wrapper {
+          height: 75px;
+          width: 250px;
+          position: relative;
+          margin-top: -10px;
+        }
         .footer-logo-img {
-          height: 180px;
+          height: 360px;
           width: auto;
-          max-width: 220px;
-          margin-top: -85px;
-          margin-bottom: -51px;
-          margin-left: -62px;
+          position: absolute;
+          top: -158px;
+          left: -98px;
+          max-width: none;
         }
         @media (min-width: 768px) {
+          .footer-logo-wrapper {
+            height: 90px;
+            width: 300px;
+            margin-top: -12px;
+          }
           .footer-logo-img {
-            height: 280px;
-            max-width: 340px;
-            margin-top: -130px;
-            margin-bottom: -80px;
-            margin-left: -96px;
+            height: 440px;
+            top: -193px;
+            left: -120px;
           }
         }
         @media (min-width: 1024px) {
+          .footer-logo-wrapper {
+            height: 100px;
+            width: 330px;
+            margin-top: -15px;
+          }
           .footer-logo-img {
-            height: 425px;
-            max-width: 510px;
-            margin-top: -198px;
-            margin-bottom: -122px;
-            margin-left: -145px;
+            height: 480px;
+            top: -210px;
+            left: -130px;
           }
         }
       `}</style>

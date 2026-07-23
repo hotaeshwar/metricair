@@ -188,7 +188,7 @@ export default function Navbar() {
     location.pathname.startsWith("/other-services");
 
   const navLinkClass = (path) =>
-    `px-4 xl:px-6 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
+    `px-4 xl:px-6 py-2 rounded text-lg xl:text-xl font-extrabold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
       isActive(path)
         ? "bg-white/5"
         : scrolled
@@ -197,7 +197,7 @@ export default function Navbar() {
     }`;
 
   const productNavLinkClass = () =>
-    `px-4 xl:px-6 py-2 rounded text-base xl:text-lg font-bold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
+    `px-4 xl:px-6 py-2 rounded text-lg xl:text-xl font-extrabold whitespace-nowrap transition-all duration-300 text-[#c3252e] ${
       isProductActive()
         ? "bg-white/5"
         : scrolled
@@ -662,25 +662,38 @@ export default function Navbar() {
         scrolled ? "bg-[#1a1a2e] shadow-lg" : "bg-transparent shadow-none"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="w-full px-4 sm:px-6">
         {/* ── Main row ── */}
-        <div className="flex items-center h-20 overflow-visible">
+        <div className="flex items-center h-20 justify-between w-full">
 
-          {/* LEFT: hamburger (mobile) | nav links (desktop) */}
-          <div className="flex items-center flex-1">
-            {/* Mobile hamburger */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`xl:hidden p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
-                scrolled ? "text-gray-300 hover:text-white" : "text-white"
-              }`}
-              aria-label="Toggle menu"
+          {/* LEFT: Logo & Desktop Links */}
+          <div className="flex items-center gap-8 xl:gap-10 flex-1">
+            {/* Logo wrapper */}
+            <Link
+              to="/"
+              className="shrink-0 flex items-center pointer-events-auto relative overflow-hidden"
+              style={{ width: "450px", height: "106px" }}
             >
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              <img
+                src="/images/metricnew.png"
+                alt="MetricAir Logo"
+                style={{
+                  height: "450px",
+                  width: "auto",
+                  position: "absolute",
+                  top: "-174px",
+                  left: "-122px",
+                  maxWidth: "none",
+                  transition: "opacity 0.5s ease",
+                  opacity: scrolled ? 1 : 0.92,
+                  pointerEvents: "none",
+                }}
+                className="object-contain"
+              />
+            </Link>
 
-            {/* Desktop left links */}
-            <div className="hidden xl:flex items-center justify-end w-full gap-6 pr-36">
+            {/* Desktop Menu Links */}
+            <div className="hidden xl:flex items-center gap-6 xl:gap-8">
               <Link to="/" className={navLinkClass("/")}>Home</Link>
               
               {/* Product dropdown */}
@@ -703,32 +716,28 @@ export default function Navbar() {
                 </button>
                 {renderDropdown()}
               </div>
+
+              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
+              <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
+
+              {/* WhatsApp Icon on Desktop (near About Us) */}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Chat on WhatsApp"
+                className="ml-2 p-2 rounded-full transition-all duration-300 group text-[#25D366]"
+              >
+                <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
+                  <WhatsAppIcon size={32} />
+                </span>
+              </a>
             </div>
           </div>
 
-          {/* CENTER: Logo */}
-          <Link
-            to="/"
-            className="shrink-0 flex items-center justify-center absolute left-1/2 -translate-x-1/2 w-48 h-full pointer-events-auto z-20"
-          >
-            <img
-              src="/images/metricnew.png"
-              alt="MetricAir Logo"
-              style={{
-                height: "425px",
-                width: "auto",
-                maxWidth: "510px",
-                transition: "opacity 0.5s ease",
-                opacity: scrolled ? 1 : 0.92,
-                pointerEvents: "none",
-              }}
-              className="object-contain"
-            />
-          </Link>
-
-          {/* RIGHT: WhatsApp + nav links */}
-          <div className="flex items-center justify-end flex-1 gap-0.5">
-            {/* Mobile: WhatsApp only */}
+          {/* RIGHT: Mobile Hamburger & WhatsApp */}
+          <div className="flex items-center gap-4">
+            {/* WhatsApp icon on mobile/tablet only */}
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -737,27 +746,20 @@ export default function Navbar() {
               className="xl:hidden p-2 rounded-full transition-all duration-300 group text-[#25D366]"
             >
               <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
-                <WhatsAppIcon size={22} />
+                <WhatsAppIcon size={28} />
               </span>
             </a>
 
-            {/* Desktop right links + WhatsApp */}
-            <div className="hidden xl:flex items-center justify-start w-full gap-6 pl-36">
-              <Link to="/store" className={navLinkClass("/store")}>Store</Link>
-              <Link to="/about" className={navLinkClass("/about")}>About Us</Link>
-
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Chat on WhatsApp"
-                className="ml-1 p-2 rounded-full transition-all duration-300 group text-[#25D366]"
-              >
-                <span className="transition-transform duration-200 group-hover:scale-110 inline-flex">
-                  <WhatsAppIcon size={20} />
-                </span>
-              </a>
-            </div>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`xl:hidden p-2 rounded-md transition-all duration-300 hover:bg-white/10 ${
+                scrolled ? "text-gray-300 hover:text-white" : "text-white"
+              }`}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
 
         </div>
