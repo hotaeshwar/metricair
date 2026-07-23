@@ -669,26 +669,20 @@ export default function Navbar() {
           {/* LEFT: Logo & Desktop Links */}
           <div className="flex items-center gap-8 xl:gap-10 flex-1">
             {/* Logo wrapper */}
+            {/* Logo wrapper */}
             <Link
               to="/"
-              className="shrink-0 flex items-center pointer-events-auto relative overflow-hidden"
-              style={{ width: "450px", height: "106px" }}
+              className="shrink-0 flex items-center pointer-events-auto relative overflow-hidden navbar-logo-wrapper"
             >
               <img
                 src="/images/metricnew.png"
                 alt="MetricAir Logo"
                 style={{
-                  height: "450px",
-                  width: "auto",
-                  position: "absolute",
-                  top: "-174px",
-                  left: "-122px",
-                  maxWidth: "none",
                   transition: "opacity 0.5s ease",
                   opacity: scrolled ? 1 : 0.92,
                   pointerEvents: "none",
                 }}
-                className="object-contain"
+                className="object-contain navbar-logo-img"
               />
             </Link>
 
@@ -972,6 +966,45 @@ export default function Navbar() {
           </Link>
         </div>
       )}
+
+      {/* CSS responsive style for Navbar Logo */}
+      <style>{`
+        .navbar-logo-wrapper {
+          height: 60px;
+          width: 250px;
+          position: relative;
+        }
+        .navbar-logo-img {
+          height: 360px;
+          width: auto;
+          position: absolute;
+          top: -130px;
+          left: -98px;
+          max-width: none;
+        }
+        @media (min-width: 768px) {
+          .navbar-logo-wrapper {
+            height: 80px;
+            width: 330px;
+          }
+          .navbar-logo-img {
+            height: 480px;
+            top: -173px;
+            left: -130px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .navbar-logo-wrapper {
+            height: 106px;
+            width: 450px;
+          }
+          .navbar-logo-img {
+            height: 450px;
+            top: -174px;
+            left: -122px;
+          }
+        }
+      `}</style>
     </nav>
   );
 }
